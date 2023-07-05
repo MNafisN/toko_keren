@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KendaraanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,18 @@ Route::group([
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('data', [AuthController::class, 'data']);
     });
+});
+
+Route::group([
+    'prefix' => 'kendaraan',
+    'middleware' => 'auth:api'
+], function () {
+    Route::resource('kendaraan', KendaraanController::class);
+    Route::get('motor/stock', [KendaraanController::class, 'getAllStockMotor']);
+    Route::get('mobil/stock', [KendaraanController::class, 'getAllStockMotor']);
+    Route::get('motor/terjual', [KendaraanController::class, 'getAllTerjualMotor']);
+    Route::get('mobil/terjual', [KendaraanController::class, 'getAllTerjualMobil']);
+
+    Route::get('mobil', [KendaraanController::class, 'getAllMobil']);
+    Route::get('motor', [KendaraanController::class, 'getAllMotor']);
 });
