@@ -15,15 +15,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
+        \App\Models\Kendaraan::factory(200)->create();
 
-        // \App\Models\User::create([
-        //     'username' => 'test1234',
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        //     'email_verified_at' => now(),
-        //     'password' => bcrypt('admin123'),
-        //     'about' => 'lorem ipsum dolor sit amet',
-        //     'phone_number' => '+6281823845150'
-        // ]);
+        \App\Models\User::create([
+            'username' => 'test1234',
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('admin123'),
+            'about' => 'lorem ipsum dolor sit amet',
+            'phone_number' => '+6281823845150'
+        ]);
     }
 }
