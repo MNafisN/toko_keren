@@ -65,7 +65,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 200,
                 'logged_in_user' => [
-                    'name' => auth()->user()['first_name'],
+                    'name' => auth()->user()['name'],
                     'email' => auth()->user()['email']
                 ],
                 'access_token' => $token,
