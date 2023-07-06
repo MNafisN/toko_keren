@@ -23,6 +23,7 @@ class KendaraanFactory extends Factory
         $key = array_rand($strings);
         if ($strings[$key] == 'motor') {
             return [
+                'nama_kendaraan' => fake()->unique()->firstNameMale(),
                 'tahun_keluaran' => fake()->year($max = 'now'),
                 'warna' => fake()->colorName(),
                 'harga' => fake()->numberBetween($min = 1000000, $max = 1000000000),
@@ -35,6 +36,7 @@ class KendaraanFactory extends Factory
             ];
         } else {
             return [
+                'nama_kendaraan' => fake()->unique()->firstNameMale(),
                 'tahun_keluaran' => fake()->year($max = 'now'),
                 'warna' => fake()->colorName(),
                 'harga' => fake()->numberBetween($min = 1000000, $max = 1000000000),
