@@ -1,0 +1,33 @@
+.i-location{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/loacation.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-search{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/search.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-plus{
+    width: 15px;
+    height: 15px;
+    background-image: url(./svg/plus.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-jual{
+    width: 104px;
+    height: 48px;
+    background-image: url(./svg/jualBtn.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
