@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Penjualan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,18 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
-        \App\Models\Kendaraan::factory(200)->create();
-        \App\Models\Penjualan::factory(100)->create();
-
-        \App\Models\User::create([
-            'username' => 'test1234',
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('admin123'),
-            'about' => 'lorem ipsum dolor sit amet',
-            'phone_number' => '+6281823845150'
-        ]);
+        \App\Models\User::factory(5)->create();
+        \App\Models\Kendaraan::factory(10)->create();
+        // \App\Models\Penjualan::factory(100)->create();
     }
 }

@@ -38,12 +38,14 @@ class AuthRepository
     {
         $userBaru = new $this->users;
 
-        $userBaru->username = $data['username'];
         $userBaru->email = $data['email'];
+        $userBaru->username = $data['username'];
+        $userBaru->full_name = '';
+        $userBaru->email_verified_at = $data['verified_time'];
         $userBaru->password = bcrypt($data['password']);
-        $userBaru->first_name = $data['first_name'];
-        $userBaru->last_name = $data['last_name'];
-        $userBaru->email_verified_at = time();
+        $userBaru->about = '';
+        $userBaru->phone_number = '';
+        $userBaru->profile_picture = null;
 
         $userBaru->save();
         return $userBaru->fresh();

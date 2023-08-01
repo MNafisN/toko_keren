@@ -22,7 +22,7 @@ use App\Http\Controllers\PenjualanController;
 // });
 
 Route::group([
-    'prefix' => 'auth'
+    'prefix' => 'user'
 ], function() {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -32,6 +32,11 @@ Route::group([
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('data', [AuthController::class, 'data']);
+        Route::post('update', [AuthController::class, 'update']);
+        Route::post('update_email', [AuthController::class, 'updateEmail']);
+        Route::post('update_password', [AuthController::class, 'updatePassword']);
+        Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);
+        Route::delete('delete_photo', [AuthController::class, 'deletePhoto']);
     });
 });
 
