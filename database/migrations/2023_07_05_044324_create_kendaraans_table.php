@@ -15,17 +15,15 @@ return new class extends Migration
     {
         Schema::create('kendaraans', function (Blueprint $table) {
             $table->id();
+            $table->string('produk_id');
+            $table->string('merek');
+            $table->string('model');
             $table->year('tahun_keluaran');
+            $table->string('jarak_tempuh');
             $table->string('warna');
-            $table->decimal('harga');
-            $table->integer('stok');
-            $table->integer('terjual');
             $table->string('tipe_kendaraan');
-            $table->string('mesin');
-            $table->string('suspensi');
-            $table->string('transmisi');
-            $table->integer('kapasitas_penumpang');
-            $table->string('tipe');
+            $table->spek_kendaraan();
+            $table->decimal('harga');
             $table->timestamps();
         });
     }

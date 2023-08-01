@@ -21,31 +21,43 @@ class KendaraanFactory extends Factory
             'motor',
         );
         $key = array_rand($strings);
-        if ($strings[$key] == 'motor') {
+        if ($strings[$key] == 'mobil') {
             return [
-                'nama_kendaraan' => fake()->unique()->firstNameMale(),
+                'produk_id' => \App\Models\Produk::factory()->custom(fake()->unique()->numerify('MBL-#####'), 'mobil')->create()->produk_id,
+                'merek' => fake()->company(),
+                'model' => fake()->domainWord(),
                 'tahun_keluaran' => fake()->year($max = 'now'),
+                'jarak_tempuh' => fake()->numerify('#### Km'),
                 'warna' => fake()->colorName(),
-                'harga' => fake()->numberBetween($min = 1000000, $max = 1000000000),
-                'stok' => fake()->numberBetween($min = 1000, $max = 10000),
-                'terjual' => fake()->numberBetween($min = 20, $max = 500),
                 'tipe_kendaraan' => $strings[$key],
-                'mesin' => fake()->domainWord(),
-                'tipe_suspensi' => fake()->company(),
-                'tipe_transmisi' => fake()->citySuffix(),
+                'spek_kendaraan' => [
+                    [
+                        'kapasitas_mesin' => fake()->numerify('#### cc'),
+                        'kapasitas_penumpang' => fake()->numberBetween($min = 1, $max = 8),
+                        'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
+                        'tipe_bodi' => fake()->citySuffix(),
+                        'tipe_bahan_bakar' => fake()->randomElement(['diesel', 'bensin', 'hybrid', 'listrik'])
+                    ]
+                ],
+                'harga' => fake()->numberBetween($min = 30000000, $max = 1000000000)
             ];
-        } else {
+        } else if ($strings[$key] == 'motor') {
             return [
-                'nama_kendaraan' => fake()->unique()->firstNameMale(),
+                'produk_id' => \App\Models\Produk::factory()->custom(fake()->unique()->numerify('MTR-#####'), 'motor')->create()->produk_id,
+                'merek' => fake()->company(),
+                'model' => fake()->domainWord(),
                 'tahun_keluaran' => fake()->year($max = 'now'),
+                'jarak_tempuh' => fake()->numerify('#### Km'),
                 'warna' => fake()->colorName(),
-                'harga' => fake()->numberBetween($min = 1000000, $max = 1000000000),
-                'stok' => fake()->numberBetween($min = 1000, $max = 10000),
-                'terjual' => fake()->numberBetween($min = 20, $max = 500),
                 'tipe_kendaraan' => $strings[$key],
-                'mesin' => fake()->domainWord(),
-                'kapasitas_penumpang' => fake()->numberBetween($min = 1, $max = 8),
-                'tipe' => fake()->citySuffix(),
+                'spek_kendaraan' => [
+                    [
+                        'kapasitas_mesin' => fake()->numerify('### cc'),
+                        'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
+                        'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
+                    ]
+                ],
+                'harga' => fake()->numberBetween($min = 1000000, $max = 50000000),
             ];
         }
     }

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\AuthRepository;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Carbon\Carbon;
 use MongoDB\Exception\InvalidArgumentException;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,18 +32,21 @@ class AuthService
     public function store(array $data) : Object
     {
         $validator = Validator::make($data, [
-            'username' => 'required|string|min:4|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
-        $result = $this->authRepository->store($validator->validated());
+        if ((filter_var($data['email'], FILTER_VALIDATE_EMAIL)) !== false) {
+            // okay, should be valid now
+            $data['verified_time'] = (string)Carbon::now('+7:00');
+            $data['username'] = substr($data['email'], 0, strrpos($data['email'], '@'));
+        }
+
+        $result = $this->authRepository->store($data);
         return $result;
     }
 
@@ -69,9 +72,10 @@ class AuthService
     /**
      * Untuk melihat detail user yang telah dalam keadaan logged in
      */
-    public function data() : Authenticatable
+    public function data() : array
     {
-        return auth()->user();
+        $user = auth()->user();
+        return $user->only(['email', 'username', 'full_name', 'about', 'phone_number', 'profile_picture']);
     }
 
     /**

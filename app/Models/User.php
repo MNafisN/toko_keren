@@ -10,6 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use Jenssegers\Mongodb\Relations\HasMany;
+use App\Models\Produk;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -23,13 +26,14 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
-        'name',
         'email',
-        'password',
+        'username',
+        'full_name',
         'email_verified_at',
+        'password',
         'about',
         'phone_number',
+        'profile_picture'
     ];
 
     /**
@@ -48,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // 'email_verified_at' => 'datetime',
     ];
 
     public function getJWTCustomClaims()
@@ -59,5 +63,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTIdentifier()
     {
         return $this->getKey();
+    }
+
+    public function produk(): HasMany
+    {
+        return $this->hasMany(Produk::class, 'produk_pemasang', 'username');
     }
 }

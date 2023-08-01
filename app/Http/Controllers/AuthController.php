@@ -13,7 +13,7 @@ class AuthController extends Controller
     
     public function __construct(AuthService $authService)
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
         $this->authService = $authService;
     }
 
@@ -26,14 +26,14 @@ class AuthController extends Controller
      */
     public function register(Request $request) : JsonResponse
     {
-        $data = $request->only('username', 'email', 'password', 'first_name', 'last_name');
+        $data = $request->all();
 
         try {
             $user = $this->authService->store($data);
             return response()->json([
                 'status' => 201,
                 'message' => 'User registered successfully',
-                'registered_user' => $user->only(['name', 'email'])
+                'registered_user' => $user->only(['username', 'email'])
             ], 201);
         } catch (Exception $err) {
             return response()->json([
@@ -51,7 +51,7 @@ class AuthController extends Controller
      */
     public function login(Request $request) : JsonResponse
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->all();
 
         try {
             $token = $this->authService->login($credentials);
@@ -65,7 +65,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 200,
                 'logged_in_user' => [
-                    'name' => auth()->user()['name'],
+                    'username' => auth()->user()['username'],
                     'email' => auth()->user()['email']
                 ],
                 'access_token' => $token,
@@ -87,7 +87,8 @@ class AuthController extends Controller
     public function data() : JsonResponse
     {
         return response()->json([
-            'logged_in_user' => $this->authService->data()
+            'status' => 200,
+            'user_data' => $this->authService->data()
         ], 200);
     }
 
