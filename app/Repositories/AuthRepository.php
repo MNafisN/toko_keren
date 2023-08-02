@@ -23,11 +23,11 @@ class AuthRepository
     }
 
     /**
-     * Untuk mengambil data user berdasarkan id
+     * Untuk mengambil data user berdasarkan username
      */
-    public function getById(string $id) : Object
+    public function getByUsername(string $username) : ?Object
     {
-        $user = $this->users->where('_id', $id)->get();
+        $user = $this->users->where('username', $username)->first();
         return $user;
     }
 
@@ -49,6 +49,75 @@ class AuthRepository
 
         $userBaru->save();
         return $userBaru->fresh();
+    }
+
+    /**
+     * Untuk memperbarui data user
+     */
+    public function save(array $data) : Object
+    {
+        $user = $this->getByUsername($data['username']);
+
+        $user->username = $data['new_username'];
+        $user->full_name = $data['full_name'];
+        $user->about = $data['about'];
+        $user->phone_number = $data['phone_number'];
+
+        $user->save();
+        return $user->fresh();
+    }
+    
+    /**
+     * Update user email
+     */
+    public function saveEmail(array $data): Object
+    {
+        $user = $this->getByUsername($data['username']);
+
+        $user->email = $data['new_email'];
+        $user->email_verified_at = $data['verified_time'];
+
+        $user->save();
+        return $user->fresh();
+    }
+
+    /**
+     * Update user password
+     */
+    public function savePassword(array $data): Object
+    {
+        $user = $this->getByUsername($data['username']);
+
+        $user->password = bcrypt($data['new_password']);
+
+        $user->save();
+        return $user->fresh();
+    }
+
+    /**
+     * Upload user profile picture
+     */
+    public function savePhoto(string $username, string $fileName): Object
+    {
+        $user = $this->getByUsername($username);
+
+        $user->profile_picture = $fileName;
+
+        $user->save();
+        return $user->fresh();
+    }
+
+    /**
+     * Delete user profile picture
+     */
+    public function deletePhoto(string $username): string
+    {
+        $user = $this->getByUsername($username);
+
+        $user->profile_picture = null;
+
+        $user->save();
+        return "profile picture of ". $user->username . " removed";
     }
 
     /**
