@@ -49,3 +49,12 @@
     background-size: contain;
     display: inline-block;
 }
+
+.i-arrow-right{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/arrow-right.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

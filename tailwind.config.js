@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'subTitle': '#406367'
+        'subTitle': '#406367',
+        'footer': 'rgba(0,47,52,1)'
       }
     },
   },
