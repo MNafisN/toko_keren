@@ -58,3 +58,11 @@
     background-size: contain;
     display: inline-block;
 }
+.i-telephone{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/telephone.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

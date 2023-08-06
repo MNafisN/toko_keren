@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       colors: {
         'subTitle': '#406367',
-        'footer': 'rgba(0,47,52,1)'
+        'footer': 'rgba(0,47,52,1)',
+        'buy-button': '#002f34'
       }
     },
   },

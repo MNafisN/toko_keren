@@ -1,13 +1,16 @@
 <template>
-    <Header page="product" />
-    <div class="h-[68px]"></div>
-    <Breadcrumb />
-    <PhotoProduct />
-    <ProductTitle />
-    <ProductDetail />
-    <ProductDescription />
-    <ProductSeller />
-    <ProductId />
+    <div class="relative">
+        <Header page="product" />
+        <div class="h-[68px]"></div>
+        <Breadcrumb />
+        <PhotoProduct />
+        <ProductTitle />
+        <ProductDetail />
+        <ProductDescription />
+        <ProductSeller />
+        <ProductId />
+        <BuyButton />
+    </div>
     <Footer />
 </template>
 
@@ -20,6 +23,7 @@ import ProductDetail from '../components/product/ProductDetail.vue';
 import ProductDescription from '../components/product/ProductDescription.vue';
 import ProductSeller from '../components/product/ProductSeller.vue';
 import ProductId from '../components/product/ProductId.vue';
+import BuyButton from '../components/product/BuyButton.vue';
 import Footer from '../components/Footer.vue';
 
 export default {
@@ -33,6 +37,7 @@ export default {
         ProductDescription,
         ProductSeller,
         ProductId,
+        BuyButton,
         Footer
     }
 }
