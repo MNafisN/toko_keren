@@ -31,3 +31,21 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+.i-love{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/love-line.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-share{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/share.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

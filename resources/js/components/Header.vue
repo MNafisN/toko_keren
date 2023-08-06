@@ -12,17 +12,26 @@
                 </div>
                 <h1 class="font-extrabold text-2xl">Fake Olx</h1>
             </div>
-            <div class="flex items-center gap-1">
+            <div v-if="page !== 'product'" class="flex items-center gap-1">
                 <span class="font-bold">Demak Kab, Jawa Tengah</span>
                 <div class="i-location"></div>
             </div>
         </header>
-        <div class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
+        <div v-if="page !== 'product'" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
             <div class="i-search"></div>
             <span class="text-slate-600">Temukan Mobil, Handphone, dan lainnya</span>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+  name: 'header',
+  props: {
+    page: String
+  }
+}
+</script>
 
 <style scoped>
 .burger {
