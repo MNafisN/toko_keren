@@ -50,6 +50,7 @@ Route::group([
     ], function() {
         Route::get('user/me', [ProdukController::class, 'getMyProduk']);
         Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);
+        Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);
     });
 });
 
