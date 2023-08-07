@@ -27,17 +27,14 @@ class ProdukFactory extends Factory
                 'produk_deskripsi' => fake()->text(30),
                 'produk_foto' => [],
                 'produk_pemasang' => \App\Models\User::raw(function($collection){ return $collection->aggregate([ ['$sample' => ['size' => 1]] ]); })->first()->username,
-                'kontak_pemasang' => [
-                    [
-                        'no_telepon' => fake()->phoneNumber(),
-                        'tampilkan_telepon' => fake()->boolean()
-                    ]
-                ],
+                'no_telepon' => fake()->phoneNumber(),
+                'tampilkan_telepon' => fake()->boolean(),
                 'lokasi_provinsi' => fake()->city(),
                 'lokasi_kabupaten_kota' => fake()->city(),
                 'lokasi_kecamatan' => fake()->city(),
                 'lokasi_koordinat' => [],
-                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s')
+                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s'),
+                'status' => 'aktif'
             ];    
         } else if ($kategori[$randomKey] == 'motor') {
             return [
@@ -47,17 +44,14 @@ class ProdukFactory extends Factory
                 'produk_deskripsi' => fake()->text(30),
                 'produk_foto' => [],
                 'produk_pemasang' => \App\Models\User::raw(function($collection){ return $collection->aggregate([ ['$sample' => ['size' => 1]] ]); })->first()->username,
-                'kontak_pemasang' => [
-                    [
-                        'no_telepon' => fake()->phoneNumber(),
-                        'tampilkan_telepon' => fake()->boolean()
-                    ]
-                ],
+                'no_telepon' => fake()->phoneNumber(),
+                'tampilkan_telepon' => fake()->boolean(),
                 'lokasi_provinsi' => fake()->city(),
                 'lokasi_kabupaten_kota' => fake()->city(),
                 'lokasi_kecamatan' => fake()->city(),
                 'lokasi_koordinat' => [],
-                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s')
+                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s'),
+                'status' => 'aktif'
             ];    
         }
     }
@@ -72,17 +66,14 @@ class ProdukFactory extends Factory
                 'produk_deskripsi' => fake()->text(30),
                 'produk_foto' => [],
                 'produk_pemasang' => \App\Models\User::raw(function($collection){ return $collection->aggregate([ ['$sample' => ['size' => 1]] ]); })->first()->username,
-                'kontak_pemasang' => [
-                    [
-                        'no_telepon' => fake()->phoneNumber(),
-                        'tampilkan_telepon' => fake()->boolean()
-                    ]
-                ],
+                'no_telepon' => fake()->phoneNumber(),
+                'tampilkan_telepon' => fake()->boolean(),
                 'lokasi_provinsi' => fake()->city(),
                 'lokasi_kabupaten_kota' => fake()->city(),
                 'lokasi_kecamatan' => fake()->city(),
                 'lokasi_koordinat' => [],
-                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s')
+                'date_posted' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s'),
+                'status' => 'aktif'
             ]);
         }
     }

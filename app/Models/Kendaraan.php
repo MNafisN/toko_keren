@@ -46,14 +46,14 @@ class Kendaraan extends Model
     {
         $idNow = "MBL-";
 
-        $this->instruction_id = $idNow . str_pad(self::getID('LI'), 5, '0', STR_PAD_LEFT);
+        $this->produk_id = $idNow . str_pad(self::getID('mobil'), 5, '0', STR_PAD_LEFT);
     }
 
     public function nextMotorId()
     {
         $idNow = "MTR-";
 
-        $this->instruction_id = $idNow . str_pad(self::getID('SI'), 5, '0', STR_PAD_LEFT);
+        $this->produk_id = $idNow . str_pad(self::getID('motor'), 5, '0', STR_PAD_LEFT);
     }
 
     public static function bootUseAutoIncrementID()

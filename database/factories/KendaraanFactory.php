@@ -36,7 +36,8 @@ class KendaraanFactory extends Factory
                         'kapasitas_penumpang' => fake()->numberBetween($min = 1, $max = 8),
                         'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
                         'tipe_bodi' => fake()->citySuffix(),
-                        'tipe_bahan_bakar' => fake()->randomElement(['diesel', 'bensin', 'hybrid', 'listrik'])
+                        'tipe_bahan_bakar' => fake()->randomElement(['diesel', 'bensin', 'hybrid', 'listrik']),
+                        'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
                     ]
                 ],
                 'harga' => fake()->numberBetween($min = 30000000, $max = 1000000000)
