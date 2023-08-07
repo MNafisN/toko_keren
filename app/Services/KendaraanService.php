@@ -3,88 +3,58 @@
 namespace App\Services;
 
 use App\Repositories\KendaraanRepository;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
+use App\Exceptions\ArrayException;
 
-class KendaraanService
+class KendaraanService extends ProdukService
 {
     protected $KendaraanRepository;
 
-    public function __construct(KendaraanRepository $KendaraanRepository)
+    protected function __construct(KendaraanRepository $KendaraanRepository)
     {
         $this->KendaraanRepository = $KendaraanRepository;
     }
 
-    public function validator($request)
+    protected function validatorMobil(array $formData): array
     {
-        $validator = Validator::make($request, [
-            'nama_kendaraan' => 'required|unique:App\Models\Kendaraan,nama_kendaraan',
-            'tahun_keluaran' => 'required|numeric|min:1900|max:2500',
+        $formData = parent::validatorProduk($formData, 'mobil');
+
+        $formData['tipe_kendaraan'] = $formData['produk_kategori'];
+
+        $validator = Validator::make($formData, [
+            'tipe_kendaraan' => ['required', Rule::in(['mobil'])],
+            'merek' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'tahun_keluaran' => ['required', 'numeric', 'min:1900', 'max:2023'],
+            'jarak_tempuh' => ['required', 'string'],
             'warna' => ['required', 'string'],
-            'harga' => ['required', 'numeric'],
-            'stok' => ['required', 'numeric'],
-            'terjual' => ['required', 'numeric'],
-            'tipe_kendaraan' => ['required', Rule::in(['motor', 'mobil'])],
+            'harga' => ['required', 'numeric', 'min:100']
         ]);
-        if ($validator->fails()) {
-            throw new InvalidArgumentException($validator->errors()->first());
-        }
-        return ($request);
+        if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
+
+        return ($formData);
     }
 
-    public function getAll()
+    protected function validatorMotor(array $formData): array
     {
-        return $this->KendaraanRepository->getAll();
-    }
+        $formData = parent::validatorProduk($formData, 'motor');
 
-    public function findById(string $id)
-    {
-        return $this->KendaraanRepository->getById($id);
-    }
+        $formData['tipe_kendaraan'] = $formData['produk_kategori'];
 
-    public function store($data)
-    {
-        return $this->KendaraanRepository->store($data);
-    }
+        $validator = Validator::make($formData, [
+            'tipe_kendaraan' => ['required', Rule::in(['motor'])],
+            'merek' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'tahun_keluaran' => ['required', 'numeric', 'min:1900', 'max:2023'],
+            'jarak_tempuh' => ['required', 'string'],
+            'warna' => ['required', 'string'],
+            'harga' => ['required', 'numeric', 'min:100']
+        ]);
+        if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
 
-    public function update($data, string $id)
-    {
-        return $this->KendaraanRepository->update($data, $id);
-    }
-
-    public function deleteById(string $id)
-    {
-        return $this->KendaraanRepository->deleteById($id);
-    }
-
-    public function getAllMobil()
-    {
-        return $this->KendaraanRepository->getAllMobil();
-    }
-
-    public function getAllStockMobil()
-    {
-        return $this->KendaraanRepository->getAllStockMobil();
-    }
-
-    public function getAllTerjualMobil()
-    {
-        return $this->KendaraanRepository->getAllTerjualMobil();
-    }
-
-    public function getAllMotor()
-    {
-        return $this->KendaraanRepository->getAllMotor();
-    }
-
-    public function getAllStockMotor()
-    {
-        return $this->KendaraanRepository->getAllStockMotor();
-    }
-
-    public function getAllTerjualMotor()
-    {
-        return $this->KendaraanRepository->getAllTerjualMotor();
+        return ($formData);
     }
 }

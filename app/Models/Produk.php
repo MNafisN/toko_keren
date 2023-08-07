@@ -35,7 +35,7 @@ class Produk extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'username', 'produk_pemasang');
+        return $this->belongsTo(User::class, 'produk_pemasang', 'username');
     }
 
     public function kendaraan(): HasOne
