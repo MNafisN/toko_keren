@@ -110,6 +110,38 @@ class ProdukService
         return array_merge($produk, $detail);
     }
 
+    public function update(array $formData, string $produkId): array
+    {
+        $produk = $this->produkRepository->getById($produkId);
+        if (!$produk) {
+            throw new InvalidArgumentException("Data produk tidak ditemukan");
+        } 
+        
+        $formData['date_modified'] = (string)Carbon::now('+7:00');
+        $kendaraan = $this->kendaraanRepository->update($produkId, $formData);
+        $produk = $this->produkRepository->update($produkId, $formData);
+
+        $produk = array_diff_key($produk->toArray(), array_flip(['created_at', 'updated_at']));
+        $detail = array_diff_key($kendaraan->toArray(), array_flip(['_id', 'produk_id', 'created_at', 'updated_at']));
+
+        return array_merge($produk, $detail);
+    }
+
+    public function destroy(string $category, string $produkId): string
+    {
+        $produk = $this->produkRepository->getById($produkId);
+        if (!$produk) {
+            throw new InvalidArgumentException("Data produk tidak ditemukan");
+        } else if ($category == "mobil" || $category == "motor") {
+            $name = $produk->produk_judul;
+            $this->kendaraanRepository->destroy($produkId);
+            $this->produkRepository->destroy($produkId);
+        }
+
+        $message = "Produk " . $name . " telah dihapus";
+        return $message;
+    }
+
     public function getMyProduk(): array
     {
         $result = [];
@@ -142,5 +174,17 @@ class ProdukService
         }
 
         return $result;
+    }
+
+    public function changeStatus(string $produkId, string $status): string
+    {
+        $produk = $this->produkRepository->getById($produkId);
+        if (!$produk) {
+            throw new InvalidArgumentException("Data produk tidak ditemukan");
+        } else {
+            $this->produkRepository->changeStatus($produkId, $status);
+        }
+
+        return $produk->produk_judul;
     }
 }

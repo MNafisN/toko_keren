@@ -23,11 +23,11 @@ class KendaraanRepository
 
     public function getById(string $id): ?Object
     {
-        $kendaraan = $this->kendaraan->find($id);
+        $kendaraan = $this->kendaraan->where('produk_id', $id)->first();
         return $kendaraan;
     }
 
-    public function store($data): Object
+    public function store(array $data): Object
     {
         $kendaraan = new $this->kendaraan;
 
@@ -51,30 +51,24 @@ class KendaraanRepository
         return $kendaraan->fresh();
     }
 
-    public function update($data, string $id): Object
+    public function update(string $id, array $data): Object
     {
-        $kendaraan = Kendaraan::find($id);
-        
-        $kendaraan->nama_kendaraan = $data['nama_kendaraan'];
+        $kendaraan = $this->getById($id);
+
+        $kendaraan->merek = $data['merek'];
+        $kendaraan->model = $data['model'];
         $kendaraan->tahun_keluaran = $data['tahun_keluaran'];
+        $kendaraan->jarak_tempuh = $data['jarak_tempuh'];
         $kendaraan->warna = $data['warna'];
-        $kendaraan->harga = $data['harga'];
-        $kendaraan->stok = $data['stok'];
-        $kendaraan->terjual = $data['terjual'];
         $kendaraan->tipe_kendaraan = $data['tipe_kendaraan'];
-
-        if ($data['tipe_kendaraan'] == "motor") {
-            $kendaraan->mesin = $data['mesin'];
-            $kendaraan->tipe_suspensi = $data['tipe_suspensi'];
-            $kendaraan->tipe_transmisi = $data['tipe_transmisi'];
-        } else {
-            $kendaraan->mesin = $data['mesin'];
-            $kendaraan->kapasistas_penumpang = $data['kapasistas_penumpang'];
-            $kendaraan->tipe = $data['tipe'];
+        if ($data['tipe_kendaraan'] == "mobil") { 
+            $kendaraan->spek_kendaraan = Arr::only($data, ['kapasitas_mesin', 'kapasitas_penumpang', 'tipe_transmisi', 'tipe_bodi', 'tipe_bahan_bakar', 'tipe_penjual']); 
+        } else if ($data['tipe_kendaraan'] == "motor") {
+            $kendaraan->spek_kendaraan = Arr::only($data, ['kapasitas_mesin', 'tipe_transmisi', 'tipe_penjual']);
         }
+        $kendaraan->harga = $data['harga'];
 
-        $kendaraan->update();
-
+        $kendaraan->save();
         return $kendaraan->fresh();
     }
 
@@ -93,8 +87,9 @@ class KendaraanRepository
     //     return $kendaraan->fresh();
     // }
 
-    public function deleteById(string $id): string
+    public function destroy(string $id): void
     {
-        return $this->kendaraan->destroy($id) ? 'Data Deleted' : 'Data Not Found';
+        $kendaraan = $this->getById($id);
+        $kendaraan->delete();
     }
 }

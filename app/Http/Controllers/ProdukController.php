@@ -35,7 +35,7 @@ class ProdukController extends Controller
             ];
         } catch (Exception $err) {
             $result = [
-                'status' => 422,
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }
@@ -52,7 +52,7 @@ class ProdukController extends Controller
             ];
         } catch (Exception $err) {
             $result = [
-                'status' => 422,
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }
@@ -103,12 +103,57 @@ class ProdukController extends Controller
 
     public function update(Request $request, string $id): JsonResponse
     {
-        return response()->json();
+        $data = $request->all();
+        try {
+            if ($data['produk_kategori'] == 'mobil') {
+                $validated = $this->mobilService->validator($data);
+            } else if ($data['produk_kategori'] == 'motor') {
+                $validated = $this->motorService->validator($data);
+            } else {
+                throw new InvalidArgumentException('Kategori yang tersedia hanya mobil dan motor');
+            }
+            $result = [
+                'status' => 200,
+                'message' => 'Produk diperbarui',
+                'data' => $this->produkService->update($validated, $id)
+            ];
+        } catch (ArrayException $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessagesArray()
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
     }
 
-    public function destroy(string $id): JsonResponse
+    public function destroy(string $produkId): JsonResponse
     {
-        return response()->json();
+        try {
+            if (str_contains($produkId, 'MBL')) {
+                $message = $this->produkService->destroy('mobil', $produkId);
+            } else if (str_contains($produkId, 'MTR')) {
+                $message = $this->produkService->destroy('motor', $produkId);
+            } else {
+                throw new InvalidArgumentException('Produk ID invalid');
+            }
+            $result = [
+                'status' => 200,
+                'message' => $message
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
     }
 
     public function getMyProduk(): JsonResponse
@@ -120,7 +165,7 @@ class ProdukController extends Controller
             ];
         } catch (Exception $err) {
             $result = [
-                'status' => 422,
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }
@@ -137,7 +182,25 @@ class ProdukController extends Controller
             ];
         } catch (Exception $err) {
             $result = [
-                'status' => 422,
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function setProdukStatus(string $id, string $status)
+    {
+        try {
+            $produk = $this->produkService->changeStatus($id, $status);
+            $result = [
+                'status' => 200,
+                'message' => "Status " . $produk . " telah diubah menjadi " . $status
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }

@@ -31,14 +31,12 @@ class KendaraanFactory extends Factory
                 'warna' => fake()->colorName(),
                 'tipe_kendaraan' => $strings[$key],
                 'spek_kendaraan' => [
-                    [
-                        'kapasitas_mesin' => fake()->numerify('#### cc'),
-                        'kapasitas_penumpang' => fake()->numberBetween($min = 1, $max = 8),
-                        'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
-                        'tipe_bodi' => fake()->citySuffix(),
-                        'tipe_bahan_bakar' => fake()->randomElement(['diesel', 'bensin', 'hybrid', 'listrik']),
-                        'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
-                    ]
+                    'kapasitas_mesin' => fake()->numerify('#### cc'),
+                    'kapasitas_penumpang' => fake()->numberBetween($min = 1, $max = 8),
+                    'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
+                    'tipe_bodi' => fake()->citySuffix(),
+                    'tipe_bahan_bakar' => fake()->randomElement(['diesel', 'bensin', 'hybrid', 'listrik']),
+                    'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
                 ],
                 'harga' => fake()->numberBetween($min = 30000000, $max = 1000000000)
             ];
@@ -52,11 +50,9 @@ class KendaraanFactory extends Factory
                 'warna' => fake()->colorName(),
                 'tipe_kendaraan' => $strings[$key],
                 'spek_kendaraan' => [
-                    [
-                        'kapasitas_mesin' => fake()->numerify('### cc'),
-                        'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
-                        'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
-                    ]
+                    'kapasitas_mesin' => fake()->numerify('### cc'),
+                    'tipe_transmisi' => fake()->randomElement(['automatic', 'manual']),
+                    'tipe_penjual' => fake()->randomElement(['individu', 'dealer'])
                 ],
                 'harga' => fake()->numberBetween($min = 1000000, $max = 50000000),
             ];

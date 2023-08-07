@@ -59,4 +59,38 @@ class ProdukRepository
         $produk->save();
         return $produk->fresh();
     }
+
+    public function update(string $produkId, array $data): Object
+    {
+        $produk = $this->getById($produkId);
+
+        $produk->produk_kategori = $data['produk_kategori'];
+        $produk->produk_judul = $data['produk_judul'];
+        $produk->produk_deskripsi = $data['produk_deskripsi'];
+        $produk->produk_foto = $data['file'];
+        $produk->produk_pemasang = $data['produk_pemasang'];
+        $produk->no_telepon = $data['no_telepon'];
+        $produk->tampilkan_telepon = $data['tampilkan_telepon'];
+        $produk->lokasi_provinsi = $data['lokasi_provinsi'];
+        $produk->lokasi_kabupaten_kota = $data['lokasi_kabupaten_kota'];
+        $produk->lokasi_kecamatan = $data['lokasi_kecamatan'];
+        $produk->lokasi_koordinat = $data['lokasi_koordinat'];
+        $produk->date_modified = $data['date_modified'];
+
+        $produk->save();
+        return $produk->fresh();
+    }
+
+    public function destroy(string $produkId): void
+    {
+        $produk = $this->getById($produkId);
+        $produk->delete();
+    }
+
+    public function changeStatus(string $produkId, string $status): void
+    {
+        $produk = $this->getById($produkId);
+        $produk->status = $status;
+        $produk->save();
+    }
 }
