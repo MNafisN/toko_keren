@@ -3,6 +3,7 @@ import Home from '../pages/Home.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Product from '../pages/Product.vue'
+import EditProfile from '../pages/EditProfile.vue'
 
 const routes = [
     {
@@ -20,6 +21,10 @@ const routes = [
     {
         path: "/app/product",
         component: Product
+    },
+    {
+        path: "/app/editProfile",
+        component: EditProfile
     }
 ]
 

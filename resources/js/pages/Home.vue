@@ -1,5 +1,5 @@
 <template>
-    <Header />
+    <Header page="home" />
     <div class="h-32"></div>
     <Banner />
     <Kategori/>

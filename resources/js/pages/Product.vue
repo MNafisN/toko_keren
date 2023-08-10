@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <Header page="product" />
+        <Header />
         <div class="h-[68px]"></div>
         <Breadcrumb />
         <PhotoProduct />

@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed z-10 p-2 w-full bg-white">
+    <div class="fixed z-10 p-2 w-full bg-white shadow">
         <header class="flex justify-between items-center py-2">
             <div class="flex gap-2">
                 <div class="w-9 h-9 rounded-full bg-[#C8F8F6] flex justify-center items-center">
@@ -12,12 +12,12 @@
                 </div>
                 <h1 class="font-extrabold text-2xl">Fake Olx</h1>
             </div>
-            <div v-if="page !== 'product'" class="flex items-center gap-1">
+            <div v-if="page === 'home'" class="flex items-center gap-1">
                 <span class="font-bold">Demak Kab, Jawa Tengah</span>
                 <div class="i-location"></div>
             </div>
         </header>
-        <div v-if="page !== 'product'" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
+        <div v-if="page === 'home'" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
             <div class="i-search"></div>
             <span class="text-slate-600">Temukan Mobil, Handphone, dan lainnya</span>
         </div>
