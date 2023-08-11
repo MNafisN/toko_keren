@@ -1,22 +1,46 @@
 <template>
-    <div class="fixed z-10 p-2 w-full bg-white shadow">
+    <div class="fixed z-30 w-full bg-white shadow">
         <header class="flex justify-between items-center py-2">
             <div class="flex gap-2">
-                <div class="w-9 h-9 rounded-full bg-[#C8F8F6] flex justify-center items-center">
-                    <label class="burger" for="burger">
-                        <input type="checkbox" id="burger" />
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </label>
+                <div @click="toggleMenu" class="w-9 h-9 rounded-full bg-[#C8F8F6] flex justify-center items-center">
+                  <div :class="isActive ? 'i-x' : 'i-menu'"></div>
                 </div>
                 <h1 class="font-extrabold text-2xl">Fake Olx</h1>
             </div>
-            <div v-if="page === 'home'" class="flex items-center gap-1">
+            <div v-if="page === 'home' && isActive === false" class="flex items-center gap-1">
                 <span class="font-bold">Demak Kab, Jawa Tengah</span>
                 <div class="i-location"></div>
             </div>
         </header>
+
+        <!-- toggle menu -->
+        <div :class="`w-full box-border overflow-hidden p-2 relative bg-white transition-all ${isActive ? 'h-screen' : 'h-0'}`">
+          <div class="flex gap-4 items-center py-4">
+            <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500">
+            </div>
+            <span class="font-bold text-xl">Username</span>
+          </div>
+          <button class="w-full h-11 rounded-md bg-buy-button text-white font-bold">Lihat dan edit profil</button>
+          <div class="w-full h-px bg-[rgba(0,0,0,0.5)] mt-4"></div>
+          
+          <!-- list menu -->
+          <div class="flex gap-4 py-3">
+            <div class="i-camera-black"></div>
+            <span>Pasang Iklan</span>
+          </div>
+          <div class="flex gap-4 py-3">
+            <div class="i-love"></div>
+            <span>Iklan Saya</span>
+          </div>
+          <div class="flex gap-4 py-3">
+            <div class="i-logout"></div>
+            <span>Logout</span>
+          </div>
+          <!-- ///list menu -->
+
+        </div>
+        <!-- ///toggle menu/// -->
+
         <div v-if="page === 'home'" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
             <div class="i-search"></div>
             <span class="text-slate-600">Temukan Mobil, Handphone, dan lainnya</span>
@@ -27,73 +51,18 @@
 <script>
 export default {
   name: 'header',
+  data() {
+    return {
+      isActive: false
+    }
+  },
   props: {
     page: String
+  },
+  methods: {
+    toggleMenu() {
+      this.isActive ? this.isActive = false : this.isActive = true
+    }
   }
 }
 </script>
-
-<style scoped>
-.burger {
-  position: relative;
-  width: 40px;
-  height: 30px;
-  background: transparent;
-  cursor: pointer;
-  display: block;
-}
-
-.burger input {
-  display: none;
-}
-
-.burger span {
-  display: block;
-  position: absolute;
-  height: 4px;
-  width: 100%;
-  background: black;
-  border-radius: 9px;
-  opacity: 1;
-  left: 0;
-  transform: rotate(0deg);
-  transition: .25s ease-in-out;
-}
-
-.burger span:nth-of-type(1) {
-  top: 0px;
-  transform-origin: left center;
-}
-
-.burger span:nth-of-type(2) {
-  top: 50%;
-  transform: translateY(-50%);
-  transform-origin: left center;
-}
-
-.burger span:nth-of-type(3) {
-  top: 100%;
-  transform-origin: left center;
-  transform: translateY(-100%);
-}
-
-.burger input:checked ~ span:nth-of-type(1) {
-  transform: rotate(45deg);
-  top: 1px;
-  left: 5px;
-}
-
-.burger input:checked ~ span:nth-of-type(2) {
-  width: 0%;
-  opacity: 0;
-}
-
-.burger input:checked ~ span:nth-of-type(3) {
-  transform: rotate(-45deg);
-  top: 27px;
-  left: 5px;
-}
-.burger{
-    scale: 0.5;
-}
-</style>
