@@ -6,7 +6,7 @@
         </div>
         <div class="w-full overflow-x-auto">
             <div class="w-max flex">
-                <div class="w-[28.57vw] bg-white my-3">
+                <div @click="goTo('mobil')" class="w-[28.57vw] bg-white my-3">
                     <img class="w-12 h-12 mx-auto" src="/assets/mobil.png" alt="">
                     <p class="text-center text-xs">MOBIL</p>
                 </div>
@@ -14,7 +14,7 @@
                     <img class="w-12 h-12 mx-auto" src="/assets/properti.png" alt="">
                     <p class="text-center text-xs">PROPERTI</p>
                 </div>
-                <div class="w-[28.57vw] bg-white my-3">
+                <div @click="goTo('motor')" class="w-[28.57vw] bg-white my-3">
                     <img class="w-12 h-12 mx-auto" src="/assets/motor.png" alt="">
                     <p class="text-center text-xs">MOTOR</p>
                 </div>
@@ -50,3 +50,14 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name: 'list-category',
+    methods: {
+        goTo(category) {
+            this.$router.push('/app/category/'+category)
+        }
+    }
+}
+</script>

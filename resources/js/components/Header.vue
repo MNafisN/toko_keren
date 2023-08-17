@@ -8,7 +8,7 @@
                 </div>
                 <h1 @click="goToHome" class="font-extrabold text-2xl">Fake Olx</h1>
             </div>
-            <div v-if="page === 'home' && isActive === false" class="flex items-center gap-1">
+            <div v-if="searchable" class="flex items-center gap-1">
                 <span class="font-bold">Demak Kab, Jawa Tengah</span>
                 <div class="i-location"></div>
             </div>
@@ -37,12 +37,12 @@
             <div class="i-logout"></div>
             <span>Logout</span>
           </div>
-          <!-- ///list menu -->
+          <!-- ///list menu/// -->
 
         </div>
         <!-- ///toggle menu/// -->
 
-        <div v-if="page === 'home'" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
+        <div v-if="searchable" class="border-black border-2 rounded-md w-full h-10 my-2 flex items-center gap-2 px-4">
             <div class="i-search"></div>
             <span class="text-slate-600">Temukan Mobil, Handphone, dan lainnya</span>
         </div>
@@ -59,6 +59,20 @@ export default {
   },
   props: {
     page: String
+  },
+  computed: {
+    searchable() {
+      const listPage = [
+        'home',
+        'list-product'
+      ]
+      
+      if(!this.isActive){
+        return listPage.includes(this.page)
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     toggleMenu() {

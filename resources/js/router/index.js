@@ -5,6 +5,7 @@ import Register from '../pages/Register.vue'
 import Product from '../pages/Product.vue'
 import EditProfile from '../pages/EditProfile.vue'
 import Profile from '../pages/Profile.vue'
+import ListProduct from '../pages/ListProduct.vue'
 
 const routes = [
     {
@@ -30,6 +31,14 @@ const routes = [
     {
         path: "/app/profile",
         component: Profile
+    },
+    {
+        path: "/app/listProduct",
+        component: ListProduct
+    },
+    {
+        path: "/app/category/:category",
+        component: ListProduct
     }
 ]
 
