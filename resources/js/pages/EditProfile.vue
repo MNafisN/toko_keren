@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white min-h-screen">
         <Header />
-        <div class="h-[68px]"></div>
+        <div class="h-[52px]"></div>
         <div class="p-4">
             <h1 class="font-bold text-xl mb-4">Informasi Dasar</h1>
             <div class="w-full mb-4 flex gap-4">

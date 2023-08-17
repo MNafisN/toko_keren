@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <Header />
-        <div class="h-[68px]"></div>
+        <div class="h-[52px]"></div>
         <Breadcrumb />
         <PhotoProduct />
         <ProductTitle />

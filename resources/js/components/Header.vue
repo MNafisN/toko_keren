@@ -1,11 +1,12 @@
 <template>
-    <div class="fixed z-30 w-full bg-white shadow">
+    <div class="fixed z-30 w-full bg-white shadow px-2">
+
         <header class="flex justify-between items-center py-2">
             <div class="flex gap-2">
                 <div @click="toggleMenu" class="w-9 h-9 rounded-full bg-[#C8F8F6] flex justify-center items-center">
                   <div :class="isActive ? 'i-x' : 'i-menu'"></div>
                 </div>
-                <h1 class="font-extrabold text-2xl">Fake Olx</h1>
+                <h1 @click="goToHome" class="font-extrabold text-2xl">Fake Olx</h1>
             </div>
             <div v-if="page === 'home' && isActive === false" class="flex items-center gap-1">
                 <span class="font-bold">Demak Kab, Jawa Tengah</span>
@@ -14,13 +15,13 @@
         </header>
 
         <!-- toggle menu -->
-        <div :class="`w-full box-border overflow-hidden p-2 relative bg-white transition-all ${isActive ? 'h-screen' : 'h-0'}`">
+        <div :class="`w-full box-border overflow-hidden relative bg-white transition-all ${isActive ? 'h-screen p-2' : 'h-0 px-2'}`">
           <div class="flex gap-4 items-center py-4">
             <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500">
             </div>
             <span class="font-bold text-xl">Username</span>
           </div>
-          <button class="w-full h-11 rounded-md bg-buy-button text-white font-bold">Lihat dan edit profil</button>
+          <button @click="goToProfile" class="w-full h-11 rounded-md bg-buy-button text-white font-bold">Lihat dan edit profil</button>
           <div class="w-full h-px bg-[rgba(0,0,0,0.5)] mt-4"></div>
           
           <!-- list menu -->
@@ -62,6 +63,12 @@ export default {
   methods: {
     toggleMenu() {
       this.isActive ? this.isActive = false : this.isActive = true
+    },
+    goToHome() {
+      this.$router.push('/app')
+    },
+    goToProfile() {
+      this.$router.push('/app/profile')
     }
   }
 }

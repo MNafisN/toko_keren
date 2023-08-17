@@ -4,6 +4,7 @@ import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Product from '../pages/Product.vue'
 import EditProfile from '../pages/EditProfile.vue'
+import Profile from '../pages/Profile.vue'
 
 const routes = [
     {
@@ -25,6 +26,10 @@ const routes = [
     {
         path: "/app/editProfile",
         component: EditProfile
+    },
+    {
+        path: "/app/profile",
+        component: Profile
     }
 ]
 

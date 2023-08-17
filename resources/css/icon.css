@@ -108,3 +108,45 @@
     background-size: contain;
     display: inline-block;
 }
+
+.i-calender{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/calender.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-user{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/user.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-verif-email{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/verif-email.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-verif-phone{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/verif-phone.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-edit{
+    width: 22px;
+    height: 22px;
+    background-image: url(./svg/edit.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

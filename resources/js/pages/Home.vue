@@ -1,6 +1,6 @@
 <template>
     <Header page="home" />
-    <div class="h-32"></div>
+    <div class="h-28"></div>
     <Banner />
     <Kategori/>
     <Rekomendasi />
