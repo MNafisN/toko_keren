@@ -2,7 +2,7 @@
     <div class="mt-2 py-2 bg-white">
         <div class="w-full flex justify-between px-5">
             <span>Telusuri kategori</span>
-            <span class="underline font-semibold">Lihat semua</span>
+            <!-- <span class="underline font-semibold">Lihat semua</span> -->
         </div>
         <div class="w-full overflow-x-auto">
             <div class="w-max flex">

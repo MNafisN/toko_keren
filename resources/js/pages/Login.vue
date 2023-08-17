@@ -1,7 +1,9 @@
 <template>
     <div class="bg-white h-screen">
         <div class="relative">
-            <div class="i-x absolute top-3 right-3"></div>
+            <RouterLink to="/app">
+                <div class="i-x absolute top-3 right-3"></div>
+            </RouterLink>
         </div>
         <br>
         <br>
@@ -20,6 +22,9 @@
                 <button type="submit" class="w-full h-11 rounded-md bg-buy-button text-white font-bold">Masuk</button>
             </form>
         </div>
+        <p class="text-center">
+            <RouterLink to="/app/register">Register</RouterLink>
+        </p>
     </div>
 </template>
 <script>

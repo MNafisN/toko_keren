@@ -1,10 +1,11 @@
 <template>
     <Header page="list-product" />
     <div class="h-28"></div>
+    {{ router }}
     <div class="w-full bg-white py-4 px-2">
-        <p class="text-subTitle text-xs">Beranda / {{ $route.params.category }}</p>
+        <p class="text-subTitle text-xs">Beranda / {{ path1 }} / {{ path2 }}</p>
         <br>
-        <p>Menampilkan hasil untuk <b>"{{ $route.params.category }}"</b></p>
+        <p>Menampilkan hasil untuk <b>"{{ path2 }}"</b></p>
         <br>
 
         <!-- list product -->
@@ -37,6 +38,14 @@ export default {
         ProductCard,
         JualBtn,
         Footer
+    },
+    computed: {
+        path1() {
+            return this.$route.fullPath.split('/')[2]
+        },
+        path2() {
+            return this.$route.fullPath.split('/')[3]
+        }
     }
 }
 </script>

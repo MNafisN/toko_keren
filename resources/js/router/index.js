@@ -33,11 +33,11 @@ const routes = [
         component: Profile
     },
     {
-        path: "/app/listProduct",
+        path: "/app/search/:query",
         component: ListProduct
     },
     {
-        path: "/app/category/:category",
+        path: "/app/category/:query",
         component: ListProduct
     }
 ]

@@ -1,7 +1,9 @@
 <template>
     <div class="bg-white h-screen">
         <div class="relative">
-            <div class="i-x absolute top-3 right-3"></div>
+            <RouterLink to="/app">
+                <div class="i-x absolute top-3 right-3"></div>
+            </RouterLink>
         </div>
         <br>
         <br>
