@@ -6,6 +6,7 @@ import Product from '../pages/Product.vue'
 import EditProfile from '../pages/EditProfile.vue'
 import Profile from '../pages/Profile.vue'
 import ListProduct from '../pages/ListProduct.vue'
+import PostCategory from '../pages/PostCategory.vue'
 
 const routes = [
     {
@@ -39,6 +40,10 @@ const routes = [
     {
         path: "/app/category/:query",
         component: ListProduct
+    },
+    {
+        path: "/app/post",
+        component: PostCategory
     }
 ]
 

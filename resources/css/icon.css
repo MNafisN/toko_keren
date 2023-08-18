@@ -150,3 +150,77 @@
     background-size: contain;
     display: inline-block;
 }
+
+.i-arrow-left{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/arrow-left.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-mobil{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/mobil.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-properti{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/properti.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-motor{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/motor.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-loker{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/loker.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-elektronik{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/elektronik.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-hobi{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/hobi.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-perabotan{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/perabotan.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-lainnya{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/lainnya.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
