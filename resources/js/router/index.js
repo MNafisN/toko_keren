@@ -7,6 +7,7 @@ import EditProfile from '../pages/EditProfile.vue'
 import Profile from '../pages/Profile.vue'
 import ListProduct from '../pages/ListProduct.vue'
 import PostCategory from '../pages/PostCategory.vue'
+import PostProduct from '../pages/PostProduct.vue'
 
 const routes = [
     {
@@ -44,6 +45,10 @@ const routes = [
     {
         path: "/app/post",
         component: PostCategory
+    },
+    {
+        path: "/app/post/attributes",
+        component: PostProduct
     }
 ]
 

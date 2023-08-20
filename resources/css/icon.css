@@ -224,3 +224,19 @@
     background-size: contain;
     display: inline-block;
 }
+.i-camera-plus{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/camera-plus.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-camera-plus-disabled{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/camera-plus-disabled.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

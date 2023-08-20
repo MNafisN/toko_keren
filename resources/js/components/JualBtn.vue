@@ -1,5 +1,5 @@
 <template>
-    <div class="jual-btn">
+    <div @click="goToPost" class="jual-btn">
         <div class="i-jual"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center gap-2">
             <div class="i-plus"></div>
@@ -7,6 +7,17 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name: 'jual-btn',
+    methods: {
+        goToPost() {
+            this.$router.push('/app/post')
+        }
+    }
+}
+</script>
 
 <style scoped>
 .jual-btn{

@@ -1,8 +1,11 @@
 <template>
-    <div class="w-full h-16 pl-8 flex items-center gap-4">
-        <div class="i-arrow-left"></div>
-        <span class="text-xl lg:hidden">Pasang iklan anda</span>
+    <div class="bg-white fixed w-full">
+        <div class="bg-[rgba(0,47,52,0.03)] w-full h-16 pl-8 flex items-center gap-4">
+            <div class="i-arrow-left"></div>
+            <span class="text-xl lg:hidden">Pasang iklan anda</span>
+        </div>
     </div>
+    <div class="h-16"></div>
     <div class="bg-white sm:flex sm:items-center sm:flex-col">
         <span class="hidden lg:block text-2xl font-bold py-4">PASANG IKLAN ANDA</span>
         <div class="sm:w-5/6 lg:w-2/3 sm:border sm:border-slate-400">
@@ -52,7 +55,6 @@
     </div>
     <Footer />
 </template>
-
 <script>
 import Footer from '../components/Footer.vue';
 
