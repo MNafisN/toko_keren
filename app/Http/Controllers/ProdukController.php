@@ -190,13 +190,49 @@ class ProdukController extends Controller
         return response()->json($result, $result['status']);
     }
 
-    public function setProdukStatus(string $id, string $status)
+    public function setProdukStatus(string $id, string $status): JsonResponse
     {
         try {
             $produk = $this->produkService->changeStatus($id, $status);
             $result = [
                 'status' => 200,
                 'message' => "Status " . $produk . " telah diubah menjadi " . $status
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function uploadPhoto(Request $request): JsonResponse
+    {
+        $data = $request->all();
+
+        try {
+            $result = [
+                'status' => 201,
+                'data' => $this->produkService->uploadPhoto($data)
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function deletePhoto(string $fileName): JsonResponse
+    {
+        try {
+            $result = [
+                'status' => 200,
+                'message' => $this->produkService->deletePhoto($fileName)
             ];
         } catch (Exception $err) {
             $result = [

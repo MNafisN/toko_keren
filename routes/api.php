@@ -48,9 +48,11 @@ Route::group([
     Route::group([
         'prefix' => 'produk'
     ], function() {
-        Route::get('user/me', [ProdukController::class, 'getMyProduk']);
-        Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);
-        Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);
+        Route::get('user/me', [ProdukController::class, 'getMyProduk']);                        // List produk by user
+        Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);                // Get produk detail
+        Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);       // Update produk status
+        Route::post('upload_photo', [ProdukController::class, 'uploadPhoto']);                  // Upload produk photo one by one
+        Route::delete('delete_photo/{fileName}', [ProdukController::class, 'deletePhoto']);     // Delete produk photo by name
     });
 });
 
