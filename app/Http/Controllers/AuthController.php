@@ -211,7 +211,7 @@ class AuthController extends Controller
 
         try {
             $result = [
-                'status' => 200,
+                'status' => 201,
                 'message' => 'user profile picture uploaded successfully',
                 'info' => $this->authService->uploadPhoto($data)
             ];
@@ -244,7 +244,7 @@ class AuthController extends Controller
             ];
         } catch (Exception $err) {
             $result = [
-                'status' => 422,
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }

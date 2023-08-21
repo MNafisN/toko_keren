@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ProdukRepository;
 use App\Repositories\KendaraanRepository;
+use App\Repositories\FileRepository;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
@@ -16,11 +17,13 @@ class ProdukService
 {
     protected $produkRepository;
     protected $kendaraanRepository;
+    protected $fileRepository;
 
-    public function __construct(ProdukRepository $produkRepository, KendaraanRepository $kendaraanRepository)
+    public function __construct(ProdukRepository $produkRepository, KendaraanRepository $kendaraanRepository, FileRepository $fileRepository)
     {
         $this->produkRepository = $produkRepository;
         $this->kendaraanRepository = $kendaraanRepository;
+        $this->fileRepository = $fileRepository;
     }
 
     // protected function mergeModelQuery(Object $object1, Object $object2): array
@@ -186,5 +189,42 @@ class ProdukService
         }
 
         return $produk->produk_judul;
+    }
+
+    public function uploadPhoto(array $data): array
+    {
+        $validator = Validator::make($data, [
+            'photo' => 'required|mimes:jpg,jpeg,png|max:10000',
+        ],
+        [
+            'photo.required' => 'Please upload a file',
+            'photo.mimes' => 'Only jpg, jpeg, and png images are allowed',
+            'photo.max' => 'Sorry! Maximum allowed size for a file is 10MB',
+        ]);
+
+        if ($validator->fails()) {
+            throw new InvalidArgumentException($validator->errors()->first());
+        }
+
+        $data['file_name'] = date('Y-m-d H-i-s ') . pathinfo($data['photo']->getClientOriginalName(), PATHINFO_FILENAME) .
+                            "." . $data['photo']->getClientOriginalExtension();
+        $data['file_category'] = 'produk';
+        $data['posted_by'] = auth()->user()['username'];
+        $data['created_at'] = (string)Carbon::now('+7:00')->format('Y-m-d H-i-s');
+
+        $photo = $this->fileRepository->uploadPhoto($data);
+        return $photo->toArray();
+    }
+
+    public function deletePhoto(string $fileName): string
+    {
+        $photo = $this->fileRepository->getPhotoByName($fileName);
+        if (!$photo) {
+            throw new InvalidArgumentException('File not found');
+        }
+        $photo = $this->fileRepository->deletePhoto($fileName);
+
+        $message = "File " . $photo . " deleted successfully";
+        return $message;
     }
 }
