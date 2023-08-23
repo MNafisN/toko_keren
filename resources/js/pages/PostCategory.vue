@@ -12,6 +12,7 @@
             <h2 class="font-bold text-xl text-center py-3">PILIH KATEGORI</h2>
             <ul class="w-full flex flex-wrap">
                 <li
+                    @click="goToPostForm('mobil')"
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-r border-slate-400">
                     <div class="i-mobil"></div>
                     <P class="text-sm text-center w-4/5 font-bold">MOBIL</P>
@@ -21,6 +22,7 @@
                     <P class="text-sm text-center w-4/5 font-bold">PROPERTI</P>
                 </li>
                 <li
+                    @click="goToPostForm('motor')"
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-r border-slate-400">
                     <div class="i-motor"></div>
                     <P class="text-sm text-center w-4/5 font-bold">MOTOR</P>
@@ -62,6 +64,11 @@ export default {
     name: 'post-category',
     components: {
         Footer
+    },
+    methods: {
+        goToPostForm(category) {
+            this.$router.push('/app/post/' + category)
+        }
     }
 }
 </script>

@@ -10,10 +10,7 @@
 
         <!-- list product -->
         <div class="flex flex-col gap-4">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <ProductCard v-for="item in products" :product="item" />
         </div>
         <!-- //// list product /// -->
         <div class="flex justify-center">
@@ -31,8 +28,15 @@ import ProductCard from '../components/ProductCard.vue';
 import JualBtn from '../components/JualBtn.vue';
 import Footer from '../components/Footer.vue';
 
+import axios from 'axios';
+
 export default {
     name: 'list-product',
+    data() {
+        return {
+            products: []
+        }
+    },
     components: {
         Header,
         ProductCard,
@@ -46,6 +50,14 @@ export default {
         path2() {
             return this.$route.fullPath.split('/')[3]
         }
+    },
+    mounted() {
+        axios
+            .get('/api/produk/'+this.path2)
+            .then((res)=>{
+                console.log(res.data.data)
+                this.products = res.data.data
+            })
     }
 }
 </script>

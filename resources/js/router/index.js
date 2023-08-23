@@ -23,7 +23,7 @@ const routes = [
         component: Home
     },
     {
-        path: "/app/product",
+        path: "/app/product/:id",
         component: Product
     },
     {
@@ -47,7 +47,7 @@ const routes = [
         component: PostCategory
     },
     {
-        path: "/app/post/attributes",
+        path: "/app/post/:category",
         component: PostProduct
     }
 ]

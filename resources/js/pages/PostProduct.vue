@@ -13,8 +13,8 @@
             <p class="text-xl font-bold">KATEGORI TERPILIH</p>
             <br />
             <div class="flex justify-between items-center">
-                <span class="text-xs text-subTitle">Mobil / Mobil Bekas</span>
-                <span class="text-sm font-bold underline">Ubah</span>
+                <span class="text-xs text-subTitle">{{ postCategory }}</span>
+                <span @click="goToPostCategory" class="text-sm font-bold underline">Ubah</span>
             </div>
         </div>
         <div class="p-4 border-b">
@@ -329,5 +329,15 @@ export default {
         UploadImage,
         Footer
     },
+    computed: {
+        postCategory() {
+            this.$route.params.category
+        }
+    },
+    methods: {
+        goToPostCategory() {
+            this.$router.push('/app/post')
+        }
+    }
 };
 </script>

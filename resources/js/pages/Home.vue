@@ -3,7 +3,7 @@
     <div class="h-28"></div>
     <Banner />
     <Kategori/>
-    <Rekomendasi />
+    <Rekomendasi :list="products" />
     <JualBtn />
     <Footer />
 
@@ -17,8 +17,15 @@ import Rekomendasi from '../components/Rekomendasi.vue'
 import JualBtn from '../components/JualBtn.vue';
 import Footer from '../components/Footer.vue';
 
+import axios from 'axios';
+
 export default {
     name: "home-page",
+    data() {
+        return {
+            products: []
+        }
+    },
     components: {
         Header,
         Banner,
@@ -26,6 +33,13 @@ export default {
         Rekomendasi,
         JualBtn,
         Footer
+    },
+    mounted() {
+        axios.get('/api/produk')
+        .then((res)=> {
+            console.log(res.data.data)
+            this.products = res.data.data
+        })
     }
 }
 </script>
