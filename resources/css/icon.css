@@ -1,0 +1,242 @@
+.i-location{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/loacation.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-search{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/search.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-plus{
+    width: 15px;
+    height: 15px;
+    background-image: url(./svg/plus.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-jual{
+    width: 104px;
+    height: 48px;
+    background-image: url(./svg/jualBtn.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.i-love{
+    width: 23px;
+    height: 23px;
+    background-image: url(./svg/love-line.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-share{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/share.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-arrow-right{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/arrow-right.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-telephone{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/telephone.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-x{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/x.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-menu{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/menu.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-camera{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/camera.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-camera-black{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/camera-black.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-logout{
+    width: 20px;
+    height: 20px;
+    background-image: url(./svg/logout.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-calender{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/calender.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-user{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/user.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-verif-email{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/verif-email.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-verif-phone{
+    width: 16px;
+    height: 16px;
+    background-image: url(./svg/verif-phone.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-edit{
+    width: 22px;
+    height: 22px;
+    background-image: url(./svg/edit.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-arrow-left{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/arrow-left.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.i-mobil{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/mobil.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-properti{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/properti.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-motor{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/motor.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-loker{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/loker.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-elektronik{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/elektronik.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-hobi{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/hobi.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-perabotan{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/perabotan.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-lainnya{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/lainnya.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-camera-plus{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/camera-plus.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.i-camera-plus-disabled{
+    width: 34px;
+    height: 34px;
+    background-image: url(./svg/camera-plus-disabled.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
