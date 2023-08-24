@@ -75,8 +75,10 @@ class ProdukService
             $produks = $motors->merge($mobils);
             foreach ($produks as $key => $value) {
                 $produk = Arr::except($value->toArray(), ['created_at', 'updated_at']);
+                $date = Carbon::parse($produk['date_posted']);
+                $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'tahun_keluaran']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
@@ -93,8 +95,10 @@ class ProdukService
         } else {
             foreach ($produks as $key => $value) {
                 $produk = Arr::except($value->toArray(), ['created_at', 'updated_at']);
+                $date = Carbon::parse($produk['date_posted']);
+                $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'tahun_keluaran']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
@@ -155,8 +159,10 @@ class ProdukService
         } else {
             foreach ($produks as $key => $value) {
                 $produk = Arr::except($value->toArray(), ['created_at', 'updated_at']);
+                $date = Carbon::parse($produk['date_posted']);
+                $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'tahun_keluaran']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
