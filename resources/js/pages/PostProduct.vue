@@ -30,11 +30,11 @@
                 <br>
                 <Input id="warna" type="select" :list="warna" label="Warna" required />
                 <br>
-                <Input id="typeMobil" type="select" :list="typeMobil" label="Tipe bodi" />
+                <Input id="tipeMobil" type="select" :list="tipeMobil" label="Tipe bodi" />
                 <br>
                 <Input id="ccMobil" type="radio" :list="ccMobil" label="Kapasitas mesin" />
                 <br>
-                <Input id="penjual" type="radio" :list="typePenjual" label="Tipe penjual" /> 
+                <Input id="penjual" type="radio" :list="tipePenjual" label="Tipe penjual" /> 
                 <br>
                 <Input id="bursaMobil" type="select" :list="bursaMobil" label="Nama Bursa Mobil" />
                 <br>
@@ -265,7 +265,7 @@ export default {
                 "Marun",
                 "Lainnya"
             ],
-            typeMobil: [
+            tipeMobil: [
                 "MPV",
                 "SUV",
                 "Hatchback",
@@ -292,7 +292,7 @@ export default {
                 ">2.000 - 3.000 cc",
                 ">3.000 cc"
             ],
-            typePenjual: [ "Individu", "Dealer" ],
+            tipePenjual: [ "Individu", "Dealer" ],
             bursaMobil: [
                 "Bursa AXC summarecon bekasi",
                 "Bursa blok M Mall",

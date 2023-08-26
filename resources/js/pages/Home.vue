@@ -3,7 +3,7 @@
     <div class="h-28"></div>
     <Banner />
     <Kategori/>
-    <Rekomendasi :list="products" />
+    <Rekomendasi :list="listProduk" />
     <JualBtn />
     <Footer />
 
@@ -23,7 +23,7 @@ export default {
     name: "home-page",
     data() {
         return {
-            products: []
+            listProduk: []
         }
     },
     components: {
@@ -38,7 +38,7 @@ export default {
         axios.get('/api/produk')
         .then((res)=> {
             console.log(res.data.data)
-            this.products = res.data.data
+            this.listProduk = res.data.data
         })
     }
 }
