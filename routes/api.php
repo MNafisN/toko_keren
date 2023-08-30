@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\WilayahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +56,15 @@ Route::group([
     });
 });
 
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'indonesia'
+], function() {
+    Route::get('provinsi', [WilayahController::class, 'getAllProvince']);                       // Get all propinsi
+    Route::get('kab_kota/{province}', [WilayahController::class, 'getRegencyByProvince']);      // Get kab/kota by propinsi name
+    Route::get('kecamatan/{regency}', [WilayahController::class, 'getDistrictByRegency']);      // Get kecamatan by kab/kota name
+    Route::get('desa/{district}', [WilayahController::class, 'getVillageByDistrict']);          // Get desa by kecamatan name
+});
 
 
 // Route::group([
