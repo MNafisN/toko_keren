@@ -14,49 +14,242 @@
             <br />
             <div class="flex justify-between items-center">
                 <span class="text-xs text-subTitle">{{ postCategory }}</span>
-                <span @click="goToPostCategory" class="text-sm font-bold underline">Ubah</span>
+                <span
+                    @click="goToPostCategory"
+                    class="text-sm font-bold underline"
+                    >Ubah</span
+                >
             </div>
         </div>
         <div class="p-4 border-b">
             <p class="text-xl font-bold mb-3">SERTAKAN BEBERAPA DETAIL</p>
             <form>
-                <Input id="merk" type="select" :list="merekMobil" label="Merek" required />
-                <br>
-                <Input id="tahun" type="select" :list="tahun" label="Tahun" required />
-                <br>
-                <Input id="jarak" type="select" :list="jarakTempuh" label="Jarak Tempuh" required />
-                <br>
-                <Input id="bahanBakar" type="radio" :list="bahanBakar" label="Tipe bahan bakar" required />
-                <br>
-                <Input id="warna" type="select" :list="warna" label="Warna" required />
-                <br>
-                <Input id="tipeMobil" type="select" :list="tipeMobil" label="Tipe bodi" />
-                <br>
-                <Input id="ccMobil" type="radio" :list="ccMobil" label="Kapasitas mesin" />
-                <br>
-                <Input id="penjual" type="radio" :list="tipePenjual" label="Tipe penjual" /> 
-                <br>
-                <Input id="bursaMobil" type="select" :list="bursaMobil" label="Nama Bursa Mobil" />
-                <br>
-                <Input id="judul" type="text" label="Judul iklan" foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)" :max="70" required />
-                <br>
-                <Input id="deskripsi" type="textarea" label="Deskripsi" foot-note="Sertakan kondisi, fitur, dan alasan penjualan" :max="4096" required />  
-                <br>
+                <Input
+                    @send-value="(value) => inputValue('merek', value)"
+                    id="merk"
+                    type="select"
+                    :list="merekMobil"
+                    label="Merek"
+                    required
+                />
+                <br />
+                <Input
+                    v-if="produk.merek"
+                    @send-value="(value) => inputValue('model', value)"
+                    id="model"
+                    type="select"
+                    :list="model"
+                    label="Model"
+                    required
+                />
+                <br v-if="produk.merek" />
+                <Input
+                    v-if="produk.model"
+                    @send-value="(value) => inputValue('tipe_transmisi', value)"
+                    id="transmisi"
+                    type="select"
+                    :list="tipeTransmisi"
+                    label="Transmisi"
+                    required
+                />
+                <br v-if="produk.model" />
+                <Input
+                    @send-value="(value) => inputValue('tahun_keluaran', value)"
+                    id="tahun"
+                    type="select"
+                    :list="tahun"
+                    label="Tahun"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('jarak_tempuh', value)"
+                    id="jarak"
+                    type="select"
+                    :list="jarakTempuh"
+                    label="Jarak Tempuh"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="
+                        (value) => inputValue('tipe_bahan_bakar', value)
+                    "
+                    id="bahanBakar"
+                    type="radio"
+                    :list="bahanBakar"
+                    label="Tipe bahan bakar"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('warna', value)"
+                    id="warna"
+                    type="select"
+                    :list="warna"
+                    label="Warna"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('tipe_bodi', value)"
+                    id="tipeMobil"
+                    type="select"
+                    :list="tipeMobil"
+                    label="Tipe bodi"
+                />
+                <br />
+                <Input
+                    @send-value="
+                        (value) => inputValue('kapasitas_mesin', value)
+                    "
+                    id="ccMobil"
+                    type="radio"
+                    :list="ccMobil"
+                    label="Kapasitas mesin"
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('tipe_penjual', value)"
+                    id="penjual"
+                    type="radio"
+                    :list="tipePenjual"
+                    label="Tipe penjual"
+                />
+                <br />
+                <!-- <Input @send-value="value => inputValue('', value)" id="bursaMobil" type="select" :list="bursaMobil" label="Nama Bursa Mobil" /> -->
+                <!-- <br> -->
+                <Input
+                    @send-value="(value) => inputValue('produk_judul', value)"
+                    id="judul"
+                    type="text"
+                    label="Judul iklan"
+                    foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)"
+                    :max="70"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="
+                        (value) => inputValue('produk_deskripsi', value)
+                    "
+                    id="deskripsi"
+                    type="textarea"
+                    label="Deskripsi"
+                    foot-note="Sertakan kondisi, fitur, dan alasan penjualan"
+                    :max="4096"
+                    required
+                />
+                <br />
             </form>
         </div>
         <div class="px-4 py-8 border-b">
             <p class="text-xl font-bold mb-3">TENTUKAN HARGA</p>
-            <Input id="harga" type="price" label="Harga" required />
+            <Input
+                @send-value="(value) => inputValue('harga', value)"
+                id="harga"
+                type="price"
+                label="Harga"
+                required
+            />
         </div>
-        <div class="px-4 py-8">
+        <div class="px-4 py-8 border-b">
             <p class="text-xl font-bold mb-3">UNGGAH HINGGA 20 FOTO</p>
             <div class="w-full flex flex-wrap gap-2">
-                <UploadImage v-for="i in 20" :disabled="i !== 1" />
+                <UploadImage
+                    v-for="i in 20"
+                    :disabled="i > previewImage.length + 1"
+                    :index="i"
+                    :preview="previewImage[i - 1]"
+                    @send-value="(file) => inputFile(file, i-1)"
+                />
+            </div>
+        </div>
+        <div class="px-4 py-8 border-b">
+            <p class="text-xl font-bold mb-3">
+                KONFIRMASIKAN LOKASI IKLAN ANDA
+            </p>
+            <div class="w-full">
+                <Input
+                    @send-value="
+                        (value) => inputValue('lokasi_provinsi', value)
+                    "
+                    id="provinsi"
+                    type="select"
+                    label="Wilayah"
+                    :list="provinsi"
+                    required
+                />
+                <br />
+                <Input
+                    v-if="produk.lokasi_provinsi"
+                    @send-value="
+                        (value) => inputValue('lokasi_kabupaten_kota', value)
+                    "
+                    id="kota"
+                    type="select"
+                    label="Kota"
+                    :list="kabupatenKota"
+                    required
+                />
+                <br v-if="produk.lokasi_provinsi" />
+                <Input
+                    v-if="produk.lokasi_kabupaten_kota"
+                    @send-value="
+                        (value) => inputValue('lokasi_kecamatan', value)
+                    "
+                    id="kecamatan"
+                    type="select"
+                    label="Kecamatan"
+                    :list="kecamatan"
+                    required
+                />
+            </div>
+        </div>
+        <div class="px-4 py-8">
+            <p class="text-xl font-bold mb-3">CEK KEMBALI DETAIL INFORMASI</p>
+            <div class="w-full">
+                <div class="w-full mb-4 flex gap-4">
+                    <div
+                        class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
+                    >
+                        <img
+                            class="w-full h-full object-fill"
+                            src="/assets/avatar.png"
+                            alt=""
+                        />
+                        <div
+                            class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
+                        >
+                            <div class="i-camera"></div>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <Input
+                            id="username"
+                            type="text"
+                            label="Nama"
+                            max="30"
+                            required
+                        />
+                    </div>
+                </div>
+                <br />
+                <Input
+                    id="telephone"
+                    type="phone"
+                    label="Nomor Handphone"
+                    required
+                />
             </div>
         </div>
     </div>
     <div class="px-4 py-8 mt-1 bg-white">
-        <button class="w-full h-11 rounded-md bg-buy-button text-white font-bold">Pasang iklan sekarang</button>
+        <button
+            class="w-full h-11 rounded-md bg-buy-button text-white font-bold"
+        >
+            Pasang iklan sekarang
+        </button>
     </div>
     <Footer />
 </template>
@@ -65,6 +258,7 @@
 import Input from "../components/Input.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
+import InputPrice from "../components/InputPrice.vue";
 
 export default {
     name: "post-product",
@@ -140,46 +334,22 @@ export default {
                 "Volkswagen",
                 "Volvo",
                 "Wuling",
-                "Lain-lain"
+                "Lain-lain",
             ],
+            model: [
+                "model 1",
+                "model 2",
+                "model 3",
+                "model 4",
+                "model 5",
+                "model 6",
+            ],
+            tipeTransmisi: ["manual", "automatic"],
             tahun: [
-                2023,
-                2022,
-                2021,
-                2020,
-                2019,
-                2018,
-                2017,
-                2016,
-                2015,
-                2014,
-                2013,
-                2012,
-                2011,
-                2010,
-                2009,
-                2008,
-                2007,
-                2006,
-                2005,
-                2004,
-                2003,
-                2002,
-                2001,
-                2000,
-                1999,
-                1998,
-                1997,
-                1996,
-                1995,
-                1994,
-                1993,
-                1992,
-                1991,
-                1990,
-                1989,
-                1988,
-                1987
+                2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
+                2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004,
+                2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994,
+                1993, 1992, 1991, 1990, 1989, 1988, 1987,
             ],
             jarakTempuh: [
                 "0-5.000",
@@ -243,12 +413,7 @@ export default {
                 "290.000-295.000",
                 "295.000-300.000",
             ],
-            bahanBakar: [
-                "Diesel",
-                "Bensin",
-                "Hybrid",
-                "Listrik"
-            ],
+            bahanBakar: ["Diesel", "Bensin", "Hybrid", "Listrik"],
             warna: [
                 "Hitam",
                 "Biru",
@@ -263,7 +428,7 @@ export default {
                 "Putih",
                 "Kuning",
                 "Marun",
-                "Lainnya"
+                "Lainnya",
             ],
             tipeMobil: [
                 "MPV",
@@ -283,16 +448,16 @@ export default {
                 "Offroad",
                 "Sports & Super Car",
                 "Classic Car",
-                "Bus"
+                "Bus",
             ],
             ccMobil: [
                 "<1.000 cc",
                 ">1.000 - 1.500 cc",
                 ">1.500 - 2.000 cc",
                 ">2.000 - 3.000 cc",
-                ">3.000 cc"
+                ">3.000 cc",
             ],
-            tipePenjual: [ "Individu", "Dealer" ],
+            tipePenjual: ["Individu", "Dealer"],
             bursaMobil: [
                 "Bursa AXC summarecon bekasi",
                 "Bursa blok M Mall",
@@ -320,24 +485,82 @@ export default {
                 "Carsentro Semarang",
                 "Carsentro Solo",
                 "Carsentro Yogyakarta",
-                "Pasar Mobil Kemayoran"
-            ]
+                "Pasar Mobil Kemayoran",
+            ],
+            provinsi: [
+                "provinsi 1",
+                "provinsi 2",
+                "provinsi 3",
+                "provinsi 4",
+                "provinsi 5",
+            ],
+            kabupatenKota: ["kota 1", "kota 2", "kota 3", "kota 4", "kota 5"],
+            kecamatan: [
+                "kecamatan 1",
+                "kecamatan 2",
+                "kecamatan 3",
+                "kecamatan 4",
+                "kecamatan 5",
+            ],
+            produk: {
+                produk_judul: "",
+                produk_deskripsi: "",
+                produk_foto: [],
+                produk_kategori: "",
+                merek: "",
+                model: "",
+                tahun_keluaran: "",
+                jarak_tempuh: "",
+                warna: "",
+                kapasitas_mesin: "",
+                kapasitas_penumpang: "",
+                tipe_transmisi: "",
+                tipe_bodi: "",
+                tipe_bahan_bakar: "",
+                tipe_penjual: "",
+                harga: 0,
+                lokasi_provinsi: "",
+                lokasi_kabupaten_kota: "",
+                lokasi_kecamatan: "",
+                produk_pemasang: "",
+                no_telepon: "",
+                tampilkan_telepon: false,
+            },
+            previewImage: [],
         };
     },
     components: {
         Input,
         UploadImage,
-        Footer
+        Footer,
+        InputPrice,
     },
     computed: {
         postCategory() {
-            this.$route.params.category
-        }
+            return this.$route.params.category;
+        },
     },
     methods: {
         goToPostCategory() {
-            this.$router.push('/app/post')
-        }
-    }
+            this.$router.push("/app/post");
+        },
+        inputValue(key, value) {
+            this.produk[key] = value;
+            console.log(this.produk);
+        },
+        inputFile(file, index) {
+            if (this.previewImage.length > index) {
+                this.produk.produk_foto[index] = {
+                    file_name: file.name
+                }
+                this.previewImage[index] = file.preview
+            } else {
+                this.produk.produk_foto.push({
+                    file_name: file.name,
+                });
+                this.previewImage.push(file.preview);
+            }
+        },
+    },
 };
 </script>

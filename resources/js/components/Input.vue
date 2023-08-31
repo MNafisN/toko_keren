@@ -46,14 +46,32 @@
         </div>
 
         <!-- type price -->
-        <input v-if="type === 'price'" type="number" class="w-full h-12 border  border-subTitle rounded-md" >
+        <input v-if="type === 'price'"
+            type="number"
+            class="w-full pl-11 h-12 border border-subTitle rounded-md"
+            :id="id"
+            :value="value"
+            @input="e => value = e.target.value"
+        >
         <div v-if="type === 'price'" class="h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute top-7 flex justify-center items-center">
             <span class="text-xs text-subTitle">Rp</span>
         </div>
 
+        <!-- type phone -->
+        <input v-if="type === 'phone'"
+            type="number"
+            class="w-full pl-11 h-12 border border-subTitle rounded-md"
+            :id="id"
+            :value="value"
+            @input="e => value = e.target.value"
+        >
+        <div v-if="type === 'phone'" class="h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute top-7 flex justify-center items-center">
+            <span class="text-xs text-subTitle">+62</span>
+        </div>
+
 
         <!-- footNote -->
-        <div v-if="footNote" class="flex justify-between gap-4">
+        <div v-if="footNote || maxlength" class="flex justify-between gap-4">
             <p class="text-xs text-[rgba(0,47,52,0.64)] w-fit">{{ footNote }}</p>
             <p class="text-xs text-[rgba(0,47,52,0.64)] min-w-max">{{ maxlength }}</p>
         </div>
@@ -66,7 +84,7 @@ export default {
     name: 'input-component',
     data() {
         return {
-            value : ""
+            value : "",
         }
     },
     props: {
@@ -79,9 +97,14 @@ export default {
         max: Number,
         list: Array
     },
+    emits: ['sendValue'],
     watch: {
         value: function() {
-            console.log(this.value)
+            if (this.type === "price") {
+                this.$emit('sendValue', parseInt(this.value))
+            } else {
+                this.$emit('sendValue', this.value)
+            }
         }
     },
     computed: {
@@ -90,7 +113,7 @@ export default {
             const length = this.value.length
             return `${length} / ${this.max}`
         }
-    }
+    },
 }
 </script>
 

@@ -97,14 +97,7 @@ export default {
         };
     },
     components: {
-        Header,
-        Breadcrumb,
         PhotoProduct,
-        ProductTitle,
-        ProductDetail,
-        ProductDescription,
-        ProductSeller,
-        ProductId,
         BuyButton,
         Footer,
     },
