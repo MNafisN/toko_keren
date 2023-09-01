@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import Header from "../components/Header.vue";
 import PhotoProduct from "../components/product/PhotoProduct.vue";
 import BuyButton from "../components/product/BuyButton.vue";
 import Footer from "../components/Footer.vue";
@@ -97,6 +98,7 @@ export default {
         };
     },
     components: {
+        Header,
         PhotoProduct,
         BuyButton,
         Footer,

@@ -172,24 +172,24 @@
             <div class="w-full">
                 <Input
                     @send-value="
-                        (value) => inputValue('lokasi_provinsi', value)
+                        (value) => {inputValue('lokasi_provinsi', value); selectProvinsi(value)}
                     "
                     id="provinsi"
                     type="select"
                     label="Wilayah"
-                    :list="provinsi"
+                    :list="wilayah.provinsi"
                     required
                 />
                 <br />
                 <Input
                     v-if="produk.lokasi_provinsi"
                     @send-value="
-                        (value) => inputValue('lokasi_kabupaten_kota', value)
+                        (value) => {inputValue('lokasi_kabupaten_kota', value); selectKota(value)}
                     "
                     id="kota"
                     type="select"
                     label="Kota"
-                    :list="kabupatenKota"
+                    :list="wilayah.kabupatenKota"
                     required
                 />
                 <br v-if="produk.lokasi_provinsi" />
@@ -201,7 +201,7 @@
                     id="kecamatan"
                     type="select"
                     label="Kecamatan"
-                    :list="kecamatan"
+                    :list="wilayah.kecamatan"
                     required
                 />
             </div>
@@ -246,6 +246,7 @@
     </div>
     <div class="px-4 py-8 mt-1 bg-white">
         <button
+            @click="test"
             class="w-full h-11 rounded-md bg-buy-button text-white font-bold"
         >
             Pasang iklan sekarang
@@ -259,6 +260,7 @@ import Input from "../components/Input.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import InputPrice from "../components/InputPrice.vue";
+import axios from "axios";
 
 export default {
     name: "post-product",
@@ -413,7 +415,7 @@ export default {
                 "290.000-295.000",
                 "295.000-300.000",
             ],
-            bahanBakar: ["Diesel", "Bensin", "Hybrid", "Listrik"],
+            bahanBakar: ["diesel", "bensin", "hybrid", "listrik"],
             warna: [
                 "Hitam",
                 "Biru",
@@ -457,7 +459,7 @@ export default {
                 ">2.000 - 3.000 cc",
                 ">3.000 cc",
             ],
-            tipePenjual: ["Individu", "Dealer"],
+            tipePenjual: ["individu", "dealer"],
             bursaMobil: [
                 "Bursa AXC summarecon bekasi",
                 "Bursa blok M Mall",
@@ -487,25 +489,19 @@ export default {
                 "Carsentro Yogyakarta",
                 "Pasar Mobil Kemayoran",
             ],
-            provinsi: [
-                "provinsi 1",
-                "provinsi 2",
-                "provinsi 3",
-                "provinsi 4",
-                "provinsi 5",
-            ],
-            kabupatenKota: ["kota 1", "kota 2", "kota 3", "kota 4", "kota 5"],
-            kecamatan: [
-                "kecamatan 1",
-                "kecamatan 2",
-                "kecamatan 3",
-                "kecamatan 4",
-                "kecamatan 5",
-            ],
+            wilayah: {
+                provinsi: [],
+                kabupatenKota: [],
+                kecamatan: [],
+            },
             produk: {
                 produk_judul: "",
                 produk_deskripsi: "",
-                produk_foto: [],
+                produk_foto: [
+                    {
+                        file_name: "foto_produk.jpg"
+                    }
+                ],
                 produk_kategori: "",
                 merek: "",
                 model: "",
@@ -513,7 +509,7 @@ export default {
                 jarak_tempuh: "",
                 warna: "",
                 kapasitas_mesin: "",
-                kapasitas_penumpang: "",
+                kapasitas_penumpang: "2",
                 tipe_transmisi: "",
                 tipe_bodi: "",
                 tipe_bahan_bakar: "",
@@ -522,8 +518,8 @@ export default {
                 lokasi_provinsi: "",
                 lokasi_kabupaten_kota: "",
                 lokasi_kecamatan: "",
-                produk_pemasang: "",
-                no_telepon: "",
+                produk_pemasang: "irfan",
+                no_telepon: "+6288232516796",
                 tampilkan_telepon: false,
             },
             previewImage: [],
@@ -546,7 +542,6 @@ export default {
         },
         inputValue(key, value) {
             this.produk[key] = value;
-            console.log(this.produk);
         },
         inputFile(file, index) {
             if (this.previewImage.length > index) {
@@ -561,6 +556,50 @@ export default {
                 this.previewImage.push(file.preview);
             }
         },
+        selectProvinsi(value) {
+            axios
+                .get('/api/indonesia/kab_kota/'+value)
+                .then((res)=>{
+                    const arr = []
+                    res.data.data.forEach((obj)=> {
+                        arr.push(obj.name)
+                    })
+                    this.wilayah.kabupatenKota = arr
+                })
+        },
+        selectKota(value) {
+            axios
+                .get('/api/indonesia/kecamatan/'+value)
+                .then((res)=>{
+                    const arr = []
+                    res.data.data.forEach((obj)=> {
+                        arr.push(obj.name)
+                    })
+                    this.wilayah.kecamatan = arr
+                })
+        },
+        test() {
+            console.log(this.produk)
+            axios
+                .post('/api/produk', this.produk)
+                .then((res)=> console.log(res))
+                .catch((err)=>console.log(err))
+        }
     },
+    mounted() {
+        this.produk.produk_kategori = this.postCategory
+
+        axios
+            .get('/api/indonesia/provinsi')
+            .then((res)=> {
+                console.log(res.data.data)
+                const data = res.data.data
+                const arr = []
+                data.forEach((obj)=>{
+                    arr.push(obj.name)
+                })
+                this.wilayah.provinsi = arr
+            })
+    }
 };
 </script>
