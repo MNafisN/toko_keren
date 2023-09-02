@@ -162,6 +162,8 @@
                     :index="i"
                     :preview="previewImage[i - 1]"
                     @send-value="(file) => inputFile(file, i-1)"
+                    @file-uploaded="(file)=> uploadFile(file, i-1)"
+                    @upload-failed="uploadFailed"
                 />
             </div>
         </div>
@@ -497,11 +499,7 @@ export default {
             produk: {
                 produk_judul: "",
                 produk_deskripsi: "",
-                produk_foto: [
-                    {
-                        file_name: "foto_produk.jpg"
-                    }
-                ],
+                produk_foto: [],
                 produk_kategori: "",
                 merek: "",
                 model: "",
@@ -545,16 +543,21 @@ export default {
         },
         inputFile(file, index) {
             if (this.previewImage.length > index) {
-                this.produk.produk_foto[index] = {
-                    file_name: file.name
-                }
-                this.previewImage[index] = file.preview
+                this.previewImage[index] = file
             } else {
-                this.produk.produk_foto.push({
-                    file_name: file.name,
-                });
-                this.previewImage.push(file.preview);
+                this.previewImage.push(file);
             }
+        },
+        uploadFile(file, index) {
+            if (this.produk.produk_foto.length > index) {
+                this.produk.produk_foto[index] = {file_name: file}
+            } else {
+                this.produk.produk_foto.push({file_name: file})
+            }
+        },
+        uploadFailed(index) {
+            this.previewImage.splice(index, 1)
+            this.produk.produk_foto.splice(index, 1)
         },
         selectProvinsi(value) {
             axios
@@ -584,7 +587,14 @@ export default {
                 .post('/api/produk', this.produk)
                 .then((res)=> console.log(res))
                 .catch((err)=>console.log(err))
-        }
+        },
+        // validation() {
+        //     // array yang isinya input wajib yang masih koson
+        //     const required = []
+        //     if(!this.produk.produk_judul) required.push("produk_judul")
+        //     if(!this.produk.produk_deskripsi) required.push("produk_deskripsi")
+        //     if(!this.produk.produk_foto) required.push("produk_foto")
+        // }
     },
     mounted() {
         this.produk.produk_kategori = this.postCategory
