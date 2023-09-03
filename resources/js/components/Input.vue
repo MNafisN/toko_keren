@@ -18,6 +18,15 @@
             <div class="w-3 h-3 border-r-2 border-b-2 border-black rotate-45"></div>
         </div>
 
+        <!-- type number -->
+        <input v-if="type === 'number'"
+            type="number"
+            :id="id"
+            :value="value"
+            @input="e => value = e.target.value"
+            class="w-full h-12 border border-subTitle rounded-md px-2"
+        >
+
         <!-- type text -->
         <input v-if="type === 'text'"
             type="text"
@@ -95,23 +104,28 @@ export default {
         option: Array,
         footNote: String,
         max: Number,
-        list: Array
+        list: Array,
+        initValue: String
     },
     emits: ['sendValue'],
     watch: {
         value: function() {
-            if (this.type === "price") {
+            if (this.type === "price" || this.type === "number") {
                 this.$emit('sendValue', parseInt(this.value))
             } else {
                 this.$emit('sendValue', this.value)
-            }
+            }     
+        },
+        initValue: function() {
+            this.value = this.initValue
         }
     },
     computed: {
         maxlength() {
-            if(!this.max) return;
-            const length = this.value.length
-            return `${length} / ${this.max}`
+            if(this.max){
+                const length = this.value.length
+                return `${length} / ${this.max}`
+            } else return;
         }
     },
 }

@@ -100,6 +100,13 @@
                 />
                 <br />
                 <Input
+                    @send-value="(value) => inputValue('kapasitas_penumpang', value)"
+                    id="kapasitasPenumpang"
+                    type="number"
+                    label="Kapasitas Penumpang"
+                />
+                <br />
+                <Input
                     @send-value="
                         (value) => inputValue('kapasitas_mesin', value)
                     "
@@ -117,8 +124,6 @@
                     label="Tipe penjual"
                 />
                 <br />
-                <!-- <Input @send-value="value => inputValue('', value)" id="bursaMobil" type="select" :list="bursaMobil" label="Nama Bursa Mobil" /> -->
-                <!-- <br> -->
                 <Input
                     @send-value="(value) => inputValue('produk_judul', value)"
                     id="judul"
@@ -166,6 +171,8 @@
                     @upload-failed="uploadFailed"
                 />
             </div>
+            <br>
+            <p class="text-xs text-red-500">Wajib diisi</p>
         </div>
         <div class="px-4 py-8 border-b">
             <p class="text-xl font-bold mb-3">
@@ -207,6 +214,7 @@
                     required
                 />
             </div>
+            <p class="text-xs text-red-500">Wajib diisi</p>
         </div>
         <div class="px-4 py-8">
             <p class="text-xl font-bold mb-3">CEK KEMBALI DETAIL INFORMASI</p>
@@ -228,10 +236,12 @@
                     </div>
                     <div class="w-full">
                         <Input
-                            id="username"
+                            id="fullName"
                             type="text"
                             label="Nama"
-                            max="30"
+                            :max="30"
+                            :init-value="produk.produk_pemasang"
+                            @send-value="(value) => inputValue('produk_pemasang', value)"
                             required
                         />
                     </div>
@@ -241,6 +251,8 @@
                     id="telephone"
                     type="phone"
                     label="Nomor Handphone"
+                    :init-value="produk.no_telepon"
+                    @send-value="(value) => inputValue('no_telepon', value)"
                     required
                 />
             </div>
@@ -248,7 +260,7 @@
     </div>
     <div class="px-4 py-8 mt-1 bg-white">
         <button
-            @click="test"
+            @click="post"
             :disabled="!validation"
             :class="`w-full h-11 rounded-md font-bold ${!validation ? 'bg-[#d8dfe0] text-[#7f9799]' : 'bg-buy-button text-white'}`"
         >
@@ -508,7 +520,7 @@ export default {
                 jarak_tempuh: "",
                 warna: "",
                 kapasitas_mesin: "",
-                kapasitas_penumpang: "2",
+                kapasitas_penumpang: null,
                 tipe_transmisi: "",
                 tipe_bodi: "",
                 tipe_bahan_bakar: "",
@@ -517,8 +529,8 @@ export default {
                 lokasi_provinsi: "",
                 lokasi_kabupaten_kota: "",
                 lokasi_kecamatan: "",
-                produk_pemasang: "irfan",
-                no_telepon: "+6288232516796",
+                produk_pemasang: "",
+                no_telepon: "",
                 tampilkan_telepon: false,
             },
             previewImage: [],
@@ -585,16 +597,27 @@ export default {
                     this.wilayah.kecamatan = arr
                 })
         },
-        test() {
+        post() {
             console.log(this.produk)
-            // axios
-            //     .post('/api/produk', this.produk)
-            //     .then((res)=> console.log(res))
-            //     .catch((err)=>console.log(err))
+            const {no_telepon, ...other} = this.produk
+            console.log({...other, no_telepon: '+62'+no_telepon});
+            axios
+                .post('/api/produk', {...other, no_telepon: '+62'+no_telepon})
+                .then((res)=> {
+                    console.log(res.data);
+                    this.$router.push('/app')
+                })
+                .catch((err)=>console.log(err))
         },
         validate() {
             const required = []
 
+            if(!this.produk.merek) required.push("merek")
+            if(!this.produk.model) required.push("model")
+            if(!this.produk.tahun_keluaran) required.push("tahun_keluaran")
+            if(!this.produk.jarak_tempuh) required.push("jarak_tempuh")
+            if(!this.produk.warna) required.push("warna")
+            if(!this.produk.harga) required.push("harga")
             if(!this.produk.produk_judul) required.push("produk_judul")
             if(!this.produk.produk_deskripsi) required.push("produk_deskripsi")
             if(this.produk.produk_foto.length === 0) required.push("produk_foto")
@@ -610,8 +633,16 @@ export default {
         }
     },
     mounted() {
-        this.produk.produk_kategori = this.postCategory
+        // mengambil user data
+        axios   
+            .get('/api/user/data')
+            .then((res)=>{
+                console.log(res.data);
+                this.produk.produk_pemasang = res.data.user_data.full_name
+                this.produk.no_telepon = res.data.user_data.phone_number.slice(3)
+            })
 
+        // mengambil data provinsi
         axios
             .get('/api/indonesia/provinsi')
             .then((res)=> {
@@ -623,6 +654,9 @@ export default {
                 })
                 this.wilayah.provinsi = arr
             })
+
+        // input produk_kategori
+        this.produk.produk_kategori = this.$route.params.category
     },
 };
 </script>
