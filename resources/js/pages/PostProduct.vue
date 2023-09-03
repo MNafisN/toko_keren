@@ -3,7 +3,7 @@
         <div
             class="bg-[rgba(0,47,52,0.03)] w-full h-16 pl-8 flex items-center gap-4"
         >
-            <div class="i-arrow-left"></div>
+            <div @click="goToPostCategory" class="i-arrow-left"></div>
             <span class="text-xl lg:hidden">Pasang iklan anda</span>
         </div>
     </div>
