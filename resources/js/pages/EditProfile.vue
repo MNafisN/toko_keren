@@ -11,41 +11,106 @@
                         <div class="i-camera"></div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <input type="text"
-                    placeholder="Nama"
-                    class="w-full h-12 p-2 rounded-md border border-subTitle mt-4">
-                    <span class="text-left text-xs float-right">10/30</span>
+                <div class="w-full pt-3">
+                    <Input
+                        type="text"
+                        id="fullName"
+                        placeholder="Nama"
+                        :init-value="userData.full_name"
+                        :max="30"
+                        @send-value="(value)=> inputValue('fullName', value)"
+                    />
                 </div>
             </div>
             <div>
-                <textarea class="w-full h-[78px] border border-subTitle rounded p-2" placeholder="Tentang Saya (opsional)"></textarea>
-                <span class="float-right text-xs">0/200</span>
+                <Input
+                    type="textarea"
+                    id="about"
+                    placeholder="Tentang Saya (opsional)"
+                    :init-value="userData.about"
+                    :max="200"
+                    @send-value="(value)=> inputValue('about', value)"
+                />
             </div>
         </div>
         <div class="h-[1px] w-full bg-subTitle"></div>
         <div class="p-4">
             <h1 class="font-bold text-xl mb-4">Informasi Kontak</h1>
-            <div class="w-full h-12 rounded border border-subTitle flex items-center">
-                <span class="px-3 border-r-2 text-[rgba(0,0,0,0.5)]">+62</span>
-                <input type="number" class="w-full h-11 p-2" placeholder="Masukan nomor HP">
-            </div>
-            <p class="text-xs text-subTitle my-4">Ini adalah nomor untuk kontak pembeli, pengingat, dan notifikasi lainnya</p>
-            <input type="email" class="w-full h-12 rounded border border-subTitle p-2" placeholder="Email">
-            <p class="text-xs text-subTitle my-4">Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam</p>
+            <Input
+                type="phone"
+                id="phone"
+                placeholder="Masukan nomor HP"
+                foot-note="ini adalah nomor untuk kontak pembeli, pengingat dan notifikasi lainnya"
+                :init-value="userData.phone_number"
+                @send-value="(value)=> inputValue('phoneNumber', value)"
+            />
+            <br>
+            <Input
+                type="text"
+                id="email"
+                placeholder="Email"
+                foot-note="Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam"
+                :init-value="userData.email"
+                @send-value="(value)=> inputValue('email', value)"
+            />
         </div>
         <div class="fixed z-20 bottom-0 w-full p-4">
-            <button class="w-full h-12 bg-buy-button text-white font-bold rounded">Simpan Perubahan</button>
+            <button @click="submit" class="w-full h-12 bg-buy-button text-white font-bold rounded">Simpan Perubahan</button>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';  
 import Header from '../components/Header.vue';
+import Input from '../components/Input.vue';
+
 export default {
     name: 'edit-profile',
+    data() {
+        return {
+            userData: {
+                full_name: "",
+                about: "",
+                email: "",
+                profile_picture: "",
+                phone_number: "",
+                username: ""
+            }
+        }
+    },
     components: {
-        Header
+        Header,
+        Input
+    },
+    methods: {
+        inputValue(key, value) {
+            this.userData[key] = value
+        },
+        submit() {
+            const data = {
+                new_username: this.userData.username,
+                full_name: this.userData.full_name,
+                about: this.userData.about,
+                phone_number: this.userData.phone_number
+            }
+            axios
+                .put('/api/user/update', data)
+                .then((res)=>{
+                    console.log(res.data);
+                    this.$router.push('/app')
+                })
+                .catch((err)=>console.log(err))
+        }
+    },
+    mounted() {
+        axios
+            .get('/api/user/data')
+            .then((res)=>{
+                console.log(res.data);
+                this.userData = res.data.user_data
+            })
+            .catch((err)=>console.log(err.data))
     }
 }
 </script>

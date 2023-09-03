@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <label :for="id" :class="`text-sm block ${required ? 'required' : null}`">{{ label }}</label>
+        <label v-if="label" :for="id" :class="`text-sm block ${required ? 'required' : null}`">{{ label }}</label>
 
         <!-- type select -->
         <select v-if="type === 'select'"
@@ -22,6 +22,7 @@
         <input v-if="type === 'number'"
             type="number"
             :id="id"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-12 border border-subTitle rounded-md px-2"
@@ -32,6 +33,7 @@
             type="text"
             :id="id"
             :max="max ? max : Infinity"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-12 border border-subTitle rounded-md px-2"
@@ -41,6 +43,7 @@
         <textarea v-if="type === 'textarea'"
             :id="id"
             :maxlength="max ? max : Infinity"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-textarea  border border-subTitle rounded-md p-2 resize-none"
@@ -59,6 +62,7 @@
             type="number"
             class="w-full pl-11 h-12 border border-subTitle rounded-md"
             :id="id"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
         >
@@ -71,10 +75,11 @@
             type="number"
             class="w-full pl-11 h-12 border border-subTitle rounded-md"
             :id="id"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
         >
-        <div v-if="type === 'phone'" class="h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute top-7 flex justify-center items-center">
+        <div v-if="type === 'phone'" :class="`h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute flex justify-center items-center ${label ? 'top-7' : 'top-2'}`">
             <span class="text-xs text-subTitle">+62</span>
         </div>
 
@@ -105,7 +110,8 @@ export default {
         footNote: String,
         max: Number,
         list: Array,
-        initValue: String
+        initValue: String,
+        placeholder: String
     },
     emits: ['sendValue'],
     watch: {
