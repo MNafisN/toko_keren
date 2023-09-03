@@ -249,7 +249,8 @@
     <div class="px-4 py-8 mt-1 bg-white">
         <button
             @click="test"
-            class="w-full h-11 rounded-md bg-buy-button text-white font-bold"
+            :disabled="!validation"
+            :class="`w-full h-11 rounded-md font-bold ${!validation ? 'bg-[#d8dfe0] text-[#7f9799]' : 'bg-buy-button text-white'}`"
         >
             Pasang iklan sekarang
         </button>
@@ -521,6 +522,7 @@ export default {
                 tampilkan_telepon: false,
             },
             previewImage: [],
+            validation: false          
         };
     },
     components: {
@@ -540,6 +542,7 @@ export default {
         },
         inputValue(key, value) {
             this.produk[key] = value;
+            this.validate()
         },
         inputFile(file, index) {
             if (this.previewImage.length > index) {
@@ -547,6 +550,7 @@ export default {
             } else {
                 this.previewImage.push(file);
             }
+            this.validate()
         },
         uploadFile(file, index) {
             if (this.produk.produk_foto.length > index) {
@@ -583,18 +587,27 @@ export default {
         },
         test() {
             console.log(this.produk)
-            axios
-                .post('/api/produk', this.produk)
-                .then((res)=> console.log(res))
-                .catch((err)=>console.log(err))
+            // axios
+            //     .post('/api/produk', this.produk)
+            //     .then((res)=> console.log(res))
+            //     .catch((err)=>console.log(err))
         },
-        // validation() {
-        //     // array yang isinya input wajib yang masih koson
-        //     const required = []
-        //     if(!this.produk.produk_judul) required.push("produk_judul")
-        //     if(!this.produk.produk_deskripsi) required.push("produk_deskripsi")
-        //     if(!this.produk.produk_foto) required.push("produk_foto")
-        // }
+        validate() {
+            const required = []
+
+            if(!this.produk.produk_judul) required.push("produk_judul")
+            if(!this.produk.produk_deskripsi) required.push("produk_deskripsi")
+            if(this.produk.produk_foto.length === 0) required.push("produk_foto")
+            if(!this.produk.lokasi_provinsi) required.push("lokasi_provinsi")
+            if(!this.produk.lokasi_kabupaten_kota) required.push("lokasi_kabupaten_kota")
+            if(!this.produk.lokasi_kecamatan) required.push("lokasi_kecamatan")
+            if(!this.produk.produk_pemasang) required.push("produk_pemasang")
+            if(!this.produk.no_telepon) required.push("no_telepon")
+
+            // isValidate
+            if(required.length === 0) this.validation = true
+
+        }
     },
     mounted() {
         this.produk.produk_kategori = this.postCategory
@@ -610,6 +623,6 @@ export default {
                 })
                 this.wilayah.provinsi = arr
             })
-    }
+    },
 };
 </script>
