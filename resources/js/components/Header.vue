@@ -39,7 +39,7 @@
         <div class="i-love"></div>
         <span>Iklan Saya</span>
       </div>
-      <div v-if="isLogged" class="flex gap-4 py-3">
+      <div v-if="isLogged" @click="logOut" class="flex gap-4 py-3">
         <div class="i-logout"></div>
         <span>Logout</span>
       </div>
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router'
 
 export default {
@@ -76,7 +77,7 @@ export default {
   data() {
     return {
       isActive: false,
-      isLogged: false,
+      isLogged: true,
       isTyping: false,
       search: ''
     };
@@ -119,6 +120,15 @@ export default {
       if (e.key === "Enter" && this.isTyping) {
         this.$router.push('/app/search/'+this.search)
       }
+    },
+    logOut() {
+      axios
+        .post('/api/user/logout')
+        .then((res)=>{
+          console.log(res.data)
+          this.$store.commit('deleteUserData')
+          this.$router.push('/app/login')
+        })
     }
   },
   mounted() {

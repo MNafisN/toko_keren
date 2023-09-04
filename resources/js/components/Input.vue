@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <label :for="id" :class="`text-sm block ${required ? 'required' : null}`">{{ label }}</label>
+        <label v-if="label" :for="id" :class="`text-sm block ${required ? 'required' : null}`">{{ label }}</label>
 
         <!-- type select -->
         <select v-if="type === 'select'"
@@ -18,11 +18,22 @@
             <div class="w-3 h-3 border-r-2 border-b-2 border-black rotate-45"></div>
         </div>
 
+        <!-- type number -->
+        <input v-if="type === 'number'"
+            type="number"
+            :id="id"
+            :placeholder="placeholder"
+            :value="value"
+            @input="e => value = e.target.value"
+            class="w-full h-12 border border-subTitle rounded-md px-2"
+        >
+
         <!-- type text -->
         <input v-if="type === 'text'"
             type="text"
             :id="id"
             :max="max ? max : Infinity"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-12 border border-subTitle rounded-md px-2"
@@ -32,6 +43,7 @@
         <textarea v-if="type === 'textarea'"
             :id="id"
             :maxlength="max ? max : Infinity"
+            :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-textarea  border border-subTitle rounded-md p-2 resize-none"
@@ -46,14 +58,34 @@
         </div>
 
         <!-- type price -->
-        <input v-if="type === 'price'" type="number" class="w-full h-12 border  border-subTitle rounded-md" >
+        <input v-if="type === 'price'"
+            type="number"
+            class="w-full pl-11 h-12 border border-subTitle rounded-md"
+            :id="id"
+            :placeholder="placeholder"
+            :value="value"
+            @input="e => value = e.target.value"
+        >
         <div v-if="type === 'price'" class="h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute top-7 flex justify-center items-center">
             <span class="text-xs text-subTitle">Rp</span>
         </div>
 
+        <!-- type phone -->
+        <input v-if="type === 'phone'"
+            type="number"
+            class="w-full pl-11 h-12 border border-subTitle rounded-md"
+            :id="id"
+            :placeholder="placeholder"
+            :value="value"
+            @input="e => value = e.target.value"
+        >
+        <div v-if="type === 'phone'" :class="`h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute flex justify-center items-center ${label ? 'top-7' : 'top-2'}`">
+            <span class="text-xs text-subTitle">+62</span>
+        </div>
+
 
         <!-- footNote -->
-        <div v-if="footNote" class="flex justify-between gap-4">
+        <div v-if="footNote || maxlength" class="flex justify-between gap-4">
             <p class="text-xs text-[rgba(0,47,52,0.64)] w-fit">{{ footNote }}</p>
             <p class="text-xs text-[rgba(0,47,52,0.64)] min-w-max">{{ maxlength }}</p>
         </div>
@@ -66,7 +98,7 @@ export default {
     name: 'input-component',
     data() {
         return {
-            value : ""
+            value : "",
         }
     },
     props: {
@@ -77,20 +109,31 @@ export default {
         option: Array,
         footNote: String,
         max: Number,
-        list: Array
+        list: Array,
+        initValue: String,
+        placeholder: String
     },
+    emits: ['sendValue'],
     watch: {
         value: function() {
-            console.log(this.value)
+            if (this.type === "price" || this.type === "number") {
+                this.$emit('sendValue', parseInt(this.value))
+            } else {
+                this.$emit('sendValue', this.value)
+            }     
+        },
+        initValue: function() {
+            this.value = this.initValue
         }
     },
     computed: {
         maxlength() {
-            if(!this.max) return;
-            const length = this.value.length
-            return `${length} / ${this.max}`
+            if(this.max){
+                const length = this.value.length
+                return `${length} / ${this.max}`
+            } else return;
         }
-    }
+    },
 }
 </script>
 

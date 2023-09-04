@@ -1,7 +1,6 @@
 <template>
     <Header page="list-product" />
     <div class="h-28"></div>
-    {{ router }}
     <div class="w-full bg-white py-4 px-2">
         <p class="text-subTitle text-xs">Beranda / {{ path1 }} / {{ path2 }}</p>
         <br>
@@ -10,7 +9,7 @@
 
         <!-- list product -->
         <div class="flex flex-col gap-4">
-            <ProductCard v-for="item in products" :product="item" />
+            <ProductCard v-for="item in listProduk" :produk="item" />
         </div>
         <!-- //// list product /// -->
         <div class="flex justify-center">
@@ -34,7 +33,7 @@ export default {
     name: 'list-product',
     data() {
         return {
-            products: []
+            listProduk: []
         }
     },
     components: {
@@ -56,7 +55,7 @@ export default {
             .get('/api/produk/'+this.path2)
             .then((res)=>{
                 console.log(res.data.data)
-                this.products = res.data.data
+                this.listProduk = res.data.data
             })
     }
 }

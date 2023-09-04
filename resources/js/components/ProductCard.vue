@@ -5,10 +5,10 @@
         </div>
         <div :class="`overflow-hidden flex flex-col w-full ${page === 'home' ? 'mt-3' : 'p-2'}`">
             <p class="truncate font-bold text-xl">Rp. 12.000.000</p>
-            <p class="truncate text-sm">{{ product.tahun_keluaran }}</p>
-            <p class="truncate text-xs text-slate-500 my-1">{{ product.produk_judul }}</p>
+            <p class="truncate text-sm">{{ produk.tahun_keluaran }}</p>
+            <p class="truncate text-xs text-slate-500 my-1">{{ produk.produk_judul }}</p>
             <div :class="`mt-auto text-[10px] text-slate-500 w-full gap-8 ${page !== 'home' ? 'flex justify-between' : null}`">
-                <p class="truncate">{{ product.lokasi_provinsi }}, {{ product.lokasi_kabupaten_kota }}</p>
+                <p class="truncate">{{ produk.lokasi_provinsi }}, {{ produk.lokasi_kabupaten_kota }}</p>
                 <p v-if="page !== 'home'" class="min-w-max">HARI INI</p>
             </div>
         </div>
@@ -20,11 +20,11 @@ export default {
     name: 'product-card',
     props: {
         page: String,
-        product: Object
+        produk: Object
     },
     methods: {
         goToDetailProduct() {
-            this.$router.push('/app/product/'+ this.product.produk_id)
+            this.$router.push('/app/product/'+ this.produk.produk_id)
         }
     }
 }

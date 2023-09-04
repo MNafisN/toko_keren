@@ -3,17 +3,27 @@ import {createStore} from 'vuex'
 const store = createStore({
     state() {
         return {
-            i: 0
+            user_data: {
+                about: "",
+                email: "",
+                full_name: "",
+                phone_number: "",
+                profile_picture: "",
+                username: ""
+            }
         }
     },
     getters: {
-        getI(state) {
-            return state.i
+        getUserData(state) {
+            return state.user_data
         }
     },
     mutations: {
-        setI(state, payload) {
-            state.i = payload
+        setUserData(state, payload) {
+            state.user_data = payload
+        },
+        deleteUserData(state) {
+            state.user_data = {}
         }
     }
 })

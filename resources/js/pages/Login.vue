@@ -70,6 +70,14 @@ export default {
                     console.log(err)
                 })
         },
+        getInfoUser() {
+            axios
+                .get('/api/user/data')
+                .then((res)=>{
+                    console.log(res.data.user_data)
+                    this.$store.commit('setUserData', res.data.user_data)
+                })
+        }
     },
 };
 </script>
