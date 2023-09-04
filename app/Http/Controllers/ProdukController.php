@@ -227,6 +227,24 @@ class ProdukController extends Controller
         return response()->json($result, $result['status']);
     }
 
+    public function downloadPhoto(string $fileName)
+    {
+        return $this->produkService->downloadPhoto($fileName);
+        // try {
+        //     $result = [
+        //         'status' => 200,
+        //         'data' => $this->produkService->downloadPhoto($fileName)
+        //     ];
+        // } catch (Exception $err) {
+        //     $result = [
+        //         'status' => 404,
+        //         'error' => $err->getMessage()
+        //     ];
+        // }
+
+        // return response()->json($result, $result['status']);
+    }
+
     public function deletePhoto(string $fileName): JsonResponse
     {
         try {

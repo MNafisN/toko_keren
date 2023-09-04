@@ -231,6 +231,29 @@ class AuthController extends Controller
     }
 
     /**
+     * Download or get user profile picture
+     * 
+     * @return
+     */
+    public function downloadPhoto()
+    {
+        return $this->authService->downloadPhoto();
+        // try {
+        //     $result = [
+        //         'status' => 200,
+        //         'data' => $this->authService->downloadPhoto()
+        //     ];
+        // } catch (Exception $err) {
+        //     $result = [
+        //         'status' => 404,
+        //         'error' => $err->getMessage()
+        //     ];
+        // }
+
+        // return response()->json($result, $result['status']);
+    }
+
+    /**
      * Delete user profile picture
      * 
      * @return \Illuminate\Http\JsonResponse

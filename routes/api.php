@@ -37,6 +37,7 @@ Route::group([
         Route::put('update_email', [AuthController::class, 'updateEmail']);             // Change user email
         Route::put('update_password', [AuthController::class, 'updatePassword']);       // Change user password
         Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);            // Upload user profile picture
+        Route::get('download_photo', [AuthController::class, 'downloadPhoto']);         // Download user profile picture
         Route::put('delete_photo', [AuthController::class, 'deletePhoto']);             // Remove user profile picture
     });
 });
@@ -52,6 +53,7 @@ Route::group([
         Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);                // Get produk detail
         Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);       // Update produk status
         Route::post('upload_photo', [ProdukController::class, 'uploadPhoto']);                  // Upload produk photo one by one
+        Route::get('download_photo/{fileName}', [ProdukController::class, 'downloadPhoto']);    // Download produk photo by name
         Route::delete('delete_photo/{fileName}', [ProdukController::class, 'deletePhoto']);     // Delete produk photo by name
     });
 });
