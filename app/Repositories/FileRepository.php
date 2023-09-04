@@ -29,6 +29,17 @@ class FileRepository
         return $file->fresh();
     }
 
+    public function downloadProfilePicture(string $username)
+    {
+        $file = $this->file->where([
+            ['file_category', 'profile'],
+            ['posted_by', $username]
+        ])->first();
+
+        $fileName = $file->file_name; // $file->created_at . " " . 
+        return Storage::download("/profile/" . $fileName, $fileName);
+    }
+
     public function deleteProfilePicture(string $username): void 
     {
         $file = $this->file->where([
@@ -63,6 +74,14 @@ class FileRepository
 
         $file->save();
         return $file->fresh();
+    }
+
+    public function downloadPhoto(string $fileName)
+    {
+        $file = $this->getPhotoByName($fileName);
+
+        $fileName = $file->file_name;
+        return Storage::download("/produk/" . $fileName, $fileName);
     }
 
     public function deletePhoto(string $fileName): string

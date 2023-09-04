@@ -222,13 +222,25 @@ class ProdukService
         return $photo->toArray();
     }
 
-    public function deletePhoto(string $fileName): string
+    public function downloadPhoto(string $fileName)
     {
-        $photo = $this->fileRepository->getPhotoByName($fileName);
+        $fileDecoder = rawurldecode($fileName);
+        $photo = $this->fileRepository->getPhotoByName($fileDecoder);
         if (!$photo) {
             throw new InvalidArgumentException('File not found');
         }
-        $photo = $this->fileRepository->deletePhoto($fileName);
+        $photo = $this->fileRepository->downloadPhoto($fileDecoder);
+        return $photo;
+    }
+
+    public function deletePhoto(string $fileName): string
+    {
+        $fileDecoder = rawurldecode($fileName);
+        $photo = $this->fileRepository->getPhotoByName($fileDecoder);
+        if (!$photo) {
+            throw new InvalidArgumentException('File not found');
+        }
+        $photo = $this->fileRepository->deletePhoto($fileDecoder);
 
         $message = "File " . $photo . " deleted successfully";
         return $message;

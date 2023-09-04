@@ -201,14 +201,28 @@ class AuthService
     }
 
     /**
+     * Download or get user profile picture
+     */
+    public function downloadPhoto()
+    {
+        $user = $this->authRepository->getByUsername(auth()->user()['username']);
+        if (!$user) { throw new InvalidArgumentException('user not found'); }
+        if ($user->profile_picture == null) { return null; }
+
+        $photo = $this->fileRepository->downloadProfilePicture(auth()->user()['username']);
+        return $photo;
+    }
+
+    /**
      * Delete user profile picture
      */
     public function deletePhoto(): string
     {
         // $user = $this->authRepository->getByUsername($username);
         $user = $this->authRepository->getByUsername(auth()->user()['username']);
-        
         if (!$user) { throw new InvalidArgumentException('user not found'); }
+
+        if ($user->profile_picture == null) { return 'Profile picture do not exist'; }
 
         $this->fileRepository->deleteProfilePicture(auth()->user()['username']);
         $user = $this->authRepository->deletePhoto(auth()->user()['username']);
