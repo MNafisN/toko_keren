@@ -18,9 +18,11 @@
     <div
       :class="`w-full box-border overflow-hidden relative bg-white transition-all ${isActive ? 'h-screen p-2' : 'h-0 px-2'}`">
       <div class="flex gap-4 items-center py-4">
-        <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500">
+        <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center">
+          <img v-if="infoUser.profile_picture" src="/api/user/download_photo/" alt="">
+          <span v-else class="text-white text-3xl">I</span>
         </div>
-        <span v-if="isLogged" class="font-bold text-xl">Username</span>
+        <span v-if="isLogged" class="font-bold text-xl">{{ infoUser.username }}</span>
         <div v-else>
           <p class="text-sm text-subTitle">Masuk ke akun Anda</p>
           <RouterLink to="/app/login" class="text-sm underline">Login ke akun anda</RouterLink>
@@ -73,7 +75,7 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router'
 
 export default {
-  name: 'header',
+  name: 'header-component',
   data() {
     return {
       isActive: false,
@@ -98,6 +100,9 @@ export default {
       else {
         return false;
       }
+    },
+    infoUser() {
+      return this.$store.getters.getUserData
     }
   },
   methods: {
@@ -133,6 +138,7 @@ export default {
   },
   mounted() {
     document.addEventListener("keydown", this.onkeydown)
-  }
+    }
+
 }
 </script>

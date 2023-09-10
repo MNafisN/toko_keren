@@ -3,9 +3,11 @@
     <div class="h-[52px]"></div>
     <div class="p-4 bg-white">
         <div class="flex gap-4 items-center py-4">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500">
+            <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center">
+                <img v-if="infoUser.profile_picture" src="/api/user/download_photo/'" alt="">
+                <span v-else class="text-white text-3xl">I</span>
             </div>
-            <span class="font-bold text-xl">Username</span>
+            <span class="font-bold text-xl">{{ infoUser.username }}</span>
         </div>
         <div>
             <div class="flex gap-2 items-center">
@@ -34,7 +36,10 @@
             <span class="font-bold text-sm">Bagikan Profil</span>
         </div>
     </div>
-    <div class="w-full bg-white mt-3 py-8 flex flex-col items-center">
+    <div v-if="list.length !== 0" class="w-full bg-white p-2 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <ProductCard v-for="item in list" page="home" :produk="item" />
+    </div>
+    <div v-else class="w-full bg-white mt-3 py-8 flex flex-col items-center">
         <div class="w-[200px] h-[200px] mb-4">
             <img class="w-full h-full object-contain" src="/assets/no-publications.webp" alt="tidak ada iklan">
         </div>
@@ -48,17 +53,39 @@
 <script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import ProductCard from '../components/ProductCard.vue';
+import axios from 'axios';
 
 export default {
     name: 'profile-page',
+    data() {
+        return {
+            list: []
+        }
+    },
     components: {
         Header,
-        Footer
+        Footer,
+        ProductCard
+    },
+    computed: {
+        infoUser() {
+            return this.$store.getters.getUserData
+        }
     },
     methods: {
         goToEditProfile() {
             this.$router.push('/app/editProfile')
         }
+    },
+    mounted() {
+        axios
+            .get('/api/produk/user/me')
+            .then((res)=>{
+                console.log(res.data.data)
+                this.list = res.data.data
+            })
+            .catch((err)=>console.log(err))
     }
 }
 </script>

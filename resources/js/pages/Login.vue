@@ -63,19 +63,20 @@ export default {
                     this.isLoading = false
                     localStorage.setItem('access_token', res.data.access_token)
                     console.log(res.data)
-                    this.$router.push('/app')
+                    this.getInfoUser()
                 })
                 .catch((err)=>{
                     this.isLoading = false
                     console.log(err)
                 })
-        },
-        getInfoUser() {
-            axios
+            },
+            getInfoUser() {
+                axios
                 .get('/api/user/data')
                 .then((res)=>{
                     console.log(res.data.user_data)
                     this.$store.commit('setUserData', res.data.user_data)
+                    this.$router.push('/app')
                 })
         }
     },
