@@ -30,15 +30,15 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function() {
-        Route::post('logout', [AuthController::class, 'logout']);                       // Logout user
-        Route::post('refresh', [AuthController::class, 'refresh']);                     // Refresh user token (180 minutes)
-        Route::get('data', [AuthController::class, 'data']);                            // Get user detail
-        Route::put('update', [AuthController::class, 'update']);                        // Update user data
-        Route::put('update_email', [AuthController::class, 'updateEmail']);             // Change user email
-        Route::put('update_password', [AuthController::class, 'updatePassword']);       // Change user password
-        Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);            // Upload user profile picture
-        Route::get('download_photo', [AuthController::class, 'downloadPhoto']);         // Download user profile picture
-        Route::put('delete_photo', [AuthController::class, 'deletePhoto']);             // Remove user profile picture
+        Route::post('logout', [AuthController::class, 'logout']);                           // Logout user
+        Route::post('refresh', [AuthController::class, 'refresh']);                         // Refresh user token (180 minutes)
+        Route::get('data', [AuthController::class, 'data']);                                // Get user detail
+        Route::put('update', [AuthController::class, 'update']);                            // Update user data
+        Route::put('update_email', [AuthController::class, 'updateEmail']);                 // Change user email
+        Route::put('update_password', [AuthController::class, 'updatePassword']);           // Change user password
+        Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);                // Upload user profile picture
+        Route::get('download_photo/{username}', [AuthController::class, 'downloadPhoto']);  // Download user profile picture
+        Route::put('delete_photo', [AuthController::class, 'deletePhoto']);                 // Remove user profile picture
     });
 });
 

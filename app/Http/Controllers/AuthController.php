@@ -233,24 +233,25 @@ class AuthController extends Controller
     /**
      * Download or get user profile picture
      * 
+     * @param  string
      * @return
      */
-    public function downloadPhoto()
+    public function downloadPhoto(string $username)
     {
-        return $this->authService->downloadPhoto();
-        // try {
-        //     $result = [
-        //         'status' => 200,
-        //         'data' => $this->authService->downloadPhoto()
-        //     ];
-        // } catch (Exception $err) {
-        //     $result = [
-        //         'status' => 404,
-        //         'error' => $err->getMessage()
-        //     ];
-        // }
+        try {
+            return $this->authService->downloadPhoto($username);
+            // $result = [
+            //     'status' => 200,
+            //     'data' => $this->authService->downloadPhoto()
+            // ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
 
-        // return response()->json($result, $result['status']);
+        return response()->json($result, $result['status']);
     }
 
     /**

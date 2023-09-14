@@ -17,7 +17,13 @@ class FileRepository
 
     public function uploadProfilePicture(array $data): Object
     {
-        $file = new $this->file;
+        $file = $this->file->where([
+            ['file_category', 'profile'],
+            ['posted_by', $data['username']]
+        ])->first();
+
+        if (!$file) { $file = new $this->file; }
+        else { Storage::disk('public')->delete(("/profile/" . $file->file_name)); }
 
         $data['profile_picture']->storeAs("/profile/", $data['file_name']);
         $file->file_name = $data['file_name'];

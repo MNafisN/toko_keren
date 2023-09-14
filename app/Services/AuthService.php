@@ -87,7 +87,7 @@ class AuthService
     {
         $validator = Validator::make($data, [
             // 'username' => 'required|string',
-            'new_username' => ['required', 'string', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore(auth()->user()['username'], 'username')],
+            'new_username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore(auth()->user()['username'], 'username')],
             'full_name' => 'nullable|string',
             'about' => 'nullable|string',
             'phone_number' => 'required|string'
@@ -203,9 +203,9 @@ class AuthService
     /**
      * Download or get user profile picture
      */
-    public function downloadPhoto()
+    public function downloadPhoto(string $username)
     {
-        $user = $this->authRepository->getByUsername(auth()->user()['username']);
+        $user = $this->authRepository->getByUsername($username);
         if (!$user) { throw new InvalidArgumentException('user not found'); }
         if ($user->profile_picture == null) { return null; }
 
