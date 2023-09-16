@@ -240,6 +240,9 @@ class ProdukService
         if (!$photo) {
             throw new InvalidArgumentException('File not found');
         }
+        if ($photo->posted_by != auth()->user()['username']) {
+            throw new InvalidArgumentException("This user cannot delete other user's product photo");
+        }
         $photo = $this->fileRepository->deletePhoto($fileDecoder);
 
         $message = "File " . $photo . " deleted successfully";

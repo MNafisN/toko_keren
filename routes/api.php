@@ -25,8 +25,8 @@ use App\Http\Controllers\WilayahController;
 Route::group([
     'prefix' => 'user'
 ], function() {
-    Route::post('register', [AuthController::class, 'register']);                       // Register user
-    Route::post('login', [AuthController::class, 'login']);                             // Login user
+    Route::post('register', [AuthController::class, 'register']);                           // Register user
+    Route::post('login', [AuthController::class, 'login']);                                 // Login user
     Route::group([
         'middleware' => 'auth:api'
     ], function() {
@@ -53,10 +53,10 @@ Route::group([
         Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);                // Get produk detail
         Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);       // Update produk status
         Route::post('upload_photo', [ProdukController::class, 'uploadPhoto']);                  // Upload produk photo one by one
-        Route::get('download_photo/{fileName}', [ProdukController::class, 'downloadPhoto']);    // Download produk photo by name
         Route::delete('delete_photo/{fileName}', [ProdukController::class, 'deletePhoto']);     // Delete produk photo by name
     });
 });
+Route::get('produk/download_photo/{fileName}', [ProdukController::class, 'downloadPhoto']);     // Download produk photo by name
 
 Route::group([
     'middleware' => 'auth:api',
