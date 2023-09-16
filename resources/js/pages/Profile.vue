@@ -4,7 +4,7 @@
     <div class="p-4 bg-white">
         <div class="flex gap-4 items-center py-4">
             <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center">
-                <img v-if="infoUser.profile_picture" src="/api/user/download_photo/'" alt="">
+                <img v-if="infoUser.profile_picture" :src="'/api/user/download_photo/'+infoUser.username" alt="photo profile">
                 <span v-else class="text-white text-3xl">I</span>
             </div>
             <span class="font-bold text-xl">{{ infoUser.username }}</span>

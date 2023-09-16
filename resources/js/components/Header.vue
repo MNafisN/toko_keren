@@ -19,7 +19,7 @@
       :class="`w-full box-border overflow-hidden relative bg-white transition-all ${isActive ? 'h-screen p-2' : 'h-0 px-2'}`">
       <div class="flex gap-4 items-center py-4">
         <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center">
-          <img v-if="infoUser.profile_picture" src="/api/user/download_photo/" alt="">
+          <img v-if="infoUser.profile_picture" :src="'/api/user/download_photo/'+infoUser.username" alt="photo profile">
           <span v-else class="text-white text-3xl">I</span>
         </div>
         <span v-if="isLogged" class="font-bold text-xl">{{ infoUser.username }}</span>
@@ -33,12 +33,12 @@
       <div class="w-full h-px bg-[rgba(0,0,0,0.5)] mt-4"></div>
 
       <!-- list menu -->
-      <div class="flex gap-4 py-3">
+      <div @click="goToPost" class="flex gap-4 py-3">
         <div class="i-camera-black"></div>
         <span>Pasang Iklan</span>
       </div>
       <div class="flex gap-4 py-3">
-        <div class="i-love"></div>
+        <div @click="goToProfile" class="i-love"></div>
         <span>Iklan Saya</span>
       </div>
       <div v-if="isLogged" @click="logOut" class="flex gap-4 py-3">
@@ -114,6 +114,9 @@ export default {
     },
     goToProfile() {
       this.$router.push('/app/profile');
+    },
+    goToPost() {
+      this.$router.push('/app/post')
     },
     goToLogin() {
       this.$router.push('/app/login')

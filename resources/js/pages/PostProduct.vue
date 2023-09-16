@@ -28,7 +28,7 @@
                     @send-value="(value) => inputValue('merek', value)"
                     id="merk"
                     type="select"
-                    :list="merekMobil"
+                    :list="produk.produk_kategori === 'mobil' ? merekMobil : merekMotor"
                     label="Merek"
                     required
                 />
@@ -44,7 +44,7 @@
                 />
                 <br v-if="produk.merek" />
                 <Input
-                    v-if="produk.model"
+                    v-if="produk.model && produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('tipe_transmisi', value)"
                     id="transmisi"
                     type="select"
@@ -52,7 +52,7 @@
                     label="Transmisi"
                     required
                 />
-                <br v-if="produk.model" />
+                <br v-if="produk.model && produk.produk_kategori === 'mobil'" />
                 <Input
                     @send-value="(value) => inputValue('tahun_keluaran', value)"
                     id="tahun"
@@ -72,6 +72,7 @@
                 />
                 <br />
                 <Input
+                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="
                         (value) => inputValue('tipe_bahan_bakar', value)
                     "
@@ -81,8 +82,9 @@
                     label="Tipe bahan bakar"
                     required
                 />
-                <br />
+                <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
+                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('warna', value)"
                     id="warna"
                     type="select"
@@ -90,23 +92,26 @@
                     label="Warna"
                     required
                 />
-                <br />
+                <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
+                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('tipe_bodi', value)"
                     id="tipeMobil"
                     type="select"
                     :list="tipeMobil"
                     label="Tipe bodi"
                 />
-                <br />
+                <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
+                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('kapasitas_penumpang', value)"
                     id="kapasitasPenumpang"
                     type="number"
                     label="Kapasitas Penumpang"
                 />
-                <br />
+                <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
+                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="
                         (value) => inputValue('kapasitas_mesin', value)
                     "
@@ -115,7 +120,7 @@
                     :list="ccMobil"
                     label="Kapasitas mesin"
                 />
-                <br />
+                <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
                     @send-value="(value) => inputValue('tipe_penjual', value)"
                     id="penjual"
@@ -225,8 +230,8 @@
                     >
                         <img
                             class="w-full h-full object-fill"
-                            src="/assets/avatar.png"
-                            alt=""
+                            :src="'/api/user/download_photo/'+username"
+                            alt="photo profile"
                         />
                         <div
                             class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
@@ -353,6 +358,38 @@ export default {
                 "Wuling",
                 "Lain-lain",
             ],
+            merekMotor: [
+                "Aprilia",
+                "Bajaj",
+                "Benelli",
+                "BMW",
+                "Ducati",
+                "Gilera",
+                "Harley Davidson",
+                "Honda",
+                "Husqvarna",
+                "Hyosung",
+                "Jialing",
+                "Kanzen",
+                "Kawasaki",
+                "Kreidler",
+                "KTM",
+                "Kymco",
+                "Minerva",
+                "Off-Road dan Auto-Cross",
+                "Piaggio",
+                "Quads dan Trikes",
+                "Sanex",
+                "Suzuki",
+                "Tossa",
+                "Triumph",
+                "TVS",
+                "Viar",
+                "Victory",
+                "Yamaha",
+                "Zundapp",
+                "Lain-lain"
+            ],
             model: [
                 "model 1",
                 "model 2",
@@ -475,35 +512,6 @@ export default {
                 ">3.000 cc",
             ],
             tipePenjual: ["individu", "dealer"],
-            bursaMobil: [
-                "Bursa AXC summarecon bekasi",
-                "Bursa blok M Mall",
-                "Bursa Citra Cikupa",
-                "Bursa Gading Auto Center",
-                "Bursa mobil Bella Tera",
-                "Bursa Mobil BG Junction Surabaya",
-                "Bursa Mobil Bintaro",
-                "Bursa Mobil Blok M Plaza",
-                "Bursa Mobil Blok M Square",
-                "Bursa Mobil BSD",
-                "Bursa Mobil DTC",
-                "Bursa Mobil Karawaci",
-                "Bursa Mobil Kelapa Gading",
-                "Bursa Mobil Lenmarc Surabaya",
-                "Bursa Mobil Mangga Dua Square",
-                "Bursa Mobil MGK Kemayoran",
-                "Bursa Mobil Permata Hijau",
-                "Bursa Mobil POSH Bekasi",
-                "Bursa Mobil Summarecon Serpong",
-                "Bursa Mobil WTC Mangga Dua",
-                "Bursa Otomotif Sunter",
-                "Bursa Taman palem Cengkareng",
-                "Carsentro Makassar",
-                "Carsentro Semarang",
-                "Carsentro Solo",
-                "Carsentro Yogyakarta",
-                "Pasar Mobil Kemayoran",
-            ],
             wilayah: {
                 provinsi: [],
                 kabupatenKota: [],
@@ -534,7 +542,8 @@ export default {
                 tampilkan_telepon: false,
             },
             previewImage: [],
-            validation: false          
+            validation: false,
+            username: ""        
         };
     },
     components: {
@@ -599,10 +608,8 @@ export default {
         },
         post() {
             console.log(this.produk)
-            const {no_telepon, ...other} = this.produk
-            console.log({...other, no_telepon: '+62'+no_telepon});
             axios
-                .post('/api/produk', {...other, no_telepon: '+62'+no_telepon})
+                .post('/api/produk', this.produk)
                 .then((res)=> {
                     console.log(res.data);
                     this.$router.push('/app')
@@ -639,7 +646,8 @@ export default {
             .then((res)=>{
                 console.log(res.data);
                 this.produk.produk_pemasang = res.data.user_data.full_name
-                this.produk.no_telepon = res.data.user_data.phone_number.slice(3)
+                this.produk.no_telepon = res.data.user_data.phone_number
+                this.username = res.data.user_data.username
             })
 
         // mengambil data provinsi
