@@ -81,6 +81,26 @@ class ProdukRepository
         return $produk->fresh();
     }
 
+    public function updateUsername(string $oldUsername, string $newUsername): bool
+    {
+        $produk = $this->produk->where('produk_pemasang', $oldUsername)->orderBy('created_at', 'asc')->first();
+        if (!$produk) { return false; }
+
+        if (count($produk->produk_foto) !== 0) {
+            $newPhotos = [];
+            foreach ($produk->produk_foto as $key => $value) {
+                $newPhotos[$key] = array_replace_recursive($value, [
+                    'posted_by' => $newUsername
+                ]);
+            }
+            $produk->produk_foto = $newPhotos;
+        }
+        $produk->produk_pemasang = $newUsername;
+        
+        $produk->save();
+        return true;
+    }
+
     public function destroy(string $produkId): void
     {
         $produk = $this->getById($produkId);

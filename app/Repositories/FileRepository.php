@@ -58,6 +58,19 @@ class FileRepository
         $file->delete();
     }
 
+    public function updateUsername(string $oldUsername, string $newUsername): bool
+    {
+        $file = $this->file->where([
+            ['posted_by', $oldUsername]
+        ])->first();
+        if (!$file) { return false; }
+
+        $file->posted_by = $newUsername;
+        
+        $file->save();
+        return true;
+    }
+
     public function getPhotoByName(string $name): ?Object
     {
         $file = $this->file->where([
