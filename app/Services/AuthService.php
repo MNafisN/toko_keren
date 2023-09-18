@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\AuthRepository;
+use App\Repositories\ProdukRepository;
 use App\Repositories\FileRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -14,11 +15,13 @@ use Illuminate\Validation\Rule;
 class AuthService
 {
     protected $authRepository;
+    protected $produkRepository;
     protected $fileRepository;
 
-    public function __construct(AuthRepository $authRepository, FileRepository $fileRepository)
+    public function __construct(AuthRepository $authRepository, ProdukRepository $produkRepository, FileRepository $fileRepository)
     {
         $this->authRepository = $authRepository;
+        $this->produkRepository = $produkRepository;
         $this->fileRepository = $fileRepository;
     }
 
@@ -102,6 +105,17 @@ class AuthService
         if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
 
         $data['username'] = auth()->user()['username'];
+
+        $produk = true;
+        while ($produk == true) {
+            $produk = $this->produkRepository->updateUsername($data['username'], $data['new_username']);
+        }
+
+        $file = true;
+        while ($file == true) {
+            $file = $this->fileRepository->updateUsername($data['username'], $data['new_username']);
+        }
+
         $user = $this->authRepository->save($data);
         return $user;
     }
