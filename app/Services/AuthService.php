@@ -223,7 +223,7 @@ class AuthService
         if (!$user) { throw new InvalidArgumentException('user not found'); }
         if ($user->profile_picture == null) { return null; }
 
-        $photo = $this->fileRepository->downloadProfilePicture(auth()->user()['username']);
+        $photo = $this->fileRepository->downloadProfilePicture($username);
         return $photo;
     }
 
