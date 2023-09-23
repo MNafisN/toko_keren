@@ -26,6 +26,7 @@
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-12 border border-subTitle rounded-md px-2"
+            :disabled="disabled"
         >
 
         <!-- type text -->
@@ -37,6 +38,7 @@
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-12 border border-subTitle rounded-md px-2"
+            :disabled="disabled"
         >
 
         <!-- type textarea -->
@@ -47,6 +49,7 @@
             :value="value"
             @input="e => value = e.target.value"
             class="w-full h-textarea  border border-subTitle rounded-md p-2 resize-none"
+            :disabled="disabled"
         ></textarea>
 
         <!-- type radio -->
@@ -65,6 +68,7 @@
             :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
+            :disabled="disabled"
         >
         <div v-if="type === 'price'" class="h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute top-7 flex justify-center items-center">
             <span class="text-xs text-subTitle">Rp</span>
@@ -78,6 +82,7 @@
             :placeholder="placeholder"
             :value="value"
             @input="e => value = e.target.value"
+            :disabled="disabled"
         >
         <div v-if="type === 'phone'" :class="`h-8 w-10 border-r border-[rgba(0,47,52,0.36)] absolute flex justify-center items-center ${label ? 'top-7' : 'top-2'}`">
             <span class="text-xs text-subTitle">+62</span>
@@ -111,7 +116,8 @@ export default {
         max: Number,
         list: Array,
         initValue: String,
-        placeholder: String
+        placeholder: String,
+        disabled: Boolean
     },
     emits: ['sendValue'],
     watch: {

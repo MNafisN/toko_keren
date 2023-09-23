@@ -240,3 +240,12 @@
     background-size: contain;
     display: inline-block;
 }
+
+.i-edit-form{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/edit-form.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}

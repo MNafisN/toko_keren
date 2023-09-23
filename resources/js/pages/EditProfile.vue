@@ -7,21 +7,32 @@
             <div class="w-full mb-4 flex gap-4">
                 <!-- profile picture -->
                 <label for="changePicture">
-                    <div class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative">
+                    <div
+                        class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
+                    >
                         <img
                             v-if="userData.profile_picture"
-                            class="w-full h-full object-fill"
-                            src="/api/user/download_photo"
+                            class="w-full h-full object-cover"
+                            :src="
+                                '/api/user/download_photo/' + userData.username
+                            "
                             alt="profile_picture"
                         />
                         <div
                             v-else
                             class="w-full h-full bg-blue-500 flex justify-center items-center text-4xl text-white"
-                        >I</div>
-                        <div class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1">
+                        >
+                            I
+                        </div>
+                        <div
+                            class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
+                        >
                             <div class="i-camera"></div>
                         </div>
-                        <div v-if="isLoading" class="absolute top-0 w-full h-full flex justify-center items-center">
+                        <div
+                            v-if="isLoading"
+                            class="absolute top-0 w-full h-full flex justify-center items-center"
+                        >
                             <div class="loader"></div>
                         </div>
                     </div>
@@ -69,14 +80,17 @@
                 @send-value="(value) => inputValue('phoneNumber', value)"
             />
             <br />
-            <Input
-                type="text"
-                id="email"
-                placeholder="Email"
-                foot-note="Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam"
-                :init-value="userData.email"
-                @send-value="(value) => inputValue('email', value)"
-            />
+            <div class="relative">
+                <Input
+                    type="text"
+                    id="email"
+                    placeholder="Email"
+                    foot-note="Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam"
+                    :init-value="userData.email"
+                    disabled
+                />
+                <div @click="showAlert" class="i-edit-form absolute right-2 top-3"></div>
+            </div>
         </div>
         <div class="fixed z-20 bottom-0 w-full p-4">
             <button
@@ -94,6 +108,7 @@ import axios from "axios";
 import Header from "../components/Header.vue";
 import Input from "../components/Input.vue";
 import Compressor from "compressorjs";
+import Swal from 'sweetalert2';
 
 export default {
     name: "edit-profile",
@@ -107,7 +122,7 @@ export default {
                 phone_number: "",
                 username: "",
             },
-            isLoading: false
+            isLoading: false,
         };
     },
     components: {
@@ -119,8 +134,8 @@ export default {
             this.userData[key] = value;
         },
         selectImage(file) {
-            this.isLoading = true
-            const ref = this
+            this.isLoading = true;
+            const ref = this;
 
             // compress image
             new Compressor(file, {
@@ -130,24 +145,26 @@ export default {
                 },
                 error(err) {
                     console.log("error compress file / file tidak valid");
-                    this.isLoading = false
+                    this.isLoading = false;
                 },
             });
         },
         uploadImage(file) {
             // upload image
             const formData = new FormData();
-            formData.append("profile_picture", file);
+            formData.append("profile_picture", file.name.slice(15));
             axios
                 .post("/api/user/upload_photo", formData)
                 .then((res) => {
                     console.log(res.data);
-                    this.isLoading = false
+                    this.isLoading = false;
                 })
                 .catch((err) => {
-                    console.log("error upload image / ada masalah di jaringan anda");
+                    console.log(
+                        "error upload image / ada masalah di jaringan anda"
+                    );
                     console.log(err);
-                    this.isLoading = false
+                    this.isLoading = false;
                 });
         },
         submit() {
@@ -165,6 +182,43 @@ export default {
                 })
                 .catch((err) => console.log(err));
         },
+        showAlert: async() => {
+            const {value : formValue} = await Swal.fire({
+                title: "Change Email",
+                html: `
+                <div class="flex flex-col items-start">
+                    <label for="swal-input1">New Email</label>
+                    <input id="swal-input1" type="email" placeholder="Email" class="w-full pl-2 h-12 border border-subTitle rounded-md mb-2">
+                    <label for="swal-input2">Password</label>
+                    <input id="swal-input2" type="password" placeholder="password" class="w-full pl-2 h-12 border border-subTitle rounded-md">
+                </div>
+                `,
+                confirmButtonText: "Confirm",
+                confirmButtonColor: "#002f34",
+                preConfirm: function() {
+                    const email = Swal.getPopup().querySelector('#swal-input1').value
+                    const password = Swal.getPopup().querySelector('#swal-input2').value
+                    if(!email || !password) {
+                        Swal.showValidationMessage('Masukan input terlebih dahulu')
+                    }
+                    if(!email.split("@")[1]) {
+                        Swal.showValidationMessage('Email tidak valid')
+                    }
+                    return {email, password}
+                },
+            })
+            console.log(formValue)
+            axios.put("/api/user/update_email", {
+                password: formValue.password,
+                new_email: formValue.email
+            })
+            .then(()=>{
+                Swal.fire('Email berhasil diganti')
+            })
+            .catch((err)=>{
+                Swal.fire(err.message)
+            })
+        }
     },
     mounted() {
         axios

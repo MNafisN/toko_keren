@@ -279,7 +279,6 @@
 import Input from "../components/Input.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
-import InputPrice from "../components/InputPrice.vue";
 import axios from "axios";
 
 export default {
@@ -550,7 +549,6 @@ export default {
         Input,
         UploadImage,
         Footer,
-        InputPrice,
     },
     computed: {
         postCategory() {
