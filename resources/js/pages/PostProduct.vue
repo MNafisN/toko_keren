@@ -44,7 +44,7 @@
                 />
                 <br v-if="produk.merek" />
                 <Input
-                    v-if="produk.model && produk.produk_kategori === 'mobil'"
+                    v-if="produk.model"
                     @send-value="(value) => inputValue('tipe_transmisi', value)"
                     id="transmisi"
                     type="select"
@@ -52,7 +52,7 @@
                     label="Transmisi"
                     required
                 />
-                <br v-if="produk.model && produk.produk_kategori === 'mobil'" />
+                <br v-if="produk.model" />
                 <Input
                     @send-value="(value) => inputValue('tahun_keluaran', value)"
                     id="tahun"
@@ -84,7 +84,6 @@
                 />
                 <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
-                    v-if="produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('warna', value)"
                     id="warna"
                     type="select"
@@ -92,7 +91,7 @@
                     label="Warna"
                     required
                 />
-                <br v-if="produk.produk_kategori === 'mobil'" />
+                <br />
                 <Input
                     v-if="produk.produk_kategori === 'mobil'"
                     @send-value="(value) => inputValue('tipe_bodi', value)"
@@ -111,16 +110,13 @@
                 />
                 <br v-if="produk.produk_kategori === 'mobil'" />
                 <Input
-                    v-if="produk.produk_kategori === 'mobil'"
-                    @send-value="
-                        (value) => inputValue('kapasitas_mesin', value)
-                    "
-                    id="ccMobil"
+                    @send-value="(value) => inputValue('kapasitas_mesin', value)"
+                    id="kapasitasMesin"
                     type="radio"
-                    :list="ccMobil"
+                    :list="produk.produk_kategori === 'mobil' ? ccMobil : ccMotor"
                     label="Kapasitas mesin"
                 />
-                <br v-if="produk.produk_kategori === 'mobil'" />
+                <br />
                 <Input
                     @send-value="(value) => inputValue('tipe_penjual', value)"
                     id="penjual"
@@ -229,7 +225,7 @@
                         class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
                     >
                         <img
-                            class="w-full h-full object-fill"
+                            class="w-full h-full object-cover"
                             :src="'/api/user/download_photo/'+username"
                             alt="photo profile"
                         />
@@ -505,10 +501,18 @@ export default {
             ],
             ccMobil: [
                 "<1.000 cc",
-                ">1.000 - 1.500 cc",
+                "1.000 - 1.500 cc",
                 ">1.500 - 2.000 cc",
                 ">2.000 - 3.000 cc",
                 ">3.000 cc",
+            ],
+            ccMotor: [
+                "<100 cc",
+                "100 - 125 cc",
+                ">125 - 150 cc",
+                ">150 - 175 cc",
+                ">175 - 200 cc",
+                ">200 cc"
             ],
             tipePenjual: ["individu", "dealer"],
             wilayah: {
@@ -634,7 +638,6 @@ export default {
 
             // isValidate
             if(required.length === 0) this.validation = true
-
         }
     },
     mounted() {
