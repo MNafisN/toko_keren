@@ -276,6 +276,7 @@ import Input from "../components/Input.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
     name: "post-product",
@@ -614,9 +615,25 @@ export default {
                 .post('/api/produk', this.produk)
                 .then((res)=> {
                     console.log(res.data);
-                    this.$router.push('/app')
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Produk berhasil diunggah",
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                    .then(()=>this.$router.push('/app'))
                 })
-                .catch((err)=>console.log(err))
+                .catch((err)=>{
+                    console.log(err);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: err.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                })
         },
         validate() {
             const required = []
@@ -646,7 +663,7 @@ export default {
             .get('/api/user/data')
             .then((res)=>{
                 console.log(res.data);
-                this.produk.produk_pemasang = res.data.user_data.full_name
+                this.produk.produk_pemasang = res.data.user_data.username
                 this.produk.no_telepon = res.data.user_data.phone_number
                 this.username = res.data.user_data.username
             })

@@ -152,12 +152,20 @@ export default {
         uploadImage(file) {
             // upload image
             const formData = new FormData();
-            formData.append("profile_picture", file.name.slice(15));
+            formData.append("profile_picture", file, file.name);
             axios
                 .post("/api/user/upload_photo", formData)
                 .then((res) => {
                     console.log(res.data);
                     this.isLoading = false;
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Foto profile berhasil dirubah",
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                    .then(()=>this.$router.go())
                 })
                 .catch((err) => {
                     console.log(
@@ -165,9 +173,17 @@ export default {
                     );
                     console.log(err);
                     this.isLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: err.response.data.error.profile_picture[0],
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
                 });
         },
         submit() {
+            console.log("submit");
             const data = {
                 new_username: this.userData.username,
                 full_name: this.userData.full_name,
@@ -178,9 +194,23 @@ export default {
                 .put("/api/user/update", data)
                 .then((res) => {
                     console.log(res.data);
-                    this.$router.push("/app");
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "Info user berhasil diupdate",
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                    .then(()=>this.$router.go())
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    console.log(err);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Info user gagal diupdate"
+                    })
+                });
         },
         showAlert: async() => {
             const {value : formValue} = await Swal.fire({
