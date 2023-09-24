@@ -237,13 +237,14 @@
                     </div>
                     <div class="w-full">
                         <Input
-                            id="fullName"
+                            id="username"
                             type="text"
-                            label="Nama"
+                            label="Username"
                             :max="30"
                             :init-value="produk.produk_pemasang"
                             @send-value="(value) => inputValue('produk_pemasang', value)"
                             required
+                            disabled
                         />
                     </div>
                 </div>
@@ -255,6 +256,7 @@
                     :init-value="produk.no_telepon"
                     @send-value="(value) => inputValue('no_telepon', value)"
                     required
+                    disabled
                 />
             </div>
         </div>
