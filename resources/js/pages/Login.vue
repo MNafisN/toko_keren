@@ -39,6 +39,7 @@
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
     name: "login-page",
@@ -51,6 +52,14 @@ export default {
     },
     methods: {
         handleSubmit() {
+            if(!this.email || !this.password) {
+                Swal.fire("Masukan input terlebih dahulu")
+                return;
+            }
+            if(!this.email.split("@")[1]) {
+                Swal.fire("Format email salah")
+                return;
+            }
             this.isLoading = true;
             const payload = {
                 email: this.email,
@@ -68,6 +77,11 @@ export default {
                 .catch((err) => {
                     this.isLoading = false;
                     console.log(err);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: err.response.data.error
+                    })
                 });
         },
         getInfoUser() {

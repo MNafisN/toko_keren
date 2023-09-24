@@ -50,7 +50,7 @@
 
         <!-- product-description -->
         <div class="bg-white p-4 mt-2">
-            <h1 class="text-xl font-bold mb-4">Detail</h1>
+            <h1 class="text-xl font-bold mb-4">Deskripsi</h1>
             <p>{{ produk.produk_deskripsi }}</p>
         </div>
 
@@ -71,8 +71,17 @@
             <div class="i-arrow-right"></div>
         </div>
 
+        <!-- product user -->
+        <div
+            v-if="username === produk.produk_pemasang"
+            class="w-full bg-white p-4 flex flex-col gap-1"
+        >
+            <button class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
+            <button @click="deleteProduct" class="w-full h-12 border-2 border-black rounded-md font-bold">Hapus</button>
+
+        </div>
         <!-- product-id -->
-        <div class="bg-white p-4 mt-2 flex justify-between items-center">
+        <div v-else class="bg-white p-4 mt-2 flex justify-between items-center">
             <span class="font-bold text-sm">ID IKLAN {{ produk.produk_id }}</span>
             <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
         </div>
@@ -89,12 +98,14 @@ import BuyButton from "../components/product/BuyButton.vue";
 import Footer from "../components/Footer.vue";
 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
     name: "product-detail",
     data() {
         return {
             produk: {},
+            username: ""
         };
     },
     components: {
@@ -103,11 +114,42 @@ export default {
         BuyButton,
         Footer,
     },
+    methods: {
+        deleteProduct() {
+            axios.delete("/api/produk/"+this.produk.produk_id)
+            .then((res)=>{
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: res.data.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+                .then(()=>this.$router.push("/app"))
+            })
+            .catch((err)=>{
+                console.log(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan",
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+            })
+        }
+    },
     mounted() {
         axios.get("/api/produk/detail/" + this.$route.params.id).then((res) => {
             console.log(res.data.data);
             this.produk = res.data.data;
         });
+
+        axios.get("/api/user/data").then((res) => {
+                console.log(res.data.user_data.username);
+                this.username = res.data.user_data.username
+            });
+
     },
 };
 </script>
