@@ -46,7 +46,8 @@ class ProdukRepository
         $produk->produk_judul = $data['produk_judul'];
         $produk->produk_deskripsi = $data['produk_deskripsi'];
         $produk->produk_foto = $data['file'];
-        $produk->produk_pemasang = $data['produk_pemasang'];
+        $produk->produk_pemasang = $data['username_pemasang'];
+        $produk->display_produk_pemasang = $data['produk_pemasang'];
         $produk->no_telepon = $data['no_telepon'];
         $produk->tampilkan_telepon = $data['tampilkan_telepon'];
         $produk->lokasi_provinsi = $data['lokasi_provinsi'];
@@ -68,7 +69,8 @@ class ProdukRepository
         $produk->produk_judul = $data['produk_judul'];
         $produk->produk_deskripsi = $data['produk_deskripsi'];
         $produk->produk_foto = $data['file'];
-        $produk->produk_pemasang = $data['produk_pemasang'];
+        $produk->produk_pemasang = $data['username_pemasang'];
+        $produk->display_produk_pemasang = $data['produk_pemasang'];
         $produk->no_telepon = $data['no_telepon'];
         $produk->tampilkan_telepon = $data['tampilkan_telepon'];
         $produk->lokasi_provinsi = $data['lokasi_provinsi'];

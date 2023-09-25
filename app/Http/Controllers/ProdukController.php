@@ -105,12 +105,12 @@ class ProdukController extends Controller
     {
         $data = $request->all();
         try {
-            if ($data['produk_kategori'] == 'mobil') {
+            if ($data['produk_kategori'] == 'mobil' && str_contains($id, 'MBL')) {
                 $validated = $this->mobilService->validator($data);
-            } else if ($data['produk_kategori'] == 'motor') {
+            } else if ($data['produk_kategori'] == 'motor' && str_contains($id, 'MTR')) {
                 $validated = $this->motorService->validator($data);
             } else {
-                throw new InvalidArgumentException('Kategori yang tersedia hanya mobil dan motor');
+                throw new InvalidArgumentException('Kategori tidak dapat diubah');
             }
             $result = [
                 'status' => 200,
