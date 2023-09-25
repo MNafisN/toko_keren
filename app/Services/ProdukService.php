@@ -33,6 +33,19 @@ class ProdukService
     //     return array_merge($array1, $array2);
     // }
 
+    private function recursive_change_key(array $arr, array $set): array
+    {
+        if (is_array($arr) && is_array($set)) {
+    		$newArr = array();
+    		foreach ($arr as $k => $v) {
+    		    $key = array_key_exists($k, $set) ? $set[$k] : $k;
+    		    $newArr[$key] = is_array($v) ? $this->recursive_change_key($v, $set) : $v;
+    		}
+    		return $newArr;
+    	}
+    	return $arr;    
+    }
+
     protected function validatorProduk(array $formData, string $kategori): array
     {
         $validator = Validator::make($formData, [
@@ -43,13 +56,13 @@ class ProdukService
             'lokasi_provinsi' => ['required', 'string'],
             'lokasi_kabupaten_kota' => ['required', 'string'],
             'lokasi_kecamatan' => ['required', 'string'],
-            'produk_pemasang' => ['required', 'string', 'max: 20', 'alpha_dash'],
+            'produk_pemasang' => ['required', 'string', 'max: 20'],
             'no_telepon' => ['required', 'string'],
             'tampilkan_telepon' => ['required', 'boolean']
         ]);
         if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
 
-        // $formData['username_pemasang'] = auth()->user()['username'];
+        $formData['username_pemasang'] = auth()->user()['username'];
         $formData['lokasi_koordinat'] = [];
         $formData['date_posted'] = (string)Carbon::now('+7:00');
         foreach ($formData['produk_foto'] as $key => $file) {
@@ -79,10 +92,12 @@ class ProdukService
                 $date = Carbon::parse($produk['date_posted']);
                 $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'display_produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
         return $result;
     }
 
@@ -99,10 +114,12 @@ class ProdukService
                 $date = Carbon::parse($produk['date_posted']);
                 $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'display_produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
         return $result;
     }
 
@@ -115,7 +132,10 @@ class ProdukService
         $produk = array_diff_key($produk->toArray(), array_flip(['created_at', 'updated_at']));
         $detail = array_diff_key($kendaraan->toArray(), array_flip(['_id', 'produk_id', 'created_at', 'updated_at']));
 
-        return array_merge($produk, $detail);
+        $result = array_merge($produk, $detail);
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
+        return $result;
     }
 
     public function update(array $formData, string $produkId): array
@@ -132,7 +152,10 @@ class ProdukService
         $produk = array_diff_key($produk->toArray(), array_flip(['created_at', 'updated_at']));
         $detail = array_diff_key($kendaraan->toArray(), array_flip(['_id', 'produk_id', 'created_at', 'updated_at']));
 
-        return array_merge($produk, $detail);
+        $result = array_merge($produk, $detail);
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
+        return $result;
     }
 
     public function destroy(string $category, string $produkId): string
@@ -163,10 +186,12 @@ class ProdukService
                 $date = Carbon::parse($produk['date_posted']);
                 $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
                 $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
-                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'display_produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
             }
         }
 
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
         return $result;
     }
 
@@ -183,6 +208,8 @@ class ProdukService
             $result = array_merge($produk, $detail);
         }
 
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
         return $result;
     }
 
