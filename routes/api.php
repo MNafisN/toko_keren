@@ -40,6 +40,7 @@ Route::group([
         Route::put('delete_photo', [AuthController::class, 'deletePhoto']);                 // Remove user profile picture
     });
 });
+Route::get('user/data/{username}', [AuthController::class, 'userDetail']);                  // Get user detail by username
 Route::get('user/download_photo/{username}', [AuthController::class, 'downloadPhoto']);     // Download user profile picture
 
 Route::group([

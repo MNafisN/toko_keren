@@ -84,6 +84,17 @@ class AuthService
     }
 
     /**
+     * Untuk melihat detail user lain berdasarkan username
+     */
+    public function getUserDetailByUsername(string $username) : array
+    {
+        $user = $this->authRepository->getByUsername($username);
+        if (!$user) { throw new InvalidArgumentException('user not found'); }
+
+        return $user->only(['email', 'username', 'full_name', 'about', 'phone_number', 'profile_picture']);
+    }
+
+    /**
      * Update user profile data
      */
     public function update(array $data): Object
@@ -106,14 +117,15 @@ class AuthService
 
         $data['username'] = auth()->user()['username'];
 
-        $produk = true;
-        while ($produk == true) {
-            $produk = $this->produkRepository->updateUsername($data['username'], $data['new_username']);
-        }
-
-        $file = true;
-        while ($file == true) {
-            $file = $this->fileRepository->updateUsername($data['username'], $data['new_username']);
+        if ($data['new_username'] !== $data['username']) {
+            $produk = true;
+            while ($produk == true) {
+                $produk = $this->produkRepository->updateUsername($data['username'], $data['new_username']);
+            }
+            $file = true;
+            while ($file == true) {
+                $file = $this->fileRepository->updateUsername($data['username'], $data['new_username']);
+            }
         }
 
         $user = $this->authRepository->save($data);
