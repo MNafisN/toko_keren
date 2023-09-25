@@ -43,12 +43,13 @@ class ProdukService
             'lokasi_provinsi' => ['required', 'string'],
             'lokasi_kabupaten_kota' => ['required', 'string'],
             'lokasi_kecamatan' => ['required', 'string'],
-            'produk_pemasang' => ['required', 'string'],
+            'produk_pemasang' => ['required', 'string', 'max: 20', 'alpha_dash'],
             'no_telepon' => ['required', 'string'],
             'tampilkan_telepon' => ['required', 'boolean']
         ]);
         if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
 
+        // $formData['username_pemasang'] = auth()->user()['username'];
         $formData['lokasi_koordinat'] = [];
         $formData['date_posted'] = (string)Carbon::now('+7:00');
         foreach ($formData['produk_foto'] as $key => $file) {
