@@ -76,7 +76,7 @@
             v-if="username === produk.produk_pemasang"
             class="w-full bg-white p-4 flex flex-col gap-1"
         >
-            <button class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
+            <button @click="editProduct" class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
             <button @click="deleteProduct" class="w-full h-12 border-2 border-black rounded-md font-bold">Hapus</button>
 
         </div>
@@ -86,7 +86,7 @@
             <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
         </div>
 
-        <BuyButton />
+        <BuyButton v-if="username !== produk.produk_pemasang" />
     </div>
     <Footer />
 </template>
@@ -137,6 +137,9 @@ export default {
                     showConfirmButton: false
                 })
             })
+        },
+        editProduct() {
+            this.$router.push("/app/edit/"+this.produk.produk_id)
         }
     },
     mounted() {

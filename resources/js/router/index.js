@@ -8,6 +8,7 @@ import Profile from '../pages/Profile.vue'
 import ListProduct from '../pages/ListProduct.vue'
 import PostCategory from '../pages/PostCategory.vue'
 import PostProduct from '../pages/PostProduct.vue'
+import UpdateProduct from '../pages/UpdateProduct.vue'
 
 const routes = [
     {
@@ -49,6 +50,10 @@ const routes = [
     {
         path: "/app/post/:category",
         component: PostProduct
+    },
+    {
+        path: "/app/edit/:id",
+        component: UpdateProduct
     }
 ]
 

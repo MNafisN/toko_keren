@@ -3,7 +3,7 @@
         <div
             :class="`w-[100px] h-[100px] border-2 relative ${disabled ? 'border-[#9dadb6]' : 'border-black'}`"
         >
-            <img v-if="preview" :src="preview" alt="preview" class="w-full h-full object-contain" />
+            <img v-if="preview || fileName" :src="linkImg" alt="preview" class="w-full h-full object-contain" />
             <div v-else class="h-full flex justify-center items-center flex-col gap-1">
                 <div
                     :class="`${
@@ -36,20 +36,20 @@ export default {
     name: "upload-image",
     data() {
         return {
-            isLoading: false
+            isLoading: false,
+            preview: ""
         }
     },
     props: {
         index: Number,
         disabled: Boolean,
-        preview: String
+        fileName: String
     },
-    emits: ["sendValue", "fileUploaded", "uploadFailed"],
+    emits: ["fileUploaded", "uploadFailed"],
     methods: {
         selectImage (file) {
-            // mengirim preview image
-            const path = URL.createObjectURL(file);
-            this.$emit("sendValue", path)
+            // membuat preview image
+            this.preview = URL.createObjectURL(file);
 
             // isLoading
             this.isLoading = true
@@ -67,9 +67,17 @@ export default {
                     console.log(err);
                     this.$emit("uploadFailed")
                 })
-                .finally(()=> this.isLoading = false)
+                .finally(()=>{
+                    this.isLoading = false
+                    this.preview = ""
+                })
         },
     },
+    computed: {
+        linkImg() {
+            return this.preview ? this.preview : "/api/produk/download_photo/"+this.fileName
+        }
+    }
 };
 </script>
 
