@@ -105,8 +105,12 @@ export default {
         inputHarga(value) {
             this.harga = value
         },
-        UploadImage(value) {
-            this.produk_foto.push({file_name: value})
+        UploadImage(file, index) {
+            if(this.produk_foto.length > index) {
+                this.produk_foto[index].file_name = file
+            } else {
+                this.produk_foto.push({file_name: file})
+            }
         },
         uploadFailed() {
             Swal.fire({
@@ -127,7 +131,7 @@ export default {
             .then((res) => {
                 this.produk_judul = res.data.data.produk_judul;
                 this.produk_deskripsi = res.data.data.produk_deskripsi;
-                this.produk_foto = res.data.data.produk_foto;
+                this.produk_foto = res.data.data.produk_foto.reduce((arr, obj)=>{return [...arr, {file_name: obj.file_name}]}, [])
                 this.harga = res.data.data.harga;
                 console.log(res.data.data);
             })

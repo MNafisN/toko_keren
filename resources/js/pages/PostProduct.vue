@@ -165,9 +165,8 @@
                 <UploadImage
                     v-for="i in 20"
                     :disabled="i > previewImage.length + 1"
-                    :index="i"
-                    :preview="previewImage[i - 1]"
-                    @send-value="(file) => inputFile(file, i-1)"
+                    :index="i - 1"
+                    :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i -1].file_name : null"
                     @file-uploaded="(file)=> uploadFile(file, i-1)"
                     @upload-failed="uploadFailed"
                 />
@@ -547,7 +546,6 @@ export default {
                 no_telepon: "",
                 tampilkan_telepon: false,
             },
-            previewImage: [],
             validation: false,
             username: ""        
         };
@@ -568,14 +566,6 @@ export default {
         },
         inputValue(key, value) {
             this.produk[key] = value;
-            this.validate()
-        },
-        inputFile(file, index) {
-            if (this.previewImage.length > index) {
-                this.previewImage[index] = file
-            } else {
-                this.previewImage.push(file);
-            }
             this.validate()
         },
         uploadFile(file, index) {
