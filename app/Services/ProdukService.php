@@ -76,6 +76,26 @@ class ProdukService
         return $formData;
     }
 
+    protected function validatorProdukUpdate(array $formData): array
+    {
+        $validator = Validator::make($formData, [
+            'produk_judul' => ['required', 'string', 'min:4', 'max:50'],
+            'produk_deskripsi' => ['required', 'string', 'min:4', 'max:500'],
+            'produk_foto.*' => ['required'],
+        ]);
+        if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
+
+        foreach ($formData['produk_foto'] as $key => $file) {
+            // $formData['attachment'][$key] = $document[$key];
+            $formData['file'][$key] = $formData['produk_foto'][$key];
+            $formData['file'][$key]['file_category'] = 'produk';
+            $formData['file'][$key]['posted_by'] = auth()->user()['username'];
+            $formData['file'][$key]['created_at'] = (string)Carbon::now('+7:00');
+        }
+
+        return $formData;
+    }
+
     public function getAllKendaraan(): array
     {
         $result = [];
@@ -158,6 +178,26 @@ class ProdukService
         return $result;
     }
 
+    public function updateProduk(array $formData, string $produkId): array
+    {
+        $produk = $this->produkRepository->getById($produkId);
+        if (!$produk) {
+            throw new InvalidArgumentException("Data produk tidak ditemukan");
+        } 
+        
+        $formData['date_modified'] = (string)Carbon::now('+7:00');
+        $kendaraan = $this->kendaraanRepository->updateKendaraan($produkId, $formData);
+        $produk = $this->produkRepository->updateProduk($produkId, $formData);
+
+        $produk = array_diff_key($produk->toArray(), array_flip(['created_at', 'updated_at']));
+        $detail = array_diff_key($kendaraan->toArray(), array_flip(['_id', 'produk_id', 'created_at', 'updated_at']));
+
+        $result = array_merge($produk, $detail);
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
+        return $result;
+    }
+
     public function destroy(string $category, string $produkId): string
     {
         $produk = $this->produkRepository->getById($produkId);
@@ -180,6 +220,28 @@ class ProdukService
         $produks = $this->produkRepository->getByUser(auth()->user()['username']);
         if ($produks->isEmpty()) {
             throw new InvalidArgumentException("Data produk dari " . auth()->user()['username'] . " kosong");
+        } else {
+            foreach ($produks as $key => $value) {
+                $produk = Arr::except($value->toArray(), ['created_at', 'updated_at']);
+                $date = Carbon::parse($produk['date_posted']);
+                $produk['jarak_waktu'] = $date->diffForHumans(Carbon::now('+7:00'));
+                $detail = Arr::except($value->kendaraan->toArray(), ['_id', 'produk_id', 'created_at', 'updated_at']);
+                $result[] = Arr::only(array_merge($produk, $detail), ['produk_id', 'produk_kategori', 'produk_judul', 'produk_foto', 'produk_pemasang', 'display_produk_pemasang', 'lokasi_provinsi', 'lokasi_kabupaten_kota', 'date_posted', 'jarak_waktu', 'tahun_keluaran', 'harga']);
+            }
+        }
+
+        $result = $this->recursive_change_key($result, array('produk_pemasang' => 'username_pemasang'));
+        $result = $this->recursive_change_key($result, array('display_produk_pemasang' => 'produk_pemasang'));
+        return $result;
+    }
+
+    public function getProdukByUser(string $username): array
+    {
+        $result = [];
+
+        $produks = $this->produkRepository->getByUser($username);
+        if ($produks->isEmpty()) {
+            throw new InvalidArgumentException("Data produk dari " . $username . " kosong");
         } else {
             foreach ($produks as $key => $value) {
                 $produk = Arr::except($value->toArray(), ['created_at', 'updated_at']);

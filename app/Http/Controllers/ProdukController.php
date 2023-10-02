@@ -132,6 +132,37 @@ class ProdukController extends Controller
         return response()->json($result, $result['status']);
     }
 
+    public function updateProduk(Request $request, string $id): JsonResponse
+    {
+        $data = $request->all();
+        try {
+            if (str_contains($id, 'MBL')) {
+                $validated = $this->mobilService->updateValidator($data);
+            } else if (str_contains($id, 'MTR')) {
+                $validated = $this->motorService->updateValidator($data);
+            } else {
+                throw new InvalidArgumentException('ID produk tidak valid');
+            }
+            $result = [
+                'status' => 200,
+                'message' => 'Produk diperbarui',
+                'data' => $this->produkService->updateProduk($validated, $id)
+            ];
+        } catch (ArrayException $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessagesArray()
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
     public function destroy(string $produkId): JsonResponse
     {
         try {
@@ -162,6 +193,23 @@ class ProdukController extends Controller
             $result = [
                 'status' => 200,
                 'data' => $this->produkService->getMyProduk()
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function getProdukByUser(string $username): JsonResponse
+    {
+        try {
+            $result = [
+                'status' => 200,
+                'data' => $this->produkService->getProdukByUser($username)
             ];
         } catch (Exception $err) {
             $result = [

@@ -25,39 +25,50 @@ use App\Http\Controllers\WilayahController;
 Route::group([
     'prefix' => 'user'
 ], function() {
-    Route::post('register', [AuthController::class, 'register']);                           // Register user
-    Route::post('login', [AuthController::class, 'login']);                                 // Login user
+    Route::post('register', [AuthController::class, 'register']);                               // Register user
+    Route::post('login', [AuthController::class, 'login']);                                     // Login user
+    Route::get('data/{username}', [AuthController::class, 'userDetail']);                       // Get user detail by username
+    Route::get('download_photo/{username}', [AuthController::class, 'downloadPhoto']);          // Download user profile picture
+        Route::group([
+        'middleware' => 'auth:api'
+    ], function() {
+        Route::post('logout', [AuthController::class, 'logout']);                               // Logout user
+        Route::post('refresh', [AuthController::class, 'refresh']);                             // Refresh user token (180 minutes)
+        Route::get('data', [AuthController::class, 'data']);                                    // Get user detail
+        Route::put('update', [AuthController::class, 'update']);                                // Update user data
+        Route::put('update_email', [AuthController::class, 'updateEmail']);                     // Change user email
+        Route::put('update_password', [AuthController::class, 'updatePassword']);               // Change user password
+        Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);                    // Upload user profile picture
+        Route::put('delete_photo', [AuthController::class, 'deletePhoto']);                     // Remove user profile picture
+    });
+});
+
+Route::group([
+    'prefix' => 'produk'
+], function () {
+        // Route::resource('produk', ProdukController::class);
+    Route::get('/', [ProdukController::class, 'index']);                                        // Get all produk
+    Route::get('{category}', [ProdukController::class, 'show']);                                // Get produk by kategori
+
+    Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);                    // Get produk detail
+    Route::get('user/{username}', [ProdukController::class, 'getProdukByUser']);                // NEW: List produk by an user
+    Route::get('download_photo/{fileName}', [ProdukController::class, 'downloadPhoto']);        // Download produk photo by name
     Route::group([
         'middleware' => 'auth:api'
     ], function() {
-        Route::post('logout', [AuthController::class, 'logout']);                           // Logout user
-        Route::post('refresh', [AuthController::class, 'refresh']);                         // Refresh user token (180 minutes)
-        Route::get('data', [AuthController::class, 'data']);                                // Get user detail
-        Route::put('update', [AuthController::class, 'update']);                            // Update user data
-        Route::put('update_email', [AuthController::class, 'updateEmail']);                 // Change user email
-        Route::put('update_password', [AuthController::class, 'updatePassword']);           // Change user password
-        Route::post('upload_photo', [AuthController::class, 'uploadPhoto']);                // Upload user profile picture
-        Route::put('delete_photo', [AuthController::class, 'deletePhoto']);                 // Remove user profile picture
-    });
-});
-Route::get('user/data/{username}', [AuthController::class, 'userDetail']);                  // Get user detail by username
-Route::get('user/download_photo/{username}', [AuthController::class, 'downloadPhoto']);     // Download user profile picture
-
-Route::group([
-    'middleware' => 'auth:api'
-], function () {
-    Route::resource('produk', ProdukController::class);
-    Route::group([
-        'prefix' => 'produk'
-    ], function() {
-        Route::get('user/me', [ProdukController::class, 'getMyProduk']);                        // List produk by user
-        Route::get('detail/{id}', [ProdukController::class, 'getProdukDetail']);                // Get produk detail
+        Route::post('/', [ProdukController::class, 'store']);                                   // Store new produk
+        Route::get('create', [ProdukController::class, 'create']);
+        Route::put('{id}', [ProdukController::class, 'update']);
+        Route::get('{id}/edit', [ProdukController::class, 'edit']);
+        Route::delete('{id}', [ProdukController::class, 'destroy']);                            // Delete a produk
+    
+        Route::get('u/me', [ProdukController::class, 'getMyProduk']);                           // CHANGED: List produk by logged in user
+        Route::put('update/{id}', [ProdukController::class, 'updateProduk']);                   // NEW: Update produk information
         Route::put('status/{id}/{status}', [ProdukController::class, 'setProdukStatus']);       // Update produk status
         Route::post('upload_photo', [ProdukController::class, 'uploadPhoto']);                  // Upload produk photo one by one
         Route::delete('delete_photo/{fileName}', [ProdukController::class, 'deletePhoto']);     // Delete produk photo by name
     });
 });
-Route::get('produk/download_photo/{fileName}', [ProdukController::class, 'downloadPhoto']);     // Download produk photo by name
 
 Route::group([
     'middleware' => 'auth:api',

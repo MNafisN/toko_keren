@@ -83,6 +83,19 @@ class ProdukRepository
         return $produk->fresh();
     }
 
+    public function updateProduk(string $produkId, array $data): Object
+    {
+        $produk = $this->getById($produkId);
+
+        $produk->produk_judul = $data['produk_judul'];
+        $produk->produk_deskripsi = $data['produk_deskripsi'];
+        $produk->produk_foto = $data['file'];
+        $produk->date_modified = $data['date_modified'];
+
+        $produk->save();
+        return $produk->fresh();
+    }
+
     public function updateUsername(string $oldUsername, string $newUsername): bool
     {
         $produk = $this->produk->where('produk_pemasang', $oldUsername)->orderBy('created_at', 'asc')->first();

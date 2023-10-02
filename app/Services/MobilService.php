@@ -36,4 +36,11 @@ class MobilService extends KendaraanService
 
         return $formData;
     }
+
+    public function updateValidator(array $formData): array
+    {
+        $formData = parent::updateValidator($formData);
+
+        return $formData;
+    }
 }
