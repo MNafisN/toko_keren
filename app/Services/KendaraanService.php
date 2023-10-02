@@ -57,4 +57,16 @@ class KendaraanService extends ProdukService
 
         return ($formData);
     }
+
+    protected function updateValidator(array $formData): array
+    {
+        $formData = parent::validatorProdukUpdate($formData);
+
+        $validator = Validator::make($formData, [
+            'harga' => ['required', 'numeric', 'min:100']
+        ]);
+        if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
+
+        return ($formData);
+    }
 }
