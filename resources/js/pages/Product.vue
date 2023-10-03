@@ -73,7 +73,7 @@
 
         <!-- product user -->
         <div
-            v-if="username === produk.produk_pemasang"
+            v-if="username === produk.username_pemasang"
             class="w-full bg-white p-4 flex flex-col gap-1"
         >
             <button @click="editProduct" class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
@@ -86,7 +86,7 @@
             <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
         </div>
 
-        <BuyButton v-if="username !== produk.produk_pemasang" />
+        <BuyButton v-if="username !== produk.username_pemasang" />
     </div>
     <Footer />
 </template>

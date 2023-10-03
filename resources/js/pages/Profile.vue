@@ -80,7 +80,7 @@ export default {
     },
     mounted() {
         axios
-            .get('/api/produk/user/me')
+            .get('/api/produk/u/me')
             .then((res)=>{
                 console.log(res.data.data)
                 this.list = res.data.data

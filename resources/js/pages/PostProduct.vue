@@ -164,7 +164,7 @@
             <div class="w-full flex flex-wrap gap-2">
                 <UploadImage
                     v-for="i in 20"
-                    :disabled="i > previewImage.length + 1"
+                    :disabled="i > produk.produk_foto.length + 1"
                     :index="i - 1"
                     :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i -1].file_name : null"
                     @file-uploaded="(file)=> uploadFile(file, i-1)"
@@ -238,7 +238,7 @@
                         <Input
                             id="username"
                             type="text"
-                            label="Username"
+                            label="Nama"
                             :max="30"
                             :init-value="produk.produk_pemasang"
                             @send-value="(value) => inputValue('produk_pemasang', value)"
@@ -655,7 +655,7 @@ export default {
             .get('/api/user/data')
             .then((res)=>{
                 console.log(res.data);
-                this.produk.produk_pemasang = res.data.user_data.username
+                this.produk.produk_pemasang = res.data.user_data.full_name
                 this.produk.no_telepon = res.data.user_data.phone_number
                 this.username = res.data.user_data.username
             })
