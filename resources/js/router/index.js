@@ -36,6 +36,10 @@ const routes = [
         component: Profile
     },
     {
+        path: "/app/profile/:username",
+        component: Profile
+    },
+    {
         path: "/app/search/:query",
         component: ListProduct
     },

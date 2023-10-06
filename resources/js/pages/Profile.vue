@@ -3,11 +3,17 @@
     <div class="h-[52px]"></div>
     <div class="p-4 bg-white">
         <div class="flex gap-4 items-center py-4">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center">
-                <img v-if="infoUser.profile_picture" :src="'/api/user/download_photo/'+infoUser.username" alt="photo profile">
+            <div
+                class="w-[60px] h-[60px] rounded-full overflow-hidden bg-blue-500 flex justify-center items-center"
+            >
+                <img
+                    v-if="userData.profile_picture"
+                    :src="'/api/user/download_photo/' + userData.username"
+                    alt="photo profile"
+                />
                 <span v-else class="text-white text-3xl">I</span>
             </div>
-            <span class="font-bold text-xl">{{ infoUser.username }}</span>
+            <span class="font-bold text-xl">{{ userData.username }}</span>
         </div>
         <div>
             <div class="flex gap-2 items-center">
@@ -28,7 +34,11 @@
                 <div class="i-verif-phone"></div>
             </div>
         </div>
-        <button @click="goToEditProfile" class="w-full h-11 rounded-md bg-buy-button flex justify-center items-center gap-1">
+        <button
+            v-if="userData.username === getUsername"
+            @click="goToEditProfile"
+            class="w-full h-11 rounded-md bg-buy-button flex justify-center items-center gap-1"
+        >
             <div class="i-edit"></div>
             <span class="text-white font-bold">Edit Profile</span>
         </button>
@@ -36,32 +46,44 @@
             <span class="font-bold text-sm">Bagikan Profil</span>
         </div>
     </div>
-    <div v-if="list.length !== 0" class="w-full bg-white p-2 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <div
+        v-if="list.length !== 0"
+        class="w-full bg-white p-2 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3"
+    >
         <ProductCard v-for="item in list" page="home" :produk="item" />
     </div>
     <div v-else class="w-full bg-white mt-3 py-8 flex flex-col items-center">
         <div class="w-[200px] h-[200px] mb-4">
-            <img class="w-full h-full object-contain" src="/assets/no-publications.webp" alt="tidak ada iklan">
+            <img
+                class="w-full h-full object-contain"
+                src="/assets/no-publications.webp"
+                alt="tidak ada iklan"
+            />
         </div>
         <p class="font-bold">Anda belum memasang iklan</p>
-        <p class="w-3/5 text-subTitle text-center mb-6">Jual barang yang sudah tidak terpakai</p>
-        <button class="px-4 h-12 bg-buy-button rounded-md font-bold text-white">Pasang iklan</button>
+        <p class="w-3/5 text-subTitle text-center mb-6">
+            Jual barang yang sudah tidak terpakai
+        </p>
+        <button class="px-4 h-12 bg-buy-button rounded-md font-bold text-white">
+            Pasang iklan
+        </button>
     </div>
     <Footer />
 </template>
 
 <script>
-import Header from '../components/Header.vue';
-import Footer from '../components/Footer.vue';
-import ProductCard from '../components/ProductCard.vue';
-import axios from 'axios';
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+import ProductCard from "../components/ProductCard.vue";
+import axios from "axios";
 
 export default {
-    name: 'profile-page',
+    name: "profile-page",
     data() {
         return {
-            list: []
-        }
+            list: [],
+            userData: {},
+        };
     },
     components: {
         Header,
@@ -69,23 +91,41 @@ export default {
         ProductCard
     },
     computed: {
-        infoUser() {
-            return this.$store.getters.getUserData
+        getUsername() {
+            return this.$store.getters.getUsername
         }
     },
     methods: {
         goToEditProfile() {
-            this.$router.push('/app/editProfile')
-        }
+            this.$router.push("/app/editProfile");
+        },
     },
     mounted() {
-        axios
-            .get('/api/produk/u/me')
-            .then((res)=>{
-                console.log(res.data.data)
+        const getList = ()=> {
+            axios.get("/api/produk/user/"+this.userData.username)
+            .then((res)=> {
+                console.log(res.data)
                 this.list = res.data.data
             })
-            .catch((err)=>console.log(err))
-    }
-}
+            .catch((err) => console.log(err))
+        }
+        if (this.$route.params.username) {
+            axios.get("/api/user/data/" + this.$route.params.username)
+            .then((res) => {
+                console.log(res.data);
+                this.userData = res.data.user_data;
+                getList()
+            })
+            .catch((err) => console.log(err))
+        } else {
+            axios.get("/api/user/data")
+            .then((res)=> {
+                console.log(res.data);
+                this.userData = res.data.user_data
+                getList()
+            })
+            .catch((err) => console.log(err))
+        }
+    },
+};
 </script>

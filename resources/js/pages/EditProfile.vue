@@ -53,7 +53,7 @@
                         placeholder="Nama"
                         :init-value="userData.full_name"
                         :max="30"
-                        @send-value="(value) => inputValue('fullName', value)"
+                        @send-value="(value) => inputValue('full_name', value)"
                     />
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 placeholder="Masukan nomor HP"
                 foot-note="ini adalah nomor untuk kontak pembeli, pengingat dan notifikasi lainnya"
                 :init-value="userData.phone_number"
-                @send-value="(value) => inputValue('phoneNumber', value)"
+                @send-value="(value) => inputValue('phone_number', value)"
             />
             <br />
             <div class="relative">

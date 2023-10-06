@@ -55,12 +55,12 @@
         </div>
 
         <!-- product-seller -->
-        <div class="bg-white p-4 mt-2 flex justify-between items-center">
+        <div @click="goToSellerProfile" class="bg-white p-4 mt-2 flex justify-between items-center">
             <div class="w-full flex gap-4 items-center">
                 <div class="rounded-full w-16 h-16 overflow-hidden">
                     <img
                         class="w-full h-full object-cover"
-                        src="/assets/avatar.png"
+                        :src="'/api/user/download_photo/'+produk.username_pemasang"
                         alt=""
                     />
                 </div>
@@ -140,6 +140,13 @@ export default {
         },
         editProduct() {
             this.$router.push("/app/edit/"+this.produk.produk_id)
+        },
+        goToSellerProfile() {
+            if(this.produk.username_pemasang === this.username) {
+                this.$router.push("/app/profile")
+            } else {
+                this.$router.push("/app/profile/"+this.produk.username_pemasang)
+            }
         }
     },
     mounted() {
