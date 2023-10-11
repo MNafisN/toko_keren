@@ -37,8 +37,8 @@
         <div class="i-camera-black"></div>
         <span>Pasang Iklan</span>
       </div>
-      <div class="flex gap-4 py-3">
-        <div @click="goToProfile" class="i-love"></div>
+      <div @click="goToProfile" class="flex gap-4 py-3">
+        <div class="i-love"></div>
         <span>Iklan Saya</span>
       </div>
       <div v-if="isLogged" @click="logOut" class="flex gap-4 py-3">

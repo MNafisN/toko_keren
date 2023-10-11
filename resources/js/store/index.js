@@ -19,6 +19,9 @@ const store = createStore({
         },
         getUsername(state) {
             return state.user_data.username
+        },
+        getProfilePicture(state) {
+            return state.user_data.profile_picture
         }
     },
     mutations: {

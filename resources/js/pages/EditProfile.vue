@@ -5,47 +5,7 @@
         <div class="p-4">
             <h1 class="font-bold text-xl mb-4">Informasi Dasar</h1>
             <div class="w-full mb-4 flex gap-4">
-                <!-- profile picture -->
-                <label for="changePicture">
-                    <div
-                        class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
-                    >
-                        <img
-                            v-if="userData.profile_picture"
-                            class="w-full h-full object-cover"
-                            :src="
-                                '/api/user/download_photo/' + userData.username
-                            "
-                            alt="profile_picture"
-                        />
-                        <div
-                            v-else
-                            class="w-full h-full bg-blue-500 flex justify-center items-center text-4xl text-white"
-                        >
-                            I
-                        </div>
-                        <div
-                            class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
-                        >
-                            <div class="i-camera"></div>
-                        </div>
-                        <div
-                            v-if="isLoading"
-                            class="absolute top-0 w-full h-full flex justify-center items-center"
-                        >
-                            <div class="loader"></div>
-                        </div>
-                    </div>
-                </label>
-                <input
-                    type="file"
-                    id="changePicture"
-                    accept="image/*"
-                    class="hidden"
-                    @input="(e) => selectImage(e.target.files[0])"
-                />
-                <!-- /// profile picture /// -->
-
+                <ProfilePicture />
                 <div class="w-full pt-3">
                     <Input
                         type="text"
@@ -107,8 +67,8 @@
 import axios from "axios";
 import Header from "../components/Header.vue";
 import Input from "../components/Input.vue";
-import Compressor from "compressorjs";
 import Swal from 'sweetalert2';
+import ProfilePicture from "../components/ProfilePicture.vue";
 
 export default {
     name: "edit-profile",
@@ -128,59 +88,11 @@ export default {
     components: {
         Header,
         Input,
+        ProfilePicture
     },
     methods: {
         inputValue(key, value) {
             this.userData[key] = value;
-        },
-        selectImage(file) {
-            this.isLoading = true;
-            const ref = this;
-
-            // compress image
-            new Compressor(file, {
-                quality: 0.5,
-                success(result) {
-                    ref.uploadImage(result);
-                },
-                error(err) {
-                    console.log("error compress file / file tidak valid");
-                    this.isLoading = false;
-                },
-            });
-        },
-        uploadImage(file) {
-            // upload image
-            const formData = new FormData();
-            formData.append("profile_picture", file, file.name);
-            axios
-                .post("/api/user/upload_photo", formData)
-                .then((res) => {
-                    console.log(res.data);
-                    this.isLoading = false;
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: "Foto profile berhasil dirubah",
-                        timer: 2000,
-                        showConfirmButton: false
-                    })
-                    .then(()=>this.$router.go())
-                })
-                .catch((err) => {
-                    console.log(
-                        "error upload image / ada masalah di jaringan anda"
-                    );
-                    console.log(err);
-                    this.isLoading = false;
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: err.response.data.error.profile_picture[0],
-                        timer: 2000,
-                        showConfirmButton: false
-                    })
-                });
         },
         submit() {
             console.log("submit");
