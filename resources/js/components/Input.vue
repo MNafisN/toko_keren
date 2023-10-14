@@ -115,7 +115,7 @@ export default {
         footNote: String,
         max: Number,
         list: Array,
-        initValue: String,
+        initValue: String | Number,
         placeholder: String,
         disabled: Boolean
     },

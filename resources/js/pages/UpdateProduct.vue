@@ -3,7 +3,7 @@
         <div
             class="bg-[rgba(0,47,52,0.03)] w-full h-16 pl-8 flex items-center gap-4"
         >
-            <div @click="" class="i-arrow-left"></div>
+            <div @click="backToProduct" class="i-arrow-left"></div>
             <span class="text-xl lg:hidden">Update produk</span>
         </div>
     </div>
@@ -52,8 +52,8 @@
                     :file-name="
                         produk.produk_foto[i - 1] ? produk.produk_foto[i - 1].file_name : null
                     "
-                    @file-uploaded="(value) => UploadImage(value)"
-                    @upload-failed="uploadFailed"
+                    @file-uploaded="(value) => uploadImage(value)"
+                    @file-deleted="(value) => deleteImage(value)"
                 />
             </div>
         </div>
@@ -68,7 +68,7 @@
                     : 'bg-buy-button text-white'
             }`"
         >
-            Pasang iklan sekarang
+            Update Iklan
         </button>
     </div>
     <Footer />
@@ -113,21 +113,15 @@ export default {
         inputValue(key, value) {
             this.produk[key] = value;
         },
-        UploadImage(file, index) {
-            if (this.produk_foto.length > index) {
-                this.produk_foto[index].file_name = file;
+        uploadImage(file, index) {
+            if (this.produk.produk_foto.length > index) {
+                this.produk.produk_foto[index].file_name = file;
             } else {
-                this.produk_foto.push({ file_name: file });
+                this.produk.produk_foto.push({ file_name: file });
             }
         },
-        uploadFailed() {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Gagal mengunggah foto",
-                timer: 2000,
-                showConfirmButton: false,
-            });
+        deleteImage(index) {
+            this.produk.produk_foto.splice(index, 1)
         },
         submit() {
             axios.put("/api/produk/update/" + this.$route.params.id, this.produk)
@@ -153,6 +147,9 @@ export default {
                 })
             })
         },
+        backToProduct() {
+            this.$router.push("/app/product/"+ this.$route.params.id)
+        }
     },
     mounted() {
         axios
