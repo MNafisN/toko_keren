@@ -167,8 +167,9 @@
                     :disabled="i > produk.produk_foto.length + 1"
                     :index="i - 1"
                     :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i -1].file_name : null"
-                    @file-uploaded="(file)=> uploadFile(file, i-1)"
-                    @upload-failed="uploadFailed"
+                    :preview="foto[i-1] ? foto[i-1].preview : null"
+                    @send-image="(payload)=> saveImage(payload)"
+                    @delete-image="(index)=> deleteImage(index)"
                 />
             </div>
             <br>
@@ -278,6 +279,7 @@ import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { postProduct, uploadAllPhoto } from "../services/productServices"
 
 export default {
     name: "post-product",
@@ -547,7 +549,8 @@ export default {
                 tampilkan_telepon: false,
             },
             validation: false,
-            username: ""        
+            username: "",
+            foto: []    
         };
     },
     components: {
@@ -568,15 +571,12 @@ export default {
             this.produk[key] = value;
             this.validate()
         },
-        uploadFile(file, index) {
-            if (this.produk.produk_foto.length > index) {
-                this.produk.produk_foto[index] = {file_name: file}
-            } else {
-                this.produk.produk_foto.push({file_name: file})
-            }
+        saveImage(payload) {
+            this.foto.push(payload)
+            this.produk.produk_foto.push(null)
         },
-        uploadFailed(index) {
-            this.previewImage.splice(index, 1)
+        deleteImage(index) {
+            this.foto.splice(index, 1)
             this.produk.produk_foto.splice(index, 1)
         },
         selectProvinsi(value) {
@@ -602,11 +602,14 @@ export default {
                 })
         },
         post() {
-            console.log(this.produk)
-            axios
-                .post('/api/produk', this.produk)
+            uploadAllPhoto(this.foto)
+            .then((res)=> {
+                for(let i = 0; i < res.length; i++) {
+                    if(res[i]) this.produk.produk_foto[i] = res[i]
+                }
+                postProduct(this.produk)
                 .then((res)=> {
-                    console.log(res.data);
+                    console.log(res);
                     Swal.fire({
                         icon: "success",
                         title: "Success",
@@ -614,9 +617,9 @@ export default {
                         timer: 2000,
                         showConfirmButton: false
                     })
-                    .then(()=>this.$router.push('/app'))
+                    .then(()=>this.$router.push('/app/product/'+ res.data.data.produk_id))
                 })
-                .catch((err)=>{
+                .catch((err)=> {
                     console.log(err);
                     Swal.fire({
                         icon: "error",
@@ -626,6 +629,31 @@ export default {
                         showConfirmButton: false
                     })
                 })
+            })
+            .catch((err)=>console.log(err))
+            // axios
+            //     .post('/api/produk', this.produk)
+            //     .then((res)=> {
+            //         console.log(res.data);
+            //         Swal.fire({
+            //             icon: "success",
+            //             title: "Success",
+            //             text: "Produk berhasil diunggah",
+            //             timer: 2000,
+            //             showConfirmButton: false
+            //         })
+            //         .then(()=>this.$router.push('/app'))
+            //     })
+            //     .catch((err)=>{
+            //         console.log(err);
+            //         Swal.fire({
+            //             icon: "error",
+            //             title: "Error",
+            //             text: err.message,
+            //             timer: 2000,
+            //             showConfirmButton: false
+            //         })
+            //     })
         },
         validate() {
             const required = []

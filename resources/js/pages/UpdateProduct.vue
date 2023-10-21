@@ -49,11 +49,10 @@
                     v-for="i in 20"
                     :disabled="i > produk.produk_foto.length + 1"
                     :index="i - 1"
-                    :file-name="
-                        produk.produk_foto[i - 1] ? produk.produk_foto[i - 1].file_name : null
-                    "
-                    @file-uploaded="(value) => uploadImage(value)"
-                    @file-deleted="(value) => deleteImage(value)"
+                    :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i - 1].file_name : null"
+                    :preview="foto[i-1] ? foto[i-1].preview : null"
+                    @send-image="(payload)=> saveImage(payload)"
+                    @delete-image="(index)=> deleteImage(index)"
                 />
             </div>
         </div>
@@ -80,6 +79,7 @@ import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { updateProduct, uploadAllPhoto } from "../services/productServices";
 
 export default {
     name: "update-product",
@@ -91,6 +91,7 @@ export default {
                 produk_foto: [],
                 harga: 0,
             },
+            foto: []
         };
     },
     components: {
@@ -113,39 +114,44 @@ export default {
         inputValue(key, value) {
             this.produk[key] = value;
         },
-        uploadImage(file, index) {
-            if (this.produk.produk_foto.length > index) {
-                this.produk.produk_foto[index].file_name = file;
-            } else {
-                this.produk.produk_foto.push({ file_name: file });
-            }
+        saveImage(payload) {
+            this.foto.push(payload)
+            this.produk.produk_foto.push(null)
         },
         deleteImage(index) {
+            this.foto.splice(index, 1)
             this.produk.produk_foto.splice(index, 1)
         },
         submit() {
-            axios.put("/api/produk/update/" + this.$route.params.id, this.produk)
-            .then((res)=>{
-                console.log(res.data)
-                Swal.fire({
+            const ref = this
+            uploadAllPhoto(this.foto)
+            .then((res)=> {
+                for(let i = 0; i < res.length; i++) {
+                    if(res[i]) this.produk.produk_foto[i] = res[i]
+                }
+                updateProduct(this.$route.params.id, this.produk)
+                .then(()=>{
+                    Swal.fire({
                     icon: "success",
                     title: "Success",
                     text: "Produk berhasil diupdate",
                     timer: 2000,
                     showConfirmButton: false
+                    })
+                    .then(()=>this.$router.push("/app/product/"+this.$route.params.id))
                 })
-                .then(()=>this.$router.push("/app/product/"+this.$route.params.id))
-            })
-            .catch((err)=>{
-                console.log(err)
-                Swal.fire({
+                .catch((err)=>{
+                    console.log(err);
+                    Swal.fire({
                     icon: "error",
                     title: "Error",
                     text: "Produk gagal diupdate",
                     timer: 2000,
                     showConfirmButton: false
+                    })
                 })
             })
+            .catch((err)=> console.log(err))
         },
         backToProduct() {
             this.$router.push("/app/product/"+ this.$route.params.id)
@@ -164,7 +170,11 @@ export default {
                     []
                 );
                 this.produk.harga = res.data.data.harga;
+                res.data.data.produk_foto.forEach(()=> {
+                    this.foto.push(null)
+                })
                 console.log(res.data.data);
+                console.log(this.foto);
             })
             .catch((err) => {
                 console.log(err);
