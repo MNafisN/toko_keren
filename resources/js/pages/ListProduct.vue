@@ -54,7 +54,6 @@ export default {
         axios
             .get('/api/produk/'+this.path2)
             .then((res)=>{
-                console.log(res.data.data)
                 this.listProduk = res.data.data
             })
     }

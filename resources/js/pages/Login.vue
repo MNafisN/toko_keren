@@ -40,6 +40,7 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import {login, getInfoUser} from "../services/authServices"
 
 export default {
     name: "login-page",
@@ -66,30 +67,29 @@ export default {
                 password: this.password,
             };
 
-            axios
-                .post("/api/user/login", payload)
-                .then((res) => {
-                    this.isLoading = false;
-                    localStorage.setItem("access_token", res.data.access_token);
-                    console.log(res.data);
-                    this.getInfoUser();
+            login(payload)
+            .then((res)=> {
+                this.isLoading = false;
+                localStorage.setItem("access_token", res.data.access_token);
+                console.log(res.data);
+                this.getInfoUser();
+            })
+            .catch((err)=> {
+                this.isLoading = false;
+                console.log(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: err.response.data.error
                 })
-                .catch((err) => {
-                    this.isLoading = false;
-                    console.log(err);
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: err.response.data.error
-                    })
-                });
+            })
         },
         getInfoUser() {
-            axios.get("/api/user/data").then((res) => {
-                console.log(res.data.user_data);
-                this.$store.commit("setUserData", res.data.user_data);
-                this.$router.push("/app");
-            });
+            getInfoUser()
+            .then(res=> {
+                this.$store.commit("setUserData", res.data.user_data)
+                this.$router.push("/app")
+            })
         },
         onkeydown(e) {
             if (e.key === "Enter" && this.email && this.password) {

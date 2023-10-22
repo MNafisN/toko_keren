@@ -631,29 +631,6 @@ export default {
                 })
             })
             .catch((err)=>console.log(err))
-            // axios
-            //     .post('/api/produk', this.produk)
-            //     .then((res)=> {
-            //         console.log(res.data);
-            //         Swal.fire({
-            //             icon: "success",
-            //             title: "Success",
-            //             text: "Produk berhasil diunggah",
-            //             timer: 2000,
-            //             showConfirmButton: false
-            //         })
-            //         .then(()=>this.$router.push('/app'))
-            //     })
-            //     .catch((err)=>{
-            //         console.log(err);
-            //         Swal.fire({
-            //             icon: "error",
-            //             title: "Error",
-            //             text: err.message,
-            //             timer: 2000,
-            //             showConfirmButton: false
-            //         })
-            //     })
         },
         validate() {
             const required = []

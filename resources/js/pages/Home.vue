@@ -37,7 +37,6 @@ export default {
     mounted() {
         axios.get('/api/produk')
         .then((res)=> {
-            console.log(res.data.data)
             this.listProduk = res.data.data
         })
     }

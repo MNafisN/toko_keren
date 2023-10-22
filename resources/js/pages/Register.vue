@@ -73,6 +73,7 @@ import Input from "../components/Input.vue";
 import ProfilePicture from "../components/ProfilePicture.vue";
 import axios from "axios";
 import Swal from "sweetalert2"
+import { getInfoUser, updateProfile, register, login } from "../services/authServices"
 
 export default {
     name: "register-page",
@@ -114,21 +115,20 @@ export default {
                     email: this.email,
                     password: this.password,
                 };
-                axios.post("/api/user/register", payload)
-                .then((res) => {
-                    console.log(res.data);
-                    ref.login(payload);
+                register(payload)
+                .then(()=> {
+                    ref.login(payload)
                 })
-                .catch((err) => {
+                .catch((err)=> {
                     console.log(err);
-                });
+                })
             } else {
                 console.log("password dan confirm password harus sama");
             }
         },
         login(payload) {
             const ref = this;
-            axios.post("/api/user/login", payload)
+            login(payload)
             .then((res) => {
                 localStorage.setItem("access_token", res.data.access_token);
                 console.log(res.data);
@@ -137,12 +137,12 @@ export default {
             });
         },
         getInfoUser() {
-            axios.get("/api/user/data").then((res) => {
-                console.log(res.data.user_data);
+            getInfoUser()
+            .then(res=> {
                 this.userData.username = res.data.user_data.username
                 this.userData.email = res.data.user_data.email
                 this.$store.commit("setUserData", res.data.user_data);
-            });
+            })
         },
         updateProfile() {
             console.log(this.userData);
@@ -152,7 +152,7 @@ export default {
                 about: this.userData.about,
                 phone_number: this.userData.phone_number
             }
-            axios.put("/api/user/update", payload)
+            updateProfile(payload)
             .then((res) => {
                 console.log(res.data);
                 Swal.fire({
@@ -182,6 +182,12 @@ export default {
     }, 
     mounted() {
         document.addEventListener("keydown", this.onkeydown);
+        getInfoUser()
+        .then((res)=> {
+            this.userData = res.data.user_data
+            if(res.data.status !== 200) return
+            if(!res.data.user_data.full_name) this.isLogged = true
+        })
     }
 };
 </script>
