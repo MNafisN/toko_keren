@@ -8,267 +8,269 @@
         </div>
     </div>
     <div class="h-16"></div>
-    <div class="bg-white">
-        <div class="p-4 border-b">
-            <p class="text-xl font-bold">KATEGORI TERPILIH</p>
-            <br />
-            <div class="flex justify-between items-center">
-                <span class="text-xs text-subTitle">{{ postCategory }}</span>
-                <span
-                    @click="goToPostCategory"
-                    class="text-sm font-bold underline"
-                    >Ubah</span
-                >
-            </div>
-        </div>
-        <div class="p-4 border-b">
-            <p class="text-xl font-bold mb-3">SERTAKAN BEBERAPA DETAIL</p>
-            <form>
-                <Input
-                    @send-value="(value) => inputValue('merek', value)"
-                    id="merk"
-                    type="select"
-                    :list="produk.produk_kategori === 'mobil' ? merekMobil : merekMotor"
-                    label="Merek"
-                    required
-                />
+    <div class="container mx-auto">
+        <div class="bg-white">
+            <div class="p-4 border-b">
+                <p class="text-xl font-bold">KATEGORI TERPILIH</p>
                 <br />
-                <Input
-                    v-if="produk.merek"
-                    @send-value="(value) => inputValue('model', value)"
-                    id="model"
-                    type="select"
-                    :list="model"
-                    label="Model"
-                    required
-                />
-                <br v-if="produk.merek" />
-                <Input
-                    v-if="produk.model"
-                    @send-value="(value) => inputValue('tipe_transmisi', value)"
-                    id="transmisi"
-                    type="select"
-                    :list="tipeTransmisi"
-                    label="Transmisi"
-                    required
-                />
-                <br v-if="produk.model" />
-                <Input
-                    @send-value="(value) => inputValue('tahun_keluaran', value)"
-                    id="tahun"
-                    type="select"
-                    :list="tahun"
-                    label="Tahun"
-                    required
-                />
-                <br />
-                <Input
-                    @send-value="(value) => inputValue('jarak_tempuh', value)"
-                    id="jarak"
-                    type="select"
-                    :list="jarakTempuh"
-                    label="Jarak Tempuh"
-                    required
-                />
-                <br />
-                <Input
-                    v-if="produk.produk_kategori === 'mobil'"
-                    @send-value="
-                        (value) => inputValue('tipe_bahan_bakar', value)
-                    "
-                    id="bahanBakar"
-                    type="radio"
-                    :list="bahanBakar"
-                    label="Tipe bahan bakar"
-                    required
-                />
-                <br v-if="produk.produk_kategori === 'mobil'" />
-                <Input
-                    @send-value="(value) => inputValue('warna', value)"
-                    id="warna"
-                    type="select"
-                    :list="warna"
-                    label="Warna"
-                    required
-                />
-                <br />
-                <Input
-                    v-if="produk.produk_kategori === 'mobil'"
-                    @send-value="(value) => inputValue('tipe_bodi', value)"
-                    id="tipeMobil"
-                    type="select"
-                    :list="tipeMobil"
-                    label="Tipe bodi"
-                />
-                <br v-if="produk.produk_kategori === 'mobil'" />
-                <Input
-                    v-if="produk.produk_kategori === 'mobil'"
-                    @send-value="(value) => inputValue('kapasitas_penumpang', value)"
-                    id="kapasitasPenumpang"
-                    type="number"
-                    label="Kapasitas Penumpang"
-                />
-                <br v-if="produk.produk_kategori === 'mobil'" />
-                <Input
-                    @send-value="(value) => inputValue('kapasitas_mesin', value)"
-                    id="kapasitasMesin"
-                    type="radio"
-                    :list="produk.produk_kategori === 'mobil' ? ccMobil : ccMotor"
-                    label="Kapasitas mesin"
-                />
-                <br />
-                <Input
-                    @send-value="(value) => inputValue('tipe_penjual', value)"
-                    id="penjual"
-                    type="radio"
-                    :list="tipePenjual"
-                    label="Tipe penjual"
-                />
-                <br />
-                <Input
-                    @send-value="(value) => inputValue('produk_judul', value)"
-                    id="judul"
-                    type="text"
-                    label="Judul iklan"
-                    foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)"
-                    :max="70"
-                    required
-                />
-                <br />
-                <Input
-                    @send-value="
-                        (value) => inputValue('produk_deskripsi', value)
-                    "
-                    id="deskripsi"
-                    type="textarea"
-                    label="Deskripsi"
-                    foot-note="Sertakan kondisi, fitur, dan alasan penjualan"
-                    :max="4096"
-                    required
-                />
-                <br />
-            </form>
-        </div>
-        <div class="px-4 py-8 border-b">
-            <p class="text-xl font-bold mb-3">TENTUKAN HARGA</p>
-            <Input
-                @send-value="(value) => inputValue('harga', value)"
-                id="harga"
-                type="price"
-                label="Harga"
-                required
-            />
-        </div>
-        <div class="px-4 py-8 border-b">
-            <p class="text-xl font-bold mb-3">UNGGAH HINGGA 20 FOTO</p>
-            <div class="w-full flex flex-wrap gap-2">
-                <UploadImage
-                    v-for="i in 20"
-                    :disabled="i > produk.produk_foto.length + 1"
-                    :index="i - 1"
-                    :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i -1].file_name : null"
-                    :preview="foto[i-1] ? foto[i-1].preview : null"
-                    @send-image="(payload)=> saveImage(payload)"
-                    @delete-image="(index)=> deleteImage(index)"
-                />
-            </div>
-            <br>
-            <p class="text-xs text-red-500">Wajib diisi</p>
-        </div>
-        <div class="px-4 py-8 border-b">
-            <p class="text-xl font-bold mb-3">
-                KONFIRMASIKAN LOKASI IKLAN ANDA
-            </p>
-            <div class="w-full">
-                <Input
-                    @send-value="
-                        (value) => {inputValue('lokasi_provinsi', value); selectProvinsi(value)}
-                    "
-                    id="provinsi"
-                    type="select"
-                    label="Wilayah"
-                    :list="wilayah.provinsi"
-                    required
-                />
-                <br />
-                <Input
-                    v-if="produk.lokasi_provinsi"
-                    @send-value="
-                        (value) => {inputValue('lokasi_kabupaten_kota', value); selectKota(value)}
-                    "
-                    id="kota"
-                    type="select"
-                    label="Kota"
-                    :list="wilayah.kabupatenKota"
-                    required
-                />
-                <br v-if="produk.lokasi_provinsi" />
-                <Input
-                    v-if="produk.lokasi_kabupaten_kota"
-                    @send-value="
-                        (value) => inputValue('lokasi_kecamatan', value)
-                    "
-                    id="kecamatan"
-                    type="select"
-                    label="Kecamatan"
-                    :list="wilayah.kecamatan"
-                    required
-                />
-            </div>
-            <p class="text-xs text-red-500">Wajib diisi</p>
-        </div>
-        <div class="px-4 py-8">
-            <p class="text-xl font-bold mb-3">CEK KEMBALI DETAIL INFORMASI</p>
-            <div class="w-full">
-                <div class="w-full mb-4 flex gap-4">
-                    <div
-                        class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-subTitle">{{ postCategory }}</span>
+                    <span
+                        @click="goToPostCategory"
+                        class="text-sm font-bold underline"
+                        >Ubah</span
                     >
-                        <img
-                            class="w-full h-full object-cover"
-                            :src="'/api/user/download_photo/'+username"
-                            alt="photo profile"
-                        />
+                </div>
+            </div>
+            <div class="p-4 border-b">
+                <p class="text-xl font-bold mb-3">SERTAKAN BEBERAPA DETAIL</p>
+                <form>
+                    <Input
+                        @send-value="(value) => inputValue('merek', value)"
+                        id="merk"
+                        type="select"
+                        :list="produk.produk_kategori === 'mobil' ? merekMobil : merekMotor"
+                        label="Merek"
+                        required
+                    />
+                    <br />
+                    <Input
+                        v-if="produk.merek"
+                        @send-value="(value) => inputValue('model', value)"
+                        id="model"
+                        type="select"
+                        :list="model"
+                        label="Model"
+                        required
+                    />
+                    <br v-if="produk.merek" />
+                    <Input
+                        v-if="produk.model"
+                        @send-value="(value) => inputValue('tipe_transmisi', value)"
+                        id="transmisi"
+                        type="select"
+                        :list="tipeTransmisi"
+                        label="Transmisi"
+                        required
+                    />
+                    <br v-if="produk.model" />
+                    <Input
+                        @send-value="(value) => inputValue('tahun_keluaran', value)"
+                        id="tahun"
+                        type="select"
+                        :list="tahun"
+                        label="Tahun"
+                        required
+                    />
+                    <br />
+                    <Input
+                        @send-value="(value) => inputValue('jarak_tempuh', value)"
+                        id="jarak"
+                        type="select"
+                        :list="jarakTempuh"
+                        label="Jarak Tempuh"
+                        required
+                    />
+                    <br />
+                    <Input
+                        v-if="produk.produk_kategori === 'mobil'"
+                        @send-value="
+                            (value) => inputValue('tipe_bahan_bakar', value)
+                        "
+                        id="bahanBakar"
+                        type="radio"
+                        :list="bahanBakar"
+                        label="Tipe bahan bakar"
+                        required
+                    />
+                    <br v-if="produk.produk_kategori === 'mobil'" />
+                    <Input
+                        @send-value="(value) => inputValue('warna', value)"
+                        id="warna"
+                        type="select"
+                        :list="warna"
+                        label="Warna"
+                        required
+                    />
+                    <br />
+                    <Input
+                        v-if="produk.produk_kategori === 'mobil'"
+                        @send-value="(value) => inputValue('tipe_bodi', value)"
+                        id="tipeMobil"
+                        type="select"
+                        :list="tipeMobil"
+                        label="Tipe bodi"
+                    />
+                    <br v-if="produk.produk_kategori === 'mobil'" />
+                    <Input
+                        v-if="produk.produk_kategori === 'mobil'"
+                        @send-value="(value) => inputValue('kapasitas_penumpang', value)"
+                        id="kapasitasPenumpang"
+                        type="number"
+                        label="Kapasitas Penumpang"
+                    />
+                    <br v-if="produk.produk_kategori === 'mobil'" />
+                    <Input
+                        @send-value="(value) => inputValue('kapasitas_mesin', value)"
+                        id="kapasitasMesin"
+                        type="radio"
+                        :list="produk.produk_kategori === 'mobil' ? ccMobil : ccMotor"
+                        label="Kapasitas mesin"
+                    />
+                    <br />
+                    <Input
+                        @send-value="(value) => inputValue('tipe_penjual', value)"
+                        id="penjual"
+                        type="radio"
+                        :list="tipePenjual"
+                        label="Tipe penjual"
+                    />
+                    <br />
+                    <Input
+                        @send-value="(value) => inputValue('produk_judul', value)"
+                        id="judul"
+                        type="text"
+                        label="Judul iklan"
+                        foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)"
+                        :max="70"
+                        required
+                    />
+                    <br />
+                    <Input
+                        @send-value="
+                            (value) => inputValue('produk_deskripsi', value)
+                        "
+                        id="deskripsi"
+                        type="textarea"
+                        label="Deskripsi"
+                        foot-note="Sertakan kondisi, fitur, dan alasan penjualan"
+                        :max="4096"
+                        required
+                    />
+                    <br />
+                </form>
+            </div>
+            <div class="px-4 py-8 border-b">
+                <p class="text-xl font-bold mb-3">TENTUKAN HARGA</p>
+                <Input
+                    @send-value="(value) => inputValue('harga', value)"
+                    id="harga"
+                    type="price"
+                    label="Harga"
+                    required
+                />
+            </div>
+            <div class="px-4 py-8 border-b">
+                <p class="text-xl font-bold mb-3">UNGGAH HINGGA 20 FOTO</p>
+                <div class="w-full flex flex-wrap gap-2">
+                    <UploadImage
+                        v-for="i in 20"
+                        :disabled="i > produk.produk_foto.length + 1"
+                        :index="i - 1"
+                        :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i -1].file_name : null"
+                        :preview="foto[i-1] ? foto[i-1].preview : null"
+                        @send-image="(payload)=> saveImage(payload)"
+                        @delete-image="(index)=> deleteImage(index)"
+                    />
+                </div>
+                <br>
+                <p class="text-xs text-red-500">Wajib diisi</p>
+            </div>
+            <div class="px-4 py-8 border-b">
+                <p class="text-xl font-bold mb-3">
+                    KONFIRMASIKAN LOKASI IKLAN ANDA
+                </p>
+                <div class="w-full">
+                    <Input
+                        @send-value="
+                            (value) => {inputValue('lokasi_provinsi', value); selectProvinsi(value)}
+                        "
+                        id="provinsi"
+                        type="select"
+                        label="Wilayah"
+                        :list="wilayah.provinsi"
+                        required
+                    />
+                    <br />
+                    <Input
+                        v-if="produk.lokasi_provinsi"
+                        @send-value="
+                            (value) => {inputValue('lokasi_kabupaten_kota', value); selectKota(value)}
+                        "
+                        id="kota"
+                        type="select"
+                        label="Kota"
+                        :list="wilayah.kabupatenKota"
+                        required
+                    />
+                    <br v-if="produk.lokasi_provinsi" />
+                    <Input
+                        v-if="produk.lokasi_kabupaten_kota"
+                        @send-value="
+                            (value) => inputValue('lokasi_kecamatan', value)
+                        "
+                        id="kecamatan"
+                        type="select"
+                        label="Kecamatan"
+                        :list="wilayah.kecamatan"
+                        required
+                    />
+                </div>
+                <p class="text-xs text-red-500">Wajib diisi</p>
+            </div>
+            <div class="px-4 py-8">
+                <p class="text-xl font-bold mb-3">CEK KEMBALI DETAIL INFORMASI</p>
+                <div class="w-full">
+                    <div class="w-full mb-4 flex gap-4">
                         <div
-                            class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
+                            class="min-w-[96px] h-[96px] rounded-full overflow-hidden relative"
                         >
-                            <div class="i-camera"></div>
+                            <img
+                                class="w-full h-full object-cover"
+                                :src="'/api/user/download_photo/'+username"
+                                alt="photo profile"
+                            />
+                            <div
+                                class="w-full h-1/3 bg-[rgba(0,0,0,0.5)] absolute bottom-0 flex justify-center p-1"
+                            >
+                                <div class="i-camera"></div>
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <Input
+                                id="username"
+                                type="text"
+                                label="Nama"
+                                :max="30"
+                                :init-value="produk.produk_pemasang"
+                                @send-value="(value) => inputValue('produk_pemasang', value)"
+                                required
+                                disabled
+                            />
                         </div>
                     </div>
-                    <div class="w-full">
-                        <Input
-                            id="username"
-                            type="text"
-                            label="Nama"
-                            :max="30"
-                            :init-value="produk.produk_pemasang"
-                            @send-value="(value) => inputValue('produk_pemasang', value)"
-                            required
-                            disabled
-                        />
-                    </div>
+                    <br />
+                    <Input
+                        id="telephone"
+                        type="phone"
+                        label="Nomor Handphone"
+                        :init-value="produk.no_telepon"
+                        @send-value="(value) => inputValue('no_telepon', value)"
+                        required
+                        disabled
+                    />
                 </div>
-                <br />
-                <Input
-                    id="telephone"
-                    type="phone"
-                    label="Nomor Handphone"
-                    :init-value="produk.no_telepon"
-                    @send-value="(value) => inputValue('no_telepon', value)"
-                    required
-                    disabled
-                />
             </div>
         </div>
-    </div>
-    <div class="px-4 py-8 mt-1 bg-white">
-        <button
-            @click="post"
-            :disabled="!validation"
-            :class="`w-full h-11 rounded-md font-bold ${!validation ? 'bg-[#d8dfe0] text-[#7f9799]' : 'bg-buy-button text-white'}`"
-        >
-            Pasang iklan sekarang
-        </button>
+        <div class="px-4 py-8 mt-1 bg-white">
+            <button
+                @click="post"
+                :disabled="!validation"
+                :class="`w-full h-11 rounded-md font-bold ${!validation ? 'bg-[#d8dfe0] text-[#7f9799]' : 'bg-buy-button text-white'}`"
+            >
+                Pasang iklan sekarang
+            </button>
+        </div>
     </div>
     <Footer />
 </template>

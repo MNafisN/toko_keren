@@ -16,14 +16,17 @@ export const register = async (payload)=> {
         if (res.name === "AxiosError") throw new Error(res.response.data.error)
         return res
     } catch (err) {
+        console.log(err);
         return err
     }
 }
 export const getInfoUser = async ()=> {
     try {
         const res = await axios.get("/api/user/data")
+        if (res.name === "AxiosError") throw new Error(res.response.data.error)
         return res
     } catch (err) {
+        console.log(err);
         return err
     }
 }
@@ -31,8 +34,10 @@ export const getInfoUser = async ()=> {
 export const updateProfile = async (payload)=> {
     try {
         const res = await axios.put("/api/user/update", payload)
+        if (res.name === "AxiosError") throw new Error(res.response.data.error)
         return res
     } catch (err) {
+        console.log(err);
         return err
     }
 }

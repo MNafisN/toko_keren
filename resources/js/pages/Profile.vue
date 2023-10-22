@@ -34,21 +34,23 @@
                 <div class="i-verif-phone"></div>
             </div>
         </div>
-        <button
+        <div class="flex flex-col md:flex-row md:gap-4">
+            <button
             v-if="userData.username === getUsername"
             @click="goToEditProfile"
             class="w-full h-11 rounded-md bg-buy-button flex justify-center items-center gap-1"
-        >
+            >
             <div class="i-edit"></div>
             <span class="text-white font-bold">Edit Profile</span>
         </button>
-        <div class="mt-8 mb-4 flex justify-center">
+        <div class="mt-5 mb-4 flex justify-center items-center md:border-2 md:border-buy-button md:w-full md:h-11 md:m-0 md:rounded-md">
             <span class="font-bold text-sm">Bagikan Profil</span>
         </div>
     </div>
+    </div>
     <div
         v-if="list.length !== 0"
-        class="w-full bg-white p-2 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3"
+        class="w-full bg-white p-2 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
     >
         <ProductCard v-for="item in list" page="home" :produk="item" />
     </div>

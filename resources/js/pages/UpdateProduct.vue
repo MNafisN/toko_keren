@@ -8,67 +8,69 @@
         </div>
     </div>
     <div class="h-16"></div>
-    <div class="bg-white">
-        <div class="p-4 border-b">
-            <p class="text-xl font-bold mb-3">UPDATE DETAIL PRODUK</p>
-            <Input
-                @send-value="(value) => inputValue('produk_judul', value)"
-                id="judul"
-                type="text"
-                label="Judul iklan"
-                :init-value="produk.produk_judul"
-                foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)"
-                :max="70"
-                required
-            />
-            <br />
-            <Input
-                @send-value="(value) => inputValue('produk_deskripsi', value)"
-                id="deskripsi"
-                type="textarea"
-                label="Deskripsi"
-                :init-value="produk.produk_deskripsi"
-                foot-note="Sertakan kondisi, fitur, dan alasan penjualan"
-                :max="4096"
-                required
-            />
-            <br />
-            <Input
-                @send-value="(value) => inputValue('harga', value)"
-                id="harga"
-                type="price"
-                label="Harga"
-                :init-value="produk.harga"
-                required
-            />
-        </div>
-        <div class="px-4 py-8 border-b">
-            <p class="text-xl font-bold mb-3">UNGGAH HINGGA 20 FOTO</p>
-            <div class="w-full flex flex-wrap gap-2">
-                <UploadImage
-                    v-for="i in 20"
-                    :disabled="i > produk.produk_foto.length + 1"
-                    :index="i - 1"
-                    :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i - 1].file_name : null"
-                    :preview="foto[i-1] ? foto[i-1].preview : null"
-                    @send-image="(payload)=> saveImage(payload)"
-                    @delete-image="(index)=> deleteImage(index)"
+    <div class="container mx-auto">
+        <div class="bg-white">
+            <div class="p-4 border-b">
+                <p class="text-xl font-bold mb-3">UPDATE DETAIL PRODUK</p>
+                <Input
+                    @send-value="(value) => inputValue('produk_judul', value)"
+                    id="judul"
+                    type="text"
+                    label="Judul iklan"
+                    :init-value="produk.produk_judul"
+                    foot-note="Sebutkan fitur utama dari barang Anda (misal merek, model, umur, jenis)"
+                    :max="70"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('produk_deskripsi', value)"
+                    id="deskripsi"
+                    type="textarea"
+                    label="Deskripsi"
+                    :init-value="produk.produk_deskripsi"
+                    foot-note="Sertakan kondisi, fitur, dan alasan penjualan"
+                    :max="4096"
+                    required
+                />
+                <br />
+                <Input
+                    @send-value="(value) => inputValue('harga', value)"
+                    id="harga"
+                    type="price"
+                    label="Harga"
+                    :init-value="produk.harga"
+                    required
                 />
             </div>
+            <div class="px-4 py-8 border-b">
+                <p class="text-xl font-bold mb-3">UNGGAH HINGGA 20 FOTO</p>
+                <div class="w-full flex flex-wrap gap-2">
+                    <UploadImage
+                        v-for="i in 20"
+                        :disabled="i > produk.produk_foto.length + 1"
+                        :index="i - 1"
+                        :file-name="produk.produk_foto[i - 1] ? produk.produk_foto[i - 1].file_name : null"
+                        :preview="foto[i-1] ? foto[i-1].preview : null"
+                        @send-image="(payload)=> saveImage(payload)"
+                        @delete-image="(index)=> deleteImage(index)"
+                    />
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="px-4 py-8 mt-1 bg-white">
-        <button
-            @click="submit"
-            :disabled="!validation"
-            :class="`w-full h-11 rounded-md font-bold ${
-                !validation
-                    ? 'bg-[#d8dfe0] text-[#7f9799]'
-                    : 'bg-buy-button text-white'
-            }`"
-        >
-            Update Iklan
-        </button>
+        <div class="px-4 py-8 mt-1 bg-white">
+            <button
+                @click="submit"
+                :disabled="!validation"
+                :class="`w-full h-11 rounded-md font-bold ${
+                    !validation
+                        ? 'bg-[#d8dfe0] text-[#7f9799]'
+                        : 'bg-buy-button text-white'
+                }`"
+            >
+                Update Iklan
+            </button>
+        </div>
     </div>
     <Footer />
 </template>

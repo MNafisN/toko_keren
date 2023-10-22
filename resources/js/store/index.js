@@ -22,6 +22,9 @@ const store = createStore({
         },
         getProfilePicture(state) {
             return state.user_data.profile_picture
+        },
+        getFullname(state) {
+            return state.user_data.full_name
         }
     },
     mutations: {

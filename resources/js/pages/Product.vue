@@ -13,7 +13,7 @@
         <!-- product-title -->
         <div class="bg-white p-4">
             <div class="flex justify-between items-center mb-1 mt-2">
-                <span class="font-bold text-xl">Rp {{ produk.harga }}</span>
+                <span class="font-bold text-xl">Rp {{ ribuan(produk.harga) }}</span>
                 <div class="flex items-center gap-4">
                     <div class="i-share"></div>
                     <div class="i-love"></div>
@@ -147,6 +147,9 @@ export default {
             } else {
                 this.$router.push("/app/profile/"+this.produk.username_pemasang)
             }
+        },
+        ribuan(price) {
+            return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
     },
     mounted() {
