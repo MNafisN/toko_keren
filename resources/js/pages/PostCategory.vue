@@ -15,42 +15,42 @@
                     @click="goToPostForm('mobil')"
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-r border-slate-400">
                     <div class="i-mobil"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">MOBIL</P>
+                    <p class="text-sm text-center w-4/5 font-bold">MOBIL</p>
                 </li>
                 <li class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center">
                     <div class="i-properti"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">PROPERTI</P>
+                    <p class="text-sm text-center w-4/5 font-bold">PROPERTI</p>
                 </li>
                 <li
                     @click="goToPostForm('motor')"
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-r border-slate-400">
                     <div class="i-motor"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">MOTOR</P>
+                    <p class="text-sm text-center w-4/5 font-bold">MOTOR</p>
                 </li>
                 <li
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-slate-400">
                     <div class="i-mobil"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">JASA & LOWONGAN KERJA</P>
+                    <p class="text-sm text-center w-4/5 font-bold">JASA & LOWONGAN KERJA</p>
                 </li>
                 <li
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-r border-slate-400">
                     <div class="i-elektronik"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">ELEKTRONIK & GADGET</P>
+                    <p class="text-sm text-center w-4/5 font-bold">ELEKTRONIK & GADGET</p>
                 </li>
                 <li
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-slate-400">
                     <div class="i-hobi"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">HOBI & OLAHRAGA</P>
+                    <p class="text-sm text-center w-4/5 font-bold">HOBI & OLAHRAGA</p>
                 </li>
                 <li
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-r border-slate-400">
                     <div class="i-perabotan"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">RUMAH TANGGA</P>
+                    <p class="text-sm text-center w-4/5 font-bold">RUMAH TANGGA</p>
                 </li>
                 <li
                     class="w-1/2 h-[125px] box-border flex flex-col gap-4 justify-center items-center border-t border-slate-400">
                     <div class="i-lainnya"></div>
-                    <P class="text-sm text-center w-4/5 font-bold">OPSI LAINNYA</P>
+                    <p class="text-sm text-center w-4/5 font-bold">OPSI LAINNYA</p>
                 </li>
             </ul>
         </div>

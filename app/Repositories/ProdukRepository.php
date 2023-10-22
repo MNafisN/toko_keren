@@ -46,7 +46,8 @@ class ProdukRepository
         $produk->produk_judul = $data['produk_judul'];
         $produk->produk_deskripsi = $data['produk_deskripsi'];
         $produk->produk_foto = $data['file'];
-        $produk->produk_pemasang = $data['produk_pemasang'];
+        $produk->produk_pemasang = $data['username_pemasang'];
+        $produk->display_produk_pemasang = $data['produk_pemasang'];
         $produk->no_telepon = $data['no_telepon'];
         $produk->tampilkan_telepon = $data['tampilkan_telepon'];
         $produk->lokasi_provinsi = $data['lokasi_provinsi'];
@@ -68,7 +69,8 @@ class ProdukRepository
         $produk->produk_judul = $data['produk_judul'];
         $produk->produk_deskripsi = $data['produk_deskripsi'];
         $produk->produk_foto = $data['file'];
-        $produk->produk_pemasang = $data['produk_pemasang'];
+        $produk->produk_pemasang = $data['username_pemasang'];
+        $produk->display_produk_pemasang = $data['produk_pemasang'];
         $produk->no_telepon = $data['no_telepon'];
         $produk->tampilkan_telepon = $data['tampilkan_telepon'];
         $produk->lokasi_provinsi = $data['lokasi_provinsi'];
@@ -79,6 +81,39 @@ class ProdukRepository
 
         $produk->save();
         return $produk->fresh();
+    }
+
+    public function updateProduk(string $produkId, array $data): Object
+    {
+        $produk = $this->getById($produkId);
+
+        $produk->produk_judul = $data['produk_judul'];
+        $produk->produk_deskripsi = $data['produk_deskripsi'];
+        $produk->produk_foto = $data['file'];
+        $produk->date_modified = $data['date_modified'];
+
+        $produk->save();
+        return $produk->fresh();
+    }
+
+    public function updateUsername(string $oldUsername, string $newUsername): bool
+    {
+        $produk = $this->produk->where('produk_pemasang', $oldUsername)->orderBy('created_at', 'asc')->first();
+        if (!$produk) { return false; }
+
+        if (count($produk->produk_foto) !== 0) {
+            $newPhotos = [];
+            foreach ($produk->produk_foto as $key => $value) {
+                $newPhotos[$key] = array_replace_recursive($value, [
+                    'posted_by' => $newUsername
+                ]);
+            }
+            $produk->produk_foto = $newPhotos;
+        }
+        $produk->produk_pemasang = $newUsername;
+        
+        $produk->save();
+        return true;
     }
 
     public function destroy(string $produkId): void

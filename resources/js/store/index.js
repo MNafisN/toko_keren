@@ -16,6 +16,15 @@ const store = createStore({
     getters: {
         getUserData(state) {
             return state.user_data
+        },
+        getUsername(state) {
+            return state.user_data.username
+        },
+        getProfilePicture(state) {
+            return state.user_data.profile_picture
+        },
+        getFullname(state) {
+            return state.user_data.full_name
         }
     },
     mutations: {

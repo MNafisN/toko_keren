@@ -15,10 +15,12 @@
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^4.2.3",
+        "compressorjs": "^1.2.1",
         "swiper": "^10.0.4",
         "vue": "^3.3.4",
         "vue-loader": "^17.2.2",
         "vue-router": "^4.2.4",
+        "vue-sweetalert2": "^5.0.5",
         "vuex": "^4.1.0"
     }
 }

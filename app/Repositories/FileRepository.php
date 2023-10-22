@@ -17,7 +17,13 @@ class FileRepository
 
     public function uploadProfilePicture(array $data): Object
     {
-        $file = new $this->file;
+        $file = $this->file->where([
+            ['file_category', 'profile'],
+            ['posted_by', $data['username']]
+        ])->first();
+
+        if (!$file) { $file = new $this->file; }
+        else { Storage::disk('public')->delete(("/profile/" . $file->file_name)); }
 
         $data['profile_picture']->storeAs("/profile/", $data['file_name']);
         $file->file_name = $data['file_name'];
@@ -27,6 +33,17 @@ class FileRepository
 
         $file->save();
         return $file->fresh();
+    }
+
+    public function downloadProfilePicture(string $username)
+    {
+        $file = $this->file->where([
+            ['file_category', 'profile'],
+            ['posted_by', $username]
+        ])->first();
+
+        $fileName = $file->file_name; // $file->created_at . " " . 
+        return Storage::download("/profile/" . $fileName, $fileName);
     }
 
     public function deleteProfilePicture(string $username): void 
@@ -39,6 +56,19 @@ class FileRepository
         $fileName = $file->file_name; // $file->created_at . " " . 
         Storage::disk('public')->delete(("/profile/" . $fileName));
         $file->delete();
+    }
+
+    public function updateUsername(string $oldUsername, string $newUsername): bool
+    {
+        $file = $this->file->where([
+            ['posted_by', $oldUsername]
+        ])->first();
+        if (!$file) { return false; }
+
+        $file->posted_by = $newUsername;
+        
+        $file->save();
+        return true;
     }
 
     public function getPhotoByName(string $name): ?Object
@@ -63,6 +93,14 @@ class FileRepository
 
         $file->save();
         return $file->fresh();
+    }
+
+    public function downloadPhoto(string $fileName)
+    {
+        $file = $this->getPhotoByName($fileName);
+
+        $fileName = $file->file_name;
+        return Storage::download("/produk/" . $fileName, $fileName);
     }
 
     public function deletePhoto(string $fileName): string

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\AuthRepository;
+use App\Repositories\ProdukRepository;
 use App\Repositories\FileRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -14,11 +15,13 @@ use Illuminate\Validation\Rule;
 class AuthService
 {
     protected $authRepository;
+    protected $produkRepository;
     protected $fileRepository;
 
-    public function __construct(AuthRepository $authRepository, FileRepository $fileRepository)
+    public function __construct(AuthRepository $authRepository, ProdukRepository $produkRepository, FileRepository $fileRepository)
     {
         $this->authRepository = $authRepository;
+        $this->produkRepository = $produkRepository;
         $this->fileRepository = $fileRepository;
     }
 
@@ -81,13 +84,24 @@ class AuthService
     }
 
     /**
+     * Untuk melihat detail user lain berdasarkan username
+     */
+    public function getUserDetailByUsername(string $username) : array
+    {
+        $user = $this->authRepository->getByUsername($username);
+        if (!$user) { throw new InvalidArgumentException('user not found'); }
+
+        return $user->only(['email', 'username', 'full_name', 'about', 'phone_number', 'profile_picture']);
+    }
+
+    /**
      * Update user profile data
      */
     public function update(array $data): Object
     {
         $validator = Validator::make($data, [
             // 'username' => 'required|string',
-            'new_username' => ['required', 'string', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore(auth()->user()['username'], 'username')],
+            'new_username' => ['required', 'string', 'alpha_dash', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore(auth()->user()['username'], 'username')],
             'full_name' => 'nullable|string',
             'about' => 'nullable|string',
             'phone_number' => 'required|string'
@@ -102,6 +116,18 @@ class AuthService
         if ($validator->fails()) { throw new ArrayException($validator->errors()->toArray()); }
 
         $data['username'] = auth()->user()['username'];
+
+        if ($data['new_username'] !== $data['username']) {
+            $produk = true;
+            while ($produk == true) {
+                $produk = $this->produkRepository->updateUsername($data['username'], $data['new_username']);
+            }
+            $file = true;
+            while ($file == true) {
+                $file = $this->fileRepository->updateUsername($data['username'], $data['new_username']);
+            }
+        }
+
         $user = $this->authRepository->save($data);
         return $user;
     }
@@ -201,14 +227,28 @@ class AuthService
     }
 
     /**
+     * Download or get user profile picture
+     */
+    public function downloadPhoto(string $username)
+    {
+        $user = $this->authRepository->getByUsername($username);
+        if (!$user) { throw new InvalidArgumentException('user not found'); }
+        if ($user->profile_picture == null) { return null; }
+
+        $photo = $this->fileRepository->downloadProfilePicture($username);
+        return $photo;
+    }
+
+    /**
      * Delete user profile picture
      */
     public function deletePhoto(): string
     {
         // $user = $this->authRepository->getByUsername($username);
         $user = $this->authRepository->getByUsername(auth()->user()['username']);
-        
         if (!$user) { throw new InvalidArgumentException('user not found'); }
+
+        if ($user->profile_picture == null) { return 'Profile picture do not exist'; }
 
         $this->fileRepository->deleteProfilePicture(auth()->user()['username']);
         $user = $this->authRepository->deletePhoto(auth()->user()['username']);

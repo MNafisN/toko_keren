@@ -13,7 +13,7 @@
         <!-- product-title -->
         <div class="bg-white p-4">
             <div class="flex justify-between items-center mb-1 mt-2">
-                <span class="font-bold text-xl">Rp {{ produk.harga }}</span>
+                <span class="font-bold text-xl">Rp {{ ribuan(produk.harga) }}</span>
                 <div class="flex items-center gap-4">
                     <div class="i-share"></div>
                     <div class="i-love"></div>
@@ -50,17 +50,17 @@
 
         <!-- product-description -->
         <div class="bg-white p-4 mt-2">
-            <h1 class="text-xl font-bold mb-4">Detail</h1>
+            <h1 class="text-xl font-bold mb-4">Deskripsi</h1>
             <p>{{ produk.produk_deskripsi }}</p>
         </div>
 
         <!-- product-seller -->
-        <div class="bg-white p-4 mt-2 flex justify-between items-center">
+        <div @click="goToSellerProfile" class="bg-white p-4 mt-2 flex justify-between items-center">
             <div class="w-full flex gap-4 items-center">
                 <div class="rounded-full w-16 h-16 overflow-hidden">
                     <img
                         class="w-full h-full object-cover"
-                        src="/assets/avatar.png"
+                        :src="'/api/user/download_photo/'+produk.username_pemasang"
                         alt=""
                     />
                 </div>
@@ -71,13 +71,22 @@
             <div class="i-arrow-right"></div>
         </div>
 
+        <!-- product user -->
+        <div
+            v-if="username === produk.username_pemasang"
+            class="w-full bg-white p-4 flex flex-col gap-1"
+        >
+            <button @click="editProduct" class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
+            <button @click="deleteProduct" class="w-full h-12 border-2 border-black rounded-md font-bold">Hapus</button>
+
+        </div>
         <!-- product-id -->
-        <div class="bg-white p-4 mt-2 flex justify-between items-center">
+        <div v-else class="bg-white p-4 mt-2 flex justify-between items-center">
             <span class="font-bold text-sm">ID IKLAN {{ produk.produk_id }}</span>
             <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
         </div>
 
-        <BuyButton />
+        <BuyButton v-if="username !== produk.username_pemasang" />
     </div>
     <Footer />
 </template>
@@ -89,12 +98,14 @@ import BuyButton from "../components/product/BuyButton.vue";
 import Footer from "../components/Footer.vue";
 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
     name: "product-detail",
     data() {
         return {
             produk: {},
+            username: ""
         };
     },
     components: {
@@ -103,11 +114,55 @@ export default {
         BuyButton,
         Footer,
     },
+    methods: {
+        deleteProduct() {
+            axios.delete("/api/produk/"+this.produk.produk_id)
+            .then((res)=>{
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: res.data.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+                .then(()=>this.$router.push("/app"))
+            })
+            .catch((err)=>{
+                console.log(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan",
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+            })
+        },
+        editProduct() {
+            this.$router.push("/app/edit/"+this.produk.produk_id)
+        },
+        goToSellerProfile() {
+            if(this.produk.username_pemasang === this.username) {
+                this.$router.push("/app/profile")
+            } else {
+                this.$router.push("/app/profile/"+this.produk.username_pemasang)
+            }
+        },
+        ribuan(price) {
+            return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+    },
     mounted() {
         axios.get("/api/produk/detail/" + this.$route.params.id).then((res) => {
             console.log(res.data.data);
             this.produk = res.data.data;
         });
+
+        axios.get("/api/user/data").then((res) => {
+                console.log(res.data.user_data.username);
+                this.username = res.data.user_data.username
+            });
+
     },
 };
 </script>

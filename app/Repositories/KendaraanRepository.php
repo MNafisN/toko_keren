@@ -72,6 +72,15 @@ class KendaraanRepository
         return $kendaraan->fresh();
     }
 
+    public function updateKendaraan(string $id, array $data): Object
+    {
+        $kendaraan = $this->getById($id);
+        $kendaraan->harga = $data['harga'];
+
+        $kendaraan->save();
+        return $kendaraan->fresh();
+    }
+
     // public function updateStok(string $nama, int $jumlah): void
     // {
     //     $kendaraan = $this->getByName($nama);

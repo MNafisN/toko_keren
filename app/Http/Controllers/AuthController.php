@@ -107,6 +107,29 @@ class AuthController extends Controller
     }
 
     /**
+     * Get user data by username
+     * 
+     * @param  string
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userDetail(string $username) : JsonResponse
+    {
+        try {
+            $result = [
+                'status' => 200,
+                'user_data' => $this->authService->getUserDetailByUsername($username)
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    /**
      * Update user profile data
      * 
      * @param  \Illuminate\Http\Request  $request
@@ -223,6 +246,30 @@ class AuthController extends Controller
         } catch (Exception $err) {
             $result = [
                 'status' => 422,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    /**
+     * Download or get user profile picture
+     * 
+     * @param  string
+     * @return
+     */
+    public function downloadPhoto(string $username)
+    {
+        try {
+            return $this->authService->downloadPhoto($username);
+            // $result = [
+            //     'status' => 200,
+            //     'data' => $this->authService->downloadPhoto()
+            // ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
                 'error' => $err->getMessage()
             ];
         }

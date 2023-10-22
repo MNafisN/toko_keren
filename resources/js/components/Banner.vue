@@ -8,13 +8,13 @@
         :modules="modules"
         >
             <SwiperSlide>
-                <div class="w-full h-48 rounded-md bg-blue-400">Slide 1</div>
+                <div class="w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 rounded-md bg-blue-400">Slide 1</div>
             </SwiperSlide>
             <SwiperSlide>
-                <div class="w-full h-48 rounded-md bg-blue-400">Slide 2</div>
+                <div class="w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 rounded-md bg-blue-400">Slide 2</div>
             </SwiperSlide>
             <SwiperSlide>
-                <div class="w-full h-48 rounded-md bg-blue-400">Slide 3</div>
+                <div class="w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 rounded-md bg-blue-400">Slide 3</div>
             </SwiperSlide>
             <div class="pagination flex justify-center gap-2 mt-2"></div>
         </Swiper>

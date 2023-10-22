@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
-    <title>Laravel Vue</title>
+    <title>Toko Keren</title>
 </head>
 <body>
     <div id="app"></div>

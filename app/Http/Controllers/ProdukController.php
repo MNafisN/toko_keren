@@ -105,17 +105,48 @@ class ProdukController extends Controller
     {
         $data = $request->all();
         try {
-            if ($data['produk_kategori'] == 'mobil') {
+            if ($data['produk_kategori'] == 'mobil' && str_contains($id, 'MBL')) {
                 $validated = $this->mobilService->validator($data);
-            } else if ($data['produk_kategori'] == 'motor') {
+            } else if ($data['produk_kategori'] == 'motor' && str_contains($id, 'MTR')) {
                 $validated = $this->motorService->validator($data);
             } else {
-                throw new InvalidArgumentException('Kategori yang tersedia hanya mobil dan motor');
+                throw new InvalidArgumentException('Kategori tidak dapat diubah');
             }
             $result = [
                 'status' => 200,
                 'message' => 'Produk diperbarui',
                 'data' => $this->produkService->update($validated, $id)
+            ];
+        } catch (ArrayException $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessagesArray()
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 422,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function updateProduk(Request $request, string $id): JsonResponse
+    {
+        $data = $request->all();
+        try {
+            if (str_contains($id, 'MBL')) {
+                $validated = $this->mobilService->updateValidator($data);
+            } else if (str_contains($id, 'MTR')) {
+                $validated = $this->motorService->updateValidator($data);
+            } else {
+                throw new InvalidArgumentException('ID produk tidak valid');
+            }
+            $result = [
+                'status' => 200,
+                'message' => 'Produk diperbarui',
+                'data' => $this->produkService->updateProduk($validated, $id)
             ];
         } catch (ArrayException $err) {
             $result = [
@@ -162,6 +193,23 @@ class ProdukController extends Controller
             $result = [
                 'status' => 200,
                 'data' => $this->produkService->getMyProduk()
+            ];
+        } catch (Exception $err) {
+            $result = [
+                'status' => 404,
+                'error' => $err->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
+    }
+
+    public function getProdukByUser(string $username): JsonResponse
+    {
+        try {
+            $result = [
+                'status' => 200,
+                'data' => $this->produkService->getProdukByUser($username)
             ];
         } catch (Exception $err) {
             $result = [
@@ -225,6 +273,24 @@ class ProdukController extends Controller
         }
 
         return response()->json($result, $result['status']);
+    }
+
+    public function downloadPhoto(string $fileName)
+    {
+        return $this->produkService->downloadPhoto($fileName);
+        // try {
+        //     $result = [
+        //         'status' => 200,
+        //         'data' => $this->produkService->downloadPhoto($fileName)
+        //     ];
+        // } catch (Exception $err) {
+        //     $result = [
+        //         'status' => 404,
+        //         'error' => $err->getMessage()
+        //     ];
+        // }
+
+        // return response()->json($result, $result['status']);
     }
 
     public function deletePhoto(string $fileName): JsonResponse

@@ -1,7 +1,7 @@
 <template>
     <div class="mt-3 p-4 bg-white">
         <p>Rekomendasi baru</p>
-        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <ProductCard v-for="item in list" page="home" :produk="item" />
         </div>
     </div>
