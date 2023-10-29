@@ -8,7 +8,7 @@
             <span class="text-[#7f9799] text-xs"> Beranda > Motor </span>
         </div>
 
-        <PhotoProduct />
+        <PhotoProduct :list="produk.produk_foto" />
 
         <!-- product-title -->
         <div class="bg-white p-4">
