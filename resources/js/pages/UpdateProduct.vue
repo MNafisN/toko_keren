@@ -3,12 +3,12 @@
         <div
             class="bg-[rgba(0,47,52,0.03)] w-full h-16 pl-8 flex items-center gap-4"
         >
-            <div @click="backToProduct" class="i-arrow-left"></div>
-            <span class="text-xl lg:hidden">Update produk</span>
+            <div @click="backToProduct" class="i-arrow-left cursor-pointer"></div>
+            <span class="text-xl">Update produk</span>
         </div>
     </div>
     <div class="h-16"></div>
-    <div class="container mx-auto">
+    <div class="container mx-auto max-w-3xl">
         <div class="bg-white">
             <div class="p-4 border-b">
                 <p class="text-xl font-bold mb-3">UPDATE DETAIL PRODUK</p>

@@ -1,6 +1,6 @@
 <template>
     <div class="mt-2 py-2 bg-white">
-        <div class="w-full flex justify-between px-5">
+        <div class="container mx-auto w-full flex justify-between">
             <span>Telusuri kategori</span>
             <!-- <span class="underline font-semibold">Lihat semua</span> -->
         </div>

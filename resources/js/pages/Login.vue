@@ -8,7 +8,7 @@
         <br />
         <br />
         <div class="container mx-auto md:border md:w-[640px] md:py-4 md:rounded-lg">
-            <h1 class="font-extrabold text-3xl text-center">Fake Olx</h1>
+            <h1 class="font-extrabold text-3xl text-center">Toko Keren</h1>
             <p class="text-xl text-center mt-4">Masuk Ke Akun Anda</p>
             <div class="p-5">
                 <input
@@ -72,7 +72,6 @@ export default {
                 .then((res) => {
                     this.isLoading = false;
                     localStorage.setItem("access_token", res.data.access_token);
-                    console.log(res.data);
                     this.getInfoUser();
                 })
                 .catch((err) => {

@@ -1,6 +1,6 @@
 <template>
     <Header page="home" />
-    <div class="h-28"></div>
+    <div class="h-28 md:h-16"></div>
     <Banner />
     <Kategori/>
     <Rekomendasi :list="listProduk" />

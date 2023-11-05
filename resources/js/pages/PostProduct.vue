@@ -3,12 +3,12 @@
         <div
             class="bg-[rgba(0,47,52,0.03)] w-full h-16 pl-8 flex items-center gap-4"
         >
-            <div @click="goToPostCategory" class="i-arrow-left"></div>
-            <span class="text-xl lg:hidden">Pasang iklan anda</span>
+            <div @click="goToPostCategory" class="i-arrow-left cursor-pointer"></div>
+            <span class="text-xl">Pasang iklan anda</span>
         </div>
     </div>
     <div class="h-16"></div>
-    <div class="container mx-auto">
+    <div class="container mx-auto max-w-3xl">
         <div class="bg-white">
             <div class="p-4 border-b">
                 <p class="text-xl font-bold">KATEGORI TERPILIH</p>
@@ -611,7 +611,7 @@ export default {
                 }
                 postProduct(this.produk)
                 .then((res)=> {
-                    console.log(res);
+                    // console.log(res);
                     Swal.fire({
                         icon: "success",
                         title: "Success",
@@ -661,7 +661,7 @@ export default {
         axios   
             .get('/api/user/data')
             .then((res)=>{
-                console.log(res.data);
+                // console.log(res.data);
                 this.produk.produk_pemasang = res.data.user_data.full_name
                 this.produk.no_telepon = res.data.user_data.phone_number
                 this.username = res.data.user_data.username
@@ -671,7 +671,7 @@ export default {
         axios
             .get('/api/indonesia/provinsi')
             .then((res)=> {
-                console.log(res.data.data)
+                // console.log(res.data.data)
                 const data = res.data.data
                 const arr = []
                 data.forEach((obj)=>{

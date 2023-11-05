@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <Header />
-        <div class="h-[52px]"></div>
+        <div class="h-[52px] md:h-16"></div>
 
         <!-- bread-crumb -->
         <div class="py-1 px-3">
@@ -11,82 +11,92 @@
         <PhotoProduct :list="produk.produk_foto" />
 
         <!-- product-title -->
-        <div class="bg-white p-4">
-            <div class="flex justify-between items-center mb-1 mt-2">
-                <span class="font-bold text-xl">Rp {{ ribuan(produk.harga) }}</span>
-                <div class="flex items-center gap-4">
-                    <div class="i-share"></div>
-                    <div class="i-love"></div>
+        <div class="bg-white">
+            <div class="container mx-auto p-4">
+                <div class="flex justify-between items-center mb-1 mt-2">
+                    <span class="font-bold text-xl">Rp {{ ribuan(produk.harga) }}</span>
+                    <div class="flex items-center gap-4">
+                        <div class="i-share"></div>
+                        <div class="i-love"></div>
+                    </div>
                 </div>
-            </div>
-            <p class="text-sm">{{ produk.produk_judul }}</p>
-            <div class="h-[1px] w-full bg-slate-300 mt-5"></div>
-            <div class="flex justify-between mt-2 text-subTitle text-sm">
-                <p class="text-xs">Wedung, Demak, Jawa Tengah</p>
-                <p class="text-xs">Hari ini</p>
+                <p class="text-sm">{{ produk.produk_judul }}</p>
+                <div class="h-[1px] w-full bg-slate-300 mt-5"></div>
+                <div class="flex justify-between mt-2 text-subTitle text-sm">
+                    <p class="text-xs">Wedung, Demak, Jawa Tengah</p>
+                    <p class="text-xs">Hari ini</p>
+                </div>
             </div>
         </div>
 
         <!-- produk-detail -->
-        <div class="bg-white p-4 mt-2">
-            <h1 class="text-xl font-bold mb-4">Detail</h1>
-            <div class="grid grid-cols-2">
-                <p class="text-sm h-7 text-subTitle">Merek</p>
-                <p class="text-sm h-7">{{ produk.merek }}</p>
+        <div class="bg-white">
+            <div class="container mx-auto p-4 mt-2">
+                <h1 class="text-xl font-bold mb-4">Detail</h1>
+                <div class="grid grid-cols-2">
+                    <p class="text-sm h-7 text-subTitle">Merek</p>
+                    <p class="text-sm h-7">{{ produk.merek }}</p>
 
-                <p class="text-sm h-7 text-subTitle">Model</p>
-                <p class="text-sm h-7">{{ produk.model }}</p>
+                    <p class="text-sm h-7 text-subTitle">Model</p>
+                    <p class="text-sm h-7">{{ produk.model }}</p>
 
-                <p class="text-sm h-7 text-subTitle">Tahun</p>
-                <p class="h-7">{{ produk.tahun_keluaran }}</p>
+                    <p class="text-sm h-7 text-subTitle">Tahun</p>
+                    <p class="h-7">{{ produk.tahun_keluaran }}</p>
 
-                <p class="text-sm h-7 text-subTitle">Jarak tempuh</p>
-                <p class="text-sm h-7">{{ produk.jarak_tempuh }}</p>
+                    <p class="text-sm h-7 text-subTitle">Jarak tempuh</p>
+                    <p class="text-sm h-7">{{ produk.jarak_tempuh }}</p>
 
-                <p class="text-sm h-7 text-subTitle">Tipe penjual</p>
-                <p class="text-sm h-7">Individu</p>
+                    <p class="text-sm h-7 text-subTitle">Tipe penjual</p>
+                    <p class="text-sm h-7">Individu</p>
+                </div>
             </div>
         </div>
 
         <!-- product-description -->
-        <div class="bg-white p-4 mt-2">
-            <h1 class="text-xl font-bold mb-4">Deskripsi</h1>
-            <p>{{ produk.produk_deskripsi }}</p>
+        <div class="bg-white">
+            <div class="container mx-auto p-4 mt-2">
+                <h1 class="text-xl font-bold mb-4">Deskripsi</h1>
+                <p>{{ produk.produk_deskripsi }}</p>
+            </div>
         </div>
 
         <!-- product-seller -->
-        <div @click="goToSellerProfile" class="bg-white p-4 mt-2 flex justify-between items-center">
-            <div class="w-full flex gap-4 items-center">
-                <div class="rounded-full w-16 h-16 overflow-hidden">
-                    <img
-                        class="w-full h-full object-cover"
-                        :src="'/api/user/download_photo/'+produk.username_pemasang"
-                        alt=""
-                    />
+        <div class="bg-white">
+            <div @click="goToSellerProfile" class="container mx-auto p-4 mt-2 flex justify-between items-center">
+                <div class="w-full flex gap-4 items-center">
+                    <div class="rounded-full w-16 h-16 overflow-hidden">
+                        <img
+                            class="w-full h-full object-cover"
+                            :src="'/api/user/download_photo/'+produk.username_pemasang"
+                            alt=""
+                        />
+                    </div>
+                    <span class="font-bold text-xl">{{
+                        produk.produk_pemasang
+                    }}</span>
                 </div>
-                <span class="font-bold text-xl">{{
-                    produk.produk_pemasang
-                }}</span>
+                <div class="i-arrow-right"></div>
             </div>
-            <div class="i-arrow-right"></div>
         </div>
 
-        <!-- product user -->
-        <div
-            v-if="username === produk.username_pemasang"
-            class="w-full bg-white p-4 flex flex-col gap-1"
-        >
-            <button @click="editProduct" class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
-            <button @click="deleteProduct" class="w-full h-12 border-2 border-black rounded-md font-bold">Hapus</button>
+        <div class="bg-white">
+            <!-- product user -->
+            <div
+                v-if="username === produk.username_pemasang"
+                class="w-full container mx-auto p-4 flex flex-col md:flex-row gap-1 md:gap-5"
+            >
+                <button @click="editProduct" class="w-full h-12 bg-buy-button rounded-md text-white font-bold">Edit</button>
+                <button @click="deleteProduct" class="w-full h-12 border-2 border-black rounded-md font-bold">Hapus</button>
 
-        </div>
-        <!-- product-id -->
-        <div v-else class="bg-white p-4 mt-2 flex justify-between items-center">
-            <span class="font-bold text-sm">ID IKLAN {{ produk.produk_id }}</span>
-            <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
-        </div>
+            </div>
+            <!-- product-id -->
+            <div v-else class="container mx-auto p-4 mt-2 flex justify-between items-center">
+                <span class="font-bold text-sm">ID IKLAN {{ produk.produk_id }}</span>
+                <span class="font-bold text-sm">LAPORKAN IKLAN INI</span>
+            </div>
 
-        <BuyButton v-if="username !== produk.username_pemasang" />
+            <BuyButton v-if="username !== produk.username_pemasang" />
+        </div>
     </div>
     <Footer />
 </template>
