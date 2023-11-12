@@ -9,6 +9,8 @@
         </div>
         <h1 @click="goToHome" class="font-extrabold text-2xl cursor-pointer">Toko Keren</h1>
       </div>
+
+      <!-- desktop only -->
       <div class="flex-1 hidden md:flex border-2 border-buy-button rounded-md overflow-hidden">
         <input
           @focusin="typing"
@@ -24,11 +26,11 @@
         </div>
       </div>
       <div class="flex items-center">
-        <div class="w-10 h-10 bg-blue-600 rounded-full overflow-hidden hidden md:block">
+        <div v-if="isLogged" class="w-10 h-10 bg-blue-600 rounded-full overflow-hidden hidden md:block">
           <img v-if="infoUser.profile_picture" class="w-full h-full object-cover" :src="'/api/user/download_photo/'+infoUser.username" alt="photo profile">
           <span v-else class="text-white text-3xl">{{ initialName }}</span>
         </div>
-        <div @click="bubbleToggle" class="relative w-4 h-4 hidden md:block">
+        <div v-if="isLogged" @click="bubbleToggle" class="relative w-4 h-4 hidden md:block">
           <svg class="cursor-pointer" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m16.843 10.211c.108-.141.157-.3.157-.456 0-.389-.306-.755-.749-.755h-8.501c-.445 0-.75.367-.75.755 0 .157.05.316.159.457 1.203 1.554 3.252 4.199 4.258 5.498.142.184.36.29.592.29.23 0 .449-.107.591-.291 1.002-1.299 3.044-3.945 4.243-5.498z"/></svg>
           <div v-if="bubbleMenu" class="absolute w-max h-max bg-white shadow-lg border top-10 right-6 rounded-md rounded-tr-none lancip">
             <ul class="w-full p-5 text-sm text-subTitle">
@@ -39,6 +41,7 @@
             </ul>
           </div>
         </div>
+        <p v-else @click="goToLogin" class="font-extrabold text-lg underline hidden md:block">Login/Register</p>
         <JualBtn header class="ml-5" />
       </div>
     </header>
@@ -108,7 +111,6 @@ export default {
   data() {
     return {
       isActive: false,
-      isLogged: true,
       isTyping: false,
       bubbleMenu: false,
       search: ''
@@ -136,6 +138,9 @@ export default {
     },
     initialName() {
       return this.infoUser.username.split("")[0]
+    },
+    isLogged() {
+      return this.$store.getters.getIsLogged
     }
   },
   methods: {

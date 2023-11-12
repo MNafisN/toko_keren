@@ -665,6 +665,9 @@ export default {
                 this.produk.no_telepon = res.data.user_data.phone_number
                 this.username = res.data.user_data.username
             })
+            .catch((err) => {
+                if (err.response.status === 401) this.$router.push("/app/login")
+            })
 
         // mengambil data provinsi
         axios

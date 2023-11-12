@@ -1,9 +1,7 @@
 <template>
     <div class="bg-white h-screen">
         <div class="relative">
-            <RouterLink to="/app">
-                <div class="i-x absolute top-3 right-3"></div>
-            </RouterLink>
+            <div @click="goToHome" class="i-x absolute top-3 right-3"></div>
         </div>
         <br />
         <br />
@@ -53,6 +51,9 @@ export default {
         };
     },
     methods: {
+        goToHome() {
+            this.$router.push("/app")
+        },
         handleSubmit() {
             if (!this.email || !this.password) {
                 Swal.fire("Masukan input terlebih dahulu");
@@ -85,10 +86,7 @@ export default {
                 });
         },
         getInfoUser() {
-            getInfoUser().then((res) => {
-                this.$store.commit("setUserData", res.data.user_data);
-                this.$router.push("/app");
-            });
+            this.$store.dispatch('pullUserData', "login")
         },
         onkeydown(e) {
             if (e.key === "Enter" && this.email && this.password) {

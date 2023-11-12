@@ -6,7 +6,6 @@
     <Rekomendasi :list="listProduk" />
     <JualBtn />
     <Footer />
-
 </template>
 
 <script>

@@ -120,15 +120,19 @@ export default {
                 this.userData = res.data.user_data;
                 getList()
             })
-            .catch((err) => console.log(err))
-        } else {
-            axios.get("/api/user/data")
-            .then((res)=> {
-                console.log(res.data);
-                this.userData = res.data.user_data
-                getList()
+            .catch((err) => {
+                console.log(err);
             })
-            .catch((err) => console.log(err))
+    } else {
+        axios.get("/api/user/data")
+        .then((res)=> {
+            console.log(res.data);
+            this.userData = res.data.user_data
+            getList()
+        })
+        .catch((err) => {
+                if (err.response.status === 401) this.$router.push("/app/login")
+            })
         }
     },
 };

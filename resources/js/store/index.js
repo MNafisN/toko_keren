@@ -1,4 +1,6 @@
 import {createStore} from 'vuex'
+import {getInfoUser} from '../services/authServices'
+import router from '../router'
 
 const store = createStore({
     state() {
@@ -10,7 +12,8 @@ const store = createStore({
                 phone_number: "",
                 profile_picture: "",
                 username: ""
-            }
+            },
+            isLogged: false
         }
     },
     getters: {
@@ -25,6 +28,9 @@ const store = createStore({
         },
         getFullname(state) {
             return state.user_data.full_name
+        },
+        getIsLogged(state) {
+            return state.isLogged
         }
     },
     mutations: {
@@ -33,6 +39,23 @@ const store = createStore({
         },
         deleteUserData(state) {
             state.user_data = {}
+        },
+        setLogged(state, payload) {
+            state.isLogged = payload
+        }
+    },
+    actions: {
+        pullUserData(context, status) {
+            getInfoUser()
+            .then((res)=>{
+                context.commit('setUserData', res.data.user_data)
+                context.commit('setLogged', true)
+                if(status === "login") router.push("/app")
+            })
+            .catch((err) => {
+                console.log(err);
+                context.commit('setLogged', false)
+            })
         }
     }
 })
