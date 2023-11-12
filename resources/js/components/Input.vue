@@ -122,7 +122,7 @@ export default {
     emits: ['sendValue'],
     watch: {
         value: function() {
-            if (this.type === "price" || this.type === "number") {
+            if (this.type === "number") {
                 this.$emit('sendValue', parseInt(this.value))
             } else {
                 this.$emit('sendValue', this.value)

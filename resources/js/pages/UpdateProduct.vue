@@ -34,11 +34,8 @@
                     required
                 />
                 <br />
-                <Input
+                <PriceInput
                     @send-value="(value) => inputValue('harga', value)"
-                    id="harga"
-                    type="price"
-                    label="Harga"
                     :init-value="produk.harga"
                     required
                 />
@@ -77,6 +74,7 @@
 
 <script>
 import Input from "../components/Input.vue";
+import PriceInput from "../components/PriceInput.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
@@ -98,6 +96,7 @@ export default {
     },
     components: {
         Input,
+        PriceInput,
         UploadImage,
         Footer,
     },

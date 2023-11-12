@@ -152,11 +152,8 @@
             </div>
             <div class="px-4 py-8 border-b">
                 <p class="text-xl font-bold mb-3">TENTUKAN HARGA</p>
-                <Input
+                <PriceInput
                     @send-value="(value) => inputValue('harga', value)"
-                    id="harga"
-                    type="price"
-                    label="Harga"
                     required
                 />
             </div>
@@ -277,6 +274,7 @@
 
 <script>
 import Input from "../components/Input.vue";
+import PriceInput from "../components/PriceInput.vue";
 import UploadImage from "../components/UploadImage.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
@@ -557,6 +555,7 @@ export default {
     },
     components: {
         Input,
+        PriceInput,
         UploadImage,
         Footer,
     },
