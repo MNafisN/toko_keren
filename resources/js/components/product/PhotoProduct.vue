@@ -3,14 +3,10 @@
     :modules="modules"
     :pagination="true"
     >
-        <SwiperSlide>
-            <div class="w-full h-48 rounded-md bg-blue-400">Slide 1</div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div class="w-full h-48 rounded-md bg-blue-400">Slide 2</div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div class="w-full h-48 rounded-md bg-blue-400">Slide 3</div>
+        <SwiperSlide v-for="foto in list">
+            <div class="w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 rounded-md bg-white">
+                <img class="w-full h-full object-contain" :src="`/api/produk/download_photo/${foto.file_name}`" alt="">
+            </div>
         </SwiperSlide>
     </Swiper>
 </template>
@@ -25,6 +21,9 @@ export default {
     components: {
         Swiper,
         SwiperSlide
+    },
+    props: {
+        list: Array
     },
     setup() {
         return {

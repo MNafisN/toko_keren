@@ -6,7 +6,7 @@
         </div>
         <div class="text-center pt-6 px-2 pb-4">
             <span class="font-bold text-xs text-white">Iklan Baris Gratis di Indonesia </span>
-            <span class="text-xs text-white"> .@2006-2023 FakeOLX</span>
+            <span class="text-xs text-white"> .@2006-2023 Toko Keren</span>
         </div>
     </div>
 </template>

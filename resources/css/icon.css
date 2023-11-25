@@ -15,6 +15,15 @@
     background-size: contain;
     display: inline-block;
 }
+.i-search-white{
+    width: 25px;
+    height: 25px;
+    background-image: url(./svg/search.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    filter: invert(1);
+}
 .i-plus{
     width: 15px;
     height: 15px;

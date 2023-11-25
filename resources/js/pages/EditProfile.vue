@@ -1,64 +1,66 @@
 <template>
-    <div class="bg-white min-h-screen">
+    <div class="min-h-screen">
         <Header />
-        <div class="h-[52px]"></div>
-        <div class="p-4">
-            <h1 class="font-bold text-xl mb-4">Informasi Dasar</h1>
-            <div class="w-full mb-4 flex gap-4">
-                <ProfilePicture />
-                <div class="w-full pt-3">
+        <div class="h-[52px] md:h-16"></div>
+        <div class="container mx-auto max-w-3xl bg-white">
+            <div class="p-4">
+                <h1 class="font-bold text-xl mb-4">Informasi Dasar</h1>
+                <div class="w-full mb-4 flex gap-4">
+                    <ProfilePicture />
+                    <div class="w-full pt-3">
+                        <Input
+                            type="text"
+                            id="fullName"
+                            placeholder="Nama"
+                            :init-value="userData.full_name"
+                            :max="30"
+                            @send-value="(value) => inputValue('full_name', value)"
+                        />
+                    </div>
+                </div>
+                <div>
                     <Input
-                        type="text"
-                        id="fullName"
-                        placeholder="Nama"
-                        :init-value="userData.full_name"
-                        :max="30"
-                        @send-value="(value) => inputValue('full_name', value)"
+                        type="textarea"
+                        id="about"
+                        placeholder="Tentang Saya (opsional)"
+                        :init-value="userData.about"
+                        :max="200"
+                        @send-value="(value) => inputValue('about', value)"
                     />
                 </div>
             </div>
-            <div>
+            <div class="h-[1px] w-full bg-subTitle"></div>
+            <div class="p-4">
+                <h1 class="font-bold text-xl mb-4">Informasi Kontak</h1>
                 <Input
-                    type="textarea"
-                    id="about"
-                    placeholder="Tentang Saya (opsional)"
-                    :init-value="userData.about"
-                    :max="200"
-                    @send-value="(value) => inputValue('about', value)"
+                    type="phone"
+                    id="phone"
+                    placeholder="Masukan nomor HP"
+                    foot-note="ini adalah nomor untuk kontak pembeli, pengingat dan notifikasi lainnya"
+                    :init-value="userData.phone_number"
+                    @send-value="(value) => inputValue('phone_number', value)"
                 />
+                <br />
+                <div class="relative">
+                    <Input
+                        type="text"
+                        id="email"
+                        placeholder="Email"
+                        foot-note="Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam"
+                        :init-value="userData.email"
+                        disabled
+                    />
+                    <div @click="showAlert" class="i-edit-form absolute right-2 top-3"></div>
+                </div>
             </div>
-        </div>
-        <div class="h-[1px] w-full bg-subTitle"></div>
-        <div class="p-4">
-            <h1 class="font-bold text-xl mb-4">Informasi Kontak</h1>
-            <Input
-                type="phone"
-                id="phone"
-                placeholder="Masukan nomor HP"
-                foot-note="ini adalah nomor untuk kontak pembeli, pengingat dan notifikasi lainnya"
-                :init-value="userData.phone_number"
-                @send-value="(value) => inputValue('phone_number', value)"
-            />
-            <br />
-            <div class="relative">
-                <Input
-                    type="text"
-                    id="email"
-                    placeholder="Email"
-                    foot-note="Kami tidak akan mengungkapkan email Anda kepada orang lain atau menggunakannya untuk mengirim Anda spam"
-                    :init-value="userData.email"
-                    disabled
-                />
-                <div @click="showAlert" class="i-edit-form absolute right-2 top-3"></div>
+            <div class="p-4">
+                <button
+                    @click="submit"
+                    class="w-full h-12 bg-buy-button text-white font-bold rounded"
+                >
+                    Simpan Perubahan
+                </button>
             </div>
-        </div>
-        <div class="fixed z-20 bottom-0 w-full p-4">
-            <button
-                @click="submit"
-                class="w-full h-12 bg-buy-button text-white font-bold rounded"
-            >
-                Simpan Perubahan
-            </button>
         </div>
     </div>
 </template>

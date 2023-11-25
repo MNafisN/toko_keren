@@ -18,7 +18,7 @@ axios.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       localStorage.removeItem('access_token');
-      router.push('/app/login');
+      // router.push('/app/login');
     }
     return Promise.reject(error);
   }

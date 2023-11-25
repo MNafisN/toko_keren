@@ -1,14 +1,12 @@
 <template>
     <div class="bg-white h-screen">
         <div class="relative">
-            <RouterLink to="/app">
-                <div class="i-x absolute top-3 right-3"></div>
-            </RouterLink>
+            <div @click="goToHome" class="i-x absolute top-3 right-3"></div>
         </div>
         <br />
         <br />
         <div class="container mx-auto md:border md:w-[640px] md:py-4 md:rounded-lg">
-            <h1 class="font-extrabold text-3xl text-center">Fake Olx</h1>
+            <h1 class="font-extrabold text-3xl text-center">Toko Keren</h1>
             <p class="text-xl text-center mt-4">Masuk Ke Akun Anda</p>
             <div class="p-5">
                 <input
@@ -53,6 +51,9 @@ export default {
         };
     },
     methods: {
+        goToHome() {
+            this.$router.push("/app")
+        },
         handleSubmit() {
             if (!this.email || !this.password) {
                 Swal.fire("Masukan input terlebih dahulu");
@@ -72,7 +73,6 @@ export default {
                 .then((res) => {
                     this.isLoading = false;
                     localStorage.setItem("access_token", res.data.access_token);
-                    console.log(res.data);
                     this.getInfoUser();
                 })
                 .catch((err) => {
@@ -86,10 +86,7 @@ export default {
                 });
         },
         getInfoUser() {
-            getInfoUser().then((res) => {
-                this.$store.commit("setUserData", res.data.user_data);
-                this.$router.push("/app");
-            });
+            this.$store.dispatch('pullUserData', "login")
         },
         onkeydown(e) {
             if (e.key === "Enter" && this.email && this.password) {

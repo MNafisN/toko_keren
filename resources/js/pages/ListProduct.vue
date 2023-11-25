@@ -1,14 +1,13 @@
 <template>
     <Header page="list-product" />
-    <div class="h-28"></div>
+    <div class="h-28 md:h-16"></div>
     <div class="w-full bg-white py-4 px-2">
         <p class="text-subTitle text-xs">Beranda / {{ path1 }} / {{ path2 }}</p>
         <br>
         <p>Menampilkan hasil untuk <b>"{{ path2 }}"</b></p>
-        <br>
 
         <!-- list product -->
-        <div class="flex flex-col gap-4">
+        <div class="container mx-auto grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             <ProductCard v-for="item in listProduk" :produk="item" />
         </div>
         <!-- //// list product /// -->
